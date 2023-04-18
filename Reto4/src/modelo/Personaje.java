@@ -65,8 +65,15 @@ public class Personaje {
 	
 	//metodos
 	
-	public void subidaMaestria() {
+	public void subidaMaestria(boolean victoria) {
 		//sube maestria de un personaje en un usuario concreto
+		
+		if(victoria) {
+			this.maestria=this.maestria+100;
+		}else {
+			this.maestria=this.maestria+20;
+		}
+		
 	}
 	
 	public void contadorPartidas() {
