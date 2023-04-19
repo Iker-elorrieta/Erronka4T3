@@ -1,6 +1,11 @@
+package test;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
+
+import modelo.Habilidad;
+import modelo.Personaje;
 
 public class testHabilidad {
 	
