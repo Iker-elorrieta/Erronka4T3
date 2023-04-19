@@ -11,7 +11,7 @@ public class Partida {
 	Modos modo;
 	Personaje personaje;
 	Estadisticas estadisticas;
-	private boolean resultado;
+	public boolean resultado;
 	Date fecha;
 	
 	public Partida(int cod_partida, Usuario jugador, Modos modo, Personaje personaje, Estadisticas estadisticas,
