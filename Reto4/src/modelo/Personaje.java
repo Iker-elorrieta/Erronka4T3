@@ -1,8 +1,17 @@
+package modelo;
+
+import java.util.Arrays;
 
 public class Personaje {
 	
-	//Valores
 	
+	@Override
+	public String toString() {
+		return "Personaje [nombre=" + nombre + ", maestria=" + maestria + ", habilidades="
+				+ Arrays.toString(habilidades) + ", categoria=" + categoria + ", partidas=" + partidas + ", usuario="
+				+ Arrays.toString(usuario) + "]";
+	}
+
 	private String nombre;
 	private String maestria;
 	private Habilidad [] habilidades;

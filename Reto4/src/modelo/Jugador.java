@@ -18,11 +18,6 @@ public class Jugador extends Usuario{
 		this.partidasRecientes=partidasRecientes;
 	}
 
-	@Override
-	public boolean comprobarContraseña() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public void anyadirPartidas(Partida ultimaPartida){
 		if(partidasRecientes.size()==5)
@@ -32,17 +27,60 @@ public class Jugador extends Usuario{
 			partidasRecientes.add(ultimaPartida);
 	}
 	
-	public void enseñarPersonajes()
-	{
-		for (int i=0;i<partidasRecientes.size();i++) {
-			partidasRecientes.get(i).toString();
-		}
+	public String getRango() {
+		return rango;
 	}
+
+
+	public void setRango(String rango) {
+		this.rango = rango;
+	}
+
+
+	public int getNivel() {
+		return nivel;
+	}
+
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+	}
+
+
+	public ArrayList<Personaje> getPersonajes() {
+		return personajes;
+	}
+
+
+	public void setPersonajes(ArrayList<Personaje> personajes) {
+		this.personajes = personajes;
+	}
+
+
+	public ArrayList<Partida> getPartidasRecientes() {
+		return partidasRecientes;
+	}
+
+
+	public void setPartidasRecientes(ArrayList<Partida> partidasRecientes) {
+		this.partidasRecientes = partidasRecientes;
+	}
+
+
 	
 	public void subidaNivel()
 	{
-		if(partidasRecientes.get(partidasRecientes.size()).isResultado())
+		if(partidasRecientes.get(partidasRecientes.size()-1).isResultado())
 			nivel++;
 	}
+
+	public boolean comprobarContrasenya(String contra) {
+		boolean inicioSesion = false;
+		if(contra.equals(contrasenya))
+			inicioSesion=true;
+		
+		return inicioSesion;
+	}
+	
 
 }

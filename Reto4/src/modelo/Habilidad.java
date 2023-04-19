@@ -1,7 +1,6 @@
-
+package modelo;
 public class Habilidad {
 	
-	//Valores
 	
 	private String nombre;
 	private Personaje personaje;
