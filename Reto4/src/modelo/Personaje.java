@@ -79,7 +79,7 @@ public class Personaje {
 	}
 	
 	public void contadorPartidas() {
-		//cuenta todas as partidas jugadas con este personaje
+		//cuenta todas las partidas jugadas con este personaje
 	}
 	
 }

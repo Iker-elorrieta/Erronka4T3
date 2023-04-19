@@ -89,6 +89,7 @@ public class Partida {
 	}
 	
 	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -103,7 +104,7 @@ public class Partida {
 
 	@Override
 	public String toString() {
-		return Victoria()+"  "+ modo +"  "+ personaje + "  " + estadisticas + "  " + fecha;
+		return Victoria()+"  "+ modo +"  "+ personaje.getNombre() + "  " + estadisticas.toString() + "  " + fecha;
 	}
 
 	
