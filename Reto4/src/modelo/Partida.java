@@ -82,7 +82,7 @@ public class Partida {
 		this.fecha = fecha;
 	}
 	
-	public String Victoria() {
+	public String victoria() {
 		String[] resul= {"Victoria", "Derrota"};
 		
 		return resultado==true?resul[0]:resul[1];
@@ -103,7 +103,7 @@ public class Partida {
 
 	@Override
 	public String toString() {
-		return Victoria()+"  "+ modo +"  "+ personaje + "  " + estadisticas + "  " + fecha;
+		return victoria()+"  "+ modo +"  "+ personaje + "  " + estadisticas + "  " + fecha;
 	}
 
 	
