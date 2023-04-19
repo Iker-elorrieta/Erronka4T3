@@ -1,17 +1,8 @@
-package modelo;
-
-import java.util.Arrays;
 
 public class Personaje {
 	
+	//Valores
 	
-	@Override
-	public String toString() {
-		return "Personaje [nombre=" + nombre + ", maestria=" + maestria + ", habilidades="
-				+ Arrays.toString(habilidades) + ", categoria=" + categoria + ", partidas=" + partidas + ", usuario="
-				+ Arrays.toString(usuario) + "]";
-	}
-
 	private String nombre;
 	private String maestria;
 	private Habilidad [] habilidades;
@@ -74,7 +65,7 @@ public class Personaje {
 	
 	//metodos
 	
-	public void subidaMaestria(boolean victoria) {
+	public void partidaJugada(boolean victoria) {
 		//sube maestria de un personaje en un usuario concreto
 		
 		if(victoria) {
@@ -83,10 +74,10 @@ public class Personaje {
 			this.maestria=this.maestria+20;
 		}
 		
+		this.partidas++;
+		
 	}
 	
-	public void contadorPartidas() {
-		//cuenta todas as partidas jugadas con este personaje
-	}
+	
 	
 }
