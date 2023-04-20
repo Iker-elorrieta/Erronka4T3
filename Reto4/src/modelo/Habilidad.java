@@ -27,18 +27,11 @@ public class Habilidad {
 		this.descripcion = descripcion;
 	}
 	
-	//constructor
-	
 	public Habilidad(String nombre, Personaje personaje, String descripcion) {
 		super();
 		this.nombre = nombre;
 		this.personaje = personaje;
 		this.descripcion = descripcion;
 	}
-	
-	
-	//metodos
-	
-	
 	
 }

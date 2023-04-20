@@ -15,10 +15,10 @@ import utils.Modos;
 class PartidaTest {
 	
 	int cod1=0;
-	Jugador jug1 = new Jugador(null, null, null, 0, null, null);
+	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1);
 	String hola = "Aram";
 	Modos modo= Modos.Aram;
-	Personaje pers1 = new Personaje("David", null, null, null, 0, null);
+	Personaje pers1 = new Personaje(hola, cod1, null, hola, cod1, cod1);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true;
 	Date date1=new Date();   
@@ -80,7 +80,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetJugador() {
-		Jugador jug2 = new Jugador(null, null, null, 1, null, null);
+		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1);
 		partida1.setJugador(jug2);
 		assertEquals(partida1.getJugador(),jug2);
 	}
@@ -94,7 +94,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetPersonaje() {
-		Personaje pers2 = new Personaje(null, null, null, null, cod1, null);
+		Personaje pers2 = new Personaje(hola, cod1, null, hola, cod1, cod1);
 		partida1.setPersonaje(pers2);
 		assertEquals(partida1.getPersonaje(),pers2);
 	}

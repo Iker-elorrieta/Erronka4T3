@@ -1,23 +1,17 @@
 package modelo;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Personaje {
 	
+	//Valores
 	
-	@Override
-	public String toString() {
-		return "Personaje [nombre=" + nombre + ", maestria=" + maestria + ", habilidades="
-				+ Arrays.toString(habilidades) + ", categoria=" + categoria + ", partidas=" + partidas + ", usuario="
-				+ Arrays.toString(usuario) + "]";
-	}
-
 	private String nombre;
-	private String maestria;
-	private Habilidad [] habilidades;
+	private int maestria;
+	private ArrayList <Habilidad> habilidades;
 	private String categoria;
 	private int partidas;
-	private Usuario [] usuario;
+	private int usuario;
 	
 	//getter setter
 	
@@ -27,16 +21,16 @@ public class Personaje {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getMaestria() {
+	public int getMaestria() {
 		return maestria;
 	}
-	public void setMaestria(String maestria) {
+	public void setMaestria(int maestria) {
 		this.maestria = maestria;
 	}
-	public Habilidad[] getHabilidades() {
+	public ArrayList<Habilidad> getHabilidades() {
 		return habilidades;
 	}
-	public void setHabilidades(Habilidad[] habilidades) {
+	public void setHabilidades(ArrayList<Habilidad> habilidades) {
 		this.habilidades = habilidades;
 	}
 	public String getCategoria() {
@@ -51,17 +45,17 @@ public class Personaje {
 	public void setPartidas(int partidas) {
 		this.partidas = partidas;
 	}
-	public Usuario[] getUsuario() {
+	public int getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(Usuario[] usuario) {
+	public void setUsuario(int usuario) {
 		this.usuario = usuario;
 	}
 	
 	//constructor
 	
-	public Personaje(String nombre, String maestria, Habilidad[] habilidades, String categoria, int partidas,
-			Usuario[] usuario) {
+	public Personaje(String nombre, int maestria, ArrayList<Habilidad> habilidades, String categoria, int partidas,
+			int usuario) {
 		super();
 		this.nombre = nombre;
 		this.maestria = maestria;
@@ -74,12 +68,21 @@ public class Personaje {
 	
 	//metodos
 	
-	public void subidaMaestria() {
+	
+	
+	public void partidaJugada(boolean victoria) {
 		//sube maestria de un personaje en un usuario concreto
+		
+		if(victoria) {
+			this.maestria=this.maestria+100;
+		}else {
+			this.maestria=this.maestria+20;
+		}
+		
+		this.partidas++;
+		
 	}
 	
-	public void contadorPartidas() {
-		//cuenta todas las partidas jugadas con este personaje
-	}
+	
 	
 }

@@ -2,8 +2,8 @@ package modelo;
 
 public class Administrador extends Usuario{
 
-	public Administrador(String nombre, String contrasenya) {
-		super(nombre, contrasenya);
+	public Administrador(String nombre, String contrasenya,int id) {
+		super(nombre, contrasenya,id);
 		// TODO Auto-generated constructor stub
 	}
 

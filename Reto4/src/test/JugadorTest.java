@@ -18,17 +18,19 @@ class JugadorTest {
 	String contra = "mango123";
 	String rango = "Maestro";
 	int nivel = 69;
-	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas);
+	int id=0;
+	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id);
 	
 	@Test
 	void testJugador() {
 		
 		assertEquals(jug1.getNombre(),nombre);
-		assertEquals(jug1.getContraseña(),contra);
+		assertEquals(jug1.getContrasenya(),contra);
 		assertEquals(jug1.getPartidasRecientes(),partidas);
 		assertEquals(jug1.getPersonajes(),personajes);
 		assertEquals(jug1.getNivel(),nivel);
 		assertEquals(jug1.getRango(),rango);
+		assertEquals(jug1.getId(),id);
 	}
 	
 	@Test
