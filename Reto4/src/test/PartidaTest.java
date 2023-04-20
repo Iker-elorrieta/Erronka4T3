@@ -18,7 +18,7 @@ class PartidaTest {
 	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1);
 	String hola = "Aram";
 	Modos modo= Modos.Aram;
-	Personaje pers1 = new Personaje(hola, cod1, null, hola, cod1, cod1);
+	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true;
 	Date date1=new Date();   
@@ -94,7 +94,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetPersonaje() {
-		Personaje pers2 = new Personaje(hola, cod1, null, hola, cod1, cod1);
+		Personaje pers2 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
 		partida1.setPersonaje(pers2);
 		assertEquals(partida1.getPersonaje(),pers2);
 	}
@@ -131,7 +131,7 @@ class PartidaTest {
 	
 	@Test
 	void testtoString() {
-	 String enviar= "Victoria  Aram  David  0/0/0  "+date1;
+	 String enviar= "Victoria  Aram  Aatrox  0/0/0  "+date1;
 	 assertEquals(partida1.toString(),enviar);
 	}
 	

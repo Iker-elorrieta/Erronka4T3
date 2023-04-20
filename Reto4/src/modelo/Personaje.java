@@ -1,98 +1,143 @@
 package modelo;
 
-
 import java.util.ArrayList;
-
+import java.util.Objects;
 
 public class Personaje {
-	
-	//Valores
-	int cod_personaje;
-	private String nombre;
-	private String role;
-	private int difficulty;
-	private ArrayList <Habilidad> habilidades;
-	private int attackDamage;
-	private int abilityPower;
-	private int health;
-	private int mana;
-	private int partidas;
-	private int usuario;
-	private int maestria;
-	//getter setter
-	
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public int getMaestria() {
-		return maestria;
-	}
-	public void setMaestria(int maestria) {
-		this.maestria = maestria;
-	}
-	public ArrayList<Habilidad> getHabilidades() {
-		return habilidades;
-	}
-	public void setHabilidades(ArrayList<Habilidad> habilidades) {
-		this.habilidades = habilidades;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String categoria) {
-		this.role = categoria;
-	}
-	public int getDifficulty() {
-		return difficulty;
-	}
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-	public int getPartidas() {
-		return partidas;
-	}
-	public void setPartidas(int partidas) {
-		this.partidas = partidas;
-	}
-	public int getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(int usuario) {
-		this.usuario = usuario;
-	}
-	
-	//constructor
-	
-	public Personaje(String nombre, int maestria, ArrayList<Habilidad> habilidades, String categoria, int partidas,
-			int usuario) {
-		super();
-		this.nombre = nombre;
-		this.maestria = maestria;
-		this.habilidades = habilidades;
-		this.role = categoria;
-		this.partidas = partidas;
-		this.usuario = usuario;
-	}
-	
-	
-	//metodos
-	
-	public void partidaJugada(boolean victoria) {
-		//sube maestria de un personaje en un usuario concreto
-		
-		if(victoria) {
-			this.maestria=this.maestria+100;
-		}else {
-			this.maestria=this.maestria+20;
-		}
-		
-		this.partidas++;
-		
-	}
-	
-	
-	
+    private int id;
+    private String name;
+    private String role;
+    private int difficulty;
+    private ArrayList<Habilidad> abilities = new ArrayList<>();
+    private int attackDamage;
+    private int abilityPower;
+    private int health;
+    private int mana;
+    private int mastery;
+
+    public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana, int mastery) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.difficulty = difficulty;
+        this.abilities = abilities;
+        this.attackDamage = attackDamage;
+        this.abilityPower = abilityPower;
+        this.health = health;
+        this.mana = mana;
+        this.mastery = mastery;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public ArrayList<Habilidad> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(ArrayList<Habilidad> abilities) {
+        this.abilities = abilities;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public void setAttackDamage(int attackDamage) {
+        this.attackDamage = attackDamage;
+    }
+
+    public int getAbilityPower() {
+        return abilityPower;
+    }
+
+    public void setAbilityPower(int abilityPower) {
+        this.abilityPower = abilityPower;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getMastery() {
+        return mastery;
+    }
+
+    public void setMastery(int mastery) {
+        this.mastery = mastery;
+    }
+
+    public int calculateMastery(int wins, int losses) {
+        return wins * 100 + losses * 20;
+    }
+
+    @Override
+    public String toString() {
+        return "Champion{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                ", difficulty=" + difficulty +
+                ", abilities=" + abilities +
+                ", attackDamage=" + attackDamage +
+                ", abilityPower=" + abilityPower +
+                ", health=" + health +
+                ", mana=" + mana +
+                ", mastery=" + mastery +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Personaje champion = (Personaje) o;
+        return id == champion.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

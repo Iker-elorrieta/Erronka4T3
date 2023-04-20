@@ -1,16 +1,17 @@
 package modelo;
 
 abstract public class Usuario {
-	protected String nombre;
-	protected String contrasenya;
 	protected int id;
+	protected String nombre;
+	protected String contrasena;
+	
 	
 	public String getContrasenya() {
-		return contrasenya;
+		return contrasena;
 	}
 
 	public void setContrasenya(String contrasenya) {
-		this.contrasenya = contrasenya;
+		this.contrasena = contrasenya;
 	}
 
 	public int getId() {
@@ -21,10 +22,10 @@ abstract public class Usuario {
 		this.id = id;
 	}
 
-	public Usuario(String contraseña, String nombre,int id)
+	public Usuario(int id, String nombre,String contrasena )
 	{
 		this.nombre=nombre;
-		this.contrasenya=contraseña;
+		this.contrasena=contrasena;
 		this.id=id;
 	}
 	

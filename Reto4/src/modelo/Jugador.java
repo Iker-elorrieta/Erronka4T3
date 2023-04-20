@@ -11,7 +11,7 @@ public class Jugador extends Usuario{
 	
 
 	public Jugador(String contraseña, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id) {
-		super(contraseña, nombre,id);
+		super(id, nombre,contraseña);
 		this.rango=rango;
 		this.nivel=nivel;
 		this.personajes=personajes;
@@ -76,7 +76,7 @@ public class Jugador extends Usuario{
 
 	public boolean comprobarContrasenya(String contra) {
 		boolean inicioSesion = false;
-		if(contra.equals(contrasenya))
+		if(contra.equals(contrasena))
 			inicioSesion=true;
 		
 		return inicioSesion;
