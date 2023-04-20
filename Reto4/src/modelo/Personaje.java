@@ -1,17 +1,24 @@
 package modelo;
 
 
+import java.util.ArrayList;
+
+
 public class Personaje {
 	
 	//Valores
-	
+	int cod_personaje;
 	private String nombre;
-	private String maestria;
-	private Habilidad [] habilidades;
-	private String categoria;
+	private String role;
+	private int difficulty;
+	private ArrayList <Habilidad> habilidades;
+	private int attackDamage;
+	private int abilityPower;
+	private int health;
+	private int mana;
 	private int partidas;
-	private Usuario [] usuario;
-	
+	private int usuario;
+	private int maestria;
 	//getter setter
 	
 	public String getNombre() {
@@ -20,23 +27,29 @@ public class Personaje {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getMaestria() {
+	public int getMaestria() {
 		return maestria;
 	}
-	public void setMaestria(String maestria) {
+	public void setMaestria(int maestria) {
 		this.maestria = maestria;
 	}
-	public Habilidad[] getHabilidades() {
+	public ArrayList<Habilidad> getHabilidades() {
 		return habilidades;
 	}
-	public void setHabilidades(Habilidad[] habilidades) {
+	public void setHabilidades(ArrayList<Habilidad> habilidades) {
 		this.habilidades = habilidades;
 	}
-	public String getCategoria() {
-		return categoria;
+	public String getRole() {
+		return role;
 	}
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setRole(String categoria) {
+		this.role = categoria;
+	}
+	public int getDifficulty() {
+		return difficulty;
+	}
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 	public int getPartidas() {
 		return partidas;
@@ -44,22 +57,22 @@ public class Personaje {
 	public void setPartidas(int partidas) {
 		this.partidas = partidas;
 	}
-	public Usuario[] getUsuario() {
+	public int getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(Usuario[] usuario) {
+	public void setUsuario(int usuario) {
 		this.usuario = usuario;
 	}
 	
 	//constructor
 	
-	public Personaje(String nombre, String maestria, Habilidad[] habilidades, String categoria, int partidas,
-			Usuario[] usuario) {
+	public Personaje(String nombre, int maestria, ArrayList<Habilidad> habilidades, String categoria, int partidas,
+			int usuario) {
 		super();
 		this.nombre = nombre;
 		this.maestria = maestria;
 		this.habilidades = habilidades;
-		this.categoria = categoria;
+		this.role = categoria;
 		this.partidas = partidas;
 		this.usuario = usuario;
 	}

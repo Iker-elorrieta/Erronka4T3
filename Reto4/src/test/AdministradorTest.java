@@ -10,7 +10,7 @@ class AdministradorTest {
 
 	@Test
 	void testcomprobarContrasenya() {
-		Administrador admin = new Administrador("hola", "admin1");
+		Administrador admin = new Administrador("hola", "admin1",0);
 		String contrasenya1= "hola";
 		String contrasenya2= "adios";//
 		assertTrue(admin.comprobarContrasenya(contrasenya1));
@@ -20,8 +20,8 @@ class AdministradorTest {
 	void testAdministrador() {
 		String nombre= "David";
 		String contra= "23";
-		
-		Administrador admin1 = new Administrador(nombre,contra);
+		int id=0;
+		Administrador admin1 = new Administrador(nombre,contra,id);
 		assertEquals(admin1.getNombre(),nombre);
 		assertEquals(admin1.getNombre(),contra);
 		

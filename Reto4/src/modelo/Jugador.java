@@ -10,8 +10,8 @@ public class Jugador extends Usuario{
 	protected ArrayList<Partida> partidasRecientes;
 	
 
-	public Jugador(String contraseña, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes) {
-		super(contraseña, nombre);
+	public Jugador(String contraseña, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id) {
+		super(contraseña, nombre,id);
 		this.rango=rango;
 		this.nivel=nivel;
 		this.personajes=personajes;

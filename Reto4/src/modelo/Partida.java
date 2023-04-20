@@ -7,14 +7,14 @@ import utils.Modos;
 
 public class Partida {
 	int cod_partida;
-	Usuario jugador;
+	Jugador jugador;
 	Modos modo;
 	Personaje personaje;
 	Estadisticas estadisticas;
 	public boolean resultado;
 	Date fecha;
 	
-	public Partida(int cod_partida, Usuario jugador, Modos modo, Personaje personaje, Estadisticas estadisticas,
+	public Partida(int cod_partida, Jugador jugador, Modos modo, Personaje personaje, Estadisticas estadisticas,
 			boolean resultado, Date fecha) {
 		super();
 		this.cod_partida = cod_partida;
@@ -58,7 +58,7 @@ public class Partida {
 		this.cod_partida = cod_partida;
 	}
 
-	public void setJugador(Usuario jugador) {
+	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
 
@@ -89,6 +89,7 @@ public class Partida {
 	}
 	
 	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -103,7 +104,9 @@ public class Partida {
 
 	@Override
 	public String toString() {
-		return victoria()+"  "+ modo +"  "+ personaje + "  " + estadisticas + "  " + fecha;
+
+		return victoria()+"  "+ modo +"  "+ personaje.getNombre() + "  " + estadisticas.toString() + "  " + fecha;
+
 	}
 
 	
