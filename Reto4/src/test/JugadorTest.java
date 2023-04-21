@@ -3,6 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,8 @@ class JugadorTest {
 	String rango = "Maestro";
 	int nivel = 69;
 	int id=0;
-	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id);
+	Date date1=new Date();   
+	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id, null);
 	
 	@Test
 	void testJugador() {
@@ -111,6 +113,18 @@ class JugadorTest {
 		String contra2= "adios";//
 		assertTrue(jug1.comprobarContrasenya(contra));
 		assertFalse(jug1.comprobarContrasenya(contra2));
+	}
+	
+	@Test
+	void testsetfecha() {
+		Date date2=new Date();  
+		jug1.setFecha(date2);
+		assertEquals(jug1.getFecha(),date2);
+	}
+	
+	@Test
+	void testFecha() {
+		assertEquals(jug1.getFecha(),date1);
 	}
 	
 }

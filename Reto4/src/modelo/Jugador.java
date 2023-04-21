@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Jugador extends Usuario{
 	
@@ -8,17 +9,29 @@ public class Jugador extends Usuario{
 	protected int nivel;
 	protected ArrayList<Personaje> personajes;
 	protected ArrayList<Partida> partidasRecientes;
+	protected Date fecha;
 	
 
-	public Jugador(String contraseña, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id) {
-		super(id, nombre,contraseña);
+	public Jugador(String contrasenya, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id, Date fecha) {
+		super(id, nombre,contrasenya);
 		this.rango=rango;
 		this.nivel=nivel;
 		this.personajes=personajes;
 		this.partidasRecientes=partidasRecientes;
+		this.fecha=fecha;
 	}
 
 	
+	public Date getFecha() {
+		return fecha;
+	}
+
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+
 	public void anyadirPartidas(Partida ultimaPartida){
 		if(partidasRecientes.size()==5)
 		{

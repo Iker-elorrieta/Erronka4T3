@@ -62,4 +62,50 @@ public class PersonajeTest {
         
         assertEquals(expectedToString, champion.toString());
     }
+    
+    public void testSetters() {
+    	 ArrayList<Habilidad> abilities = new ArrayList<>();
+         abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
+         abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
+         abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
+         abilities.add(new Habilidad(4, "Habilidad R", "Descripcion de Habilidad R"));
+
+         Personaje champion = new Personaje(1, "Ashe", "Marksman", 2, abilities, 58, 0, 539, 280, 0);
+         
+         String role="Asesino";
+         String name="David";
+         int id=666;
+         int difficulty=69;
+         int ataque=0;
+         int habilidad=100;
+         int health=200;
+         int mana=300;
+         int mastery=5;
+         ArrayList<Habilidad> abilities1 = new ArrayList<>();
+         abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
+         
+         champion.setAbilities(abilities1);
+         champion.setAbilityPower(habilidad);
+         champion.setRole(role);
+         champion.setName(name);
+         champion.setMastery(mastery);
+         champion.setMana(mana);
+         champion.setId(id);
+         champion.setHealth(health);
+         champion.setDifficulty(difficulty);
+         champion.setAttackDamage(ataque);
+         
+         assertEquals(champion.getAbilities(),abilities1);
+         assertEquals(champion.getAbilityPower(),habilidad);
+         assertEquals(champion.getAttackDamage(),ataque);
+         
+         assertEquals(champion.getDifficulty(),difficulty);
+         assertEquals(champion.getHealth(),health);
+         assertEquals(champion.getId(),id);
+         
+         assertEquals(champion.getMana(),mana);
+         assertEquals(champion.getMastery(),mastery);
+         assertEquals(champion.getName(),name);
+         assertEquals(champion.getRole(),role);
+    }
 }

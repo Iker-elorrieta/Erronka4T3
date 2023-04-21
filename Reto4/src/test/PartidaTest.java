@@ -15,13 +15,13 @@ import utils.Modos;
 class PartidaTest {
 	
 	int cod1=0;
-	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1);
+	Date date1=new Date();   
+	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1, date1);
 	String hola = "Aram";
 	Modos modo= Modos.Aram;
 	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
-	boolean resul1 = true;
-	Date date1=new Date();   
+	boolean resul1 = true; 
 	Partida partida1 = new Partida(cod1, jug1, modo, pers1, est1, resul1, date1);
 
 	@Test
