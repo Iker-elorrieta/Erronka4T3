@@ -80,7 +80,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetJugador() {
-		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1);
+		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1, date1);
 		partida1.setJugador(jug2);
 		assertEquals(partida1.getJugador(),jug2);
 	}
