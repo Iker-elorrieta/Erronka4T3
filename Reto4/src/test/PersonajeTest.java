@@ -63,7 +63,8 @@ public class PersonajeTest {
         assertEquals(expectedToString, champion.toString());
     }
     
-    public void testSetters() {
+    @Test
+    public void testsetters() {
     	 ArrayList<Habilidad> abilities = new ArrayList<>();
          abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
          abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
