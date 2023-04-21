@@ -145,8 +145,7 @@ class PartidaTest {
 	        assertFalse(partida1.equals(partida2));
 	        assertFalse(partida1.equals(partida3));
 	        assertFalse(partida1.equals("hola"));
-	        assertTrue(partida1.getCod_partida() == partida1.getCod_partida());
-	    
+	        	    
 	}
 	
 }
