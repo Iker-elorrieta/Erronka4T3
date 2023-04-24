@@ -3,6 +3,7 @@ package test;
 import org.junit.jupiter.api.Test;
 
 import modelo.Habilidad;
+import modelo.Partida;
 import modelo.Personaje;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +47,8 @@ public class PersonajeTest {
 
         assertTrue(champion1.equals(champion2));
         assertFalse(champion1.equals(champion3));
+        assertFalse(champion2.equals(abilities));
+        assertFalse(champion1.equals(null));
     }
 
     @Test
@@ -108,5 +111,27 @@ public class PersonajeTest {
          assertEquals(champion.getMastery(),mastery);
          assertEquals(champion.getName(),name);
          assertEquals(champion.getRole(),role);
+    }
+    
+    @Test
+    public void testcalculateMastery() {
+    	Personaje pers = new Personaje(0, null, null, 0, null, 0, 0, 0, 0, 0);
+    	Partida partida= new Partida(0, null, null, pers, null, false, null);
+    	pers.calculateMastery(partida);
+    	assertEquals(pers.getMastery(),20);
+    	partida.setResultado(true);
+    	pers.calculateMastery(partida);
+    	assertEquals(pers.getMastery(),120);
+    }
+    
+    @Test
+    public void testhashCode() {
+    	Personaje personaje1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0, 0);
+        Personaje personaje2 = new Personaje(2, null, null, 0, null, 0, 0, 0, 0, 0);
+        Personaje personaje3 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0, 0);
+
+        assertEquals(personaje1.hashCode(), personaje1.hashCode());
+        assertEquals(personaje1.hashCode(), personaje3.hashCode());
+        assertNotEquals(personaje1.hashCode(), personaje2.hashCode());
     }
 }

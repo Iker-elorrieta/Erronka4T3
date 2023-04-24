@@ -137,15 +137,17 @@ class PartidaTest {
 	
 	@Test
 	void testequals() {
-	        Partida partida2 = new Partida(2, jug1, modo, pers1, est1, resul1, date1);
-	        Partida partida3 = new Partida(1, jug1, modo, pers1, est1, resul1, date1);
-	        
-	        assertTrue(partida1.equals(partida1));
-	        assertFalse(partida1.equals(null));
-	        assertFalse(partida1.equals(partida2));
-	        assertFalse(partida1.equals(partida3));
-	        assertFalse(partida1.equals("hola"));
+		
+        assertTrue(partida1.equals(partida1));
+        assertFalse(partida1.equals(null));
+        String obj = "";
+        assertFalse(partida1.equals(obj));
+        Partida partida2 = new Partida(0, jug1, modo, pers1, est1, resul1, date1);
+        assertTrue(partida1.equals(partida2));
+        Partida partida3 = new Partida(2, jug1, modo, pers1, est1, resul1, date1);
+        assertFalse(partida1.equals(partida3));
+    }
 	        	    
 	}
 	
-}
+

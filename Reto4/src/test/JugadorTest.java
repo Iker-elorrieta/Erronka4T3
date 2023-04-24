@@ -21,7 +21,7 @@ class JugadorTest {
 	int nivel = 69;
 	int id=0;
 	Date date1=new Date();   
-	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id, null);
+	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id, date1);
 	
 	@Test
 	void testJugador() {

@@ -108,8 +108,11 @@ public class Personaje {
         this.mastery = mastery;
     }
 
-    public int calculateMastery(int wins, int losses) {
-        return wins * 100 + losses * 20;
+    public void calculateMastery(Partida partida) {
+        if(partida.isResultado())
+        	mastery=mastery+100;
+        else
+        	mastery=mastery+20;
     }
 
     @Override
