@@ -3,17 +3,17 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Personaje {
+public class Personaje implements Saludar{
     private int id;
+    private int mastery;
+    private ArrayList<Habilidad> abilities = new ArrayList<>();
     private String name;
     private String role;
     private int difficulty;
-    private ArrayList<Habilidad> abilities = new ArrayList<>();
     private int attackDamage;
     private int abilityPower;
     private int health;
     private int mana;
-    private int mastery;
 
     public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana, int mastery) {
         this.id = id;
@@ -143,4 +143,16 @@ public class Personaje {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+	@Override
+	public String Saludo() {
+		String saludo="";
+		if(difficulty==1)
+			saludo="Recomendado para principientes";
+		if(difficulty==2)
+			saludo="Ideal para jugadores mas expermientados";
+		if(difficulty==3)
+			saludo="Solo para expertos en el mundo de LOL";
+		return saludo;
+	}
 }

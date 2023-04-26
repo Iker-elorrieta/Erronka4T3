@@ -6,16 +6,25 @@ import java.util.Date;
 import utils.Modos;
 
 public class Partida {
-	int cod_partida;
-	Jugador jugador;
-	Modos modo;
-	Personaje personaje;
-	Estadisticas estadisticas;
+	public int cod_partida;
+	public Jugador jugador;
+	public Modos modo;
+	public Estadisticas estadisticas;
 	public boolean resultado;
-	Date fecha;
+	public Personaje personaje;
+	public Date fecha;
+	public int duracion;
 	
+	public int getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(int duracion) {
+		this.duracion = duracion;
+	}
+
 	public Partida(int cod_partida, Jugador jugador, Modos modo, Personaje personaje, Estadisticas estadisticas,
-			boolean resultado, Date fecha) {
+			boolean resultado, Date fecha, int duracion) {
 		super();
 		this.cod_partida = cod_partida;
 		this.jugador = jugador;
@@ -24,6 +33,7 @@ public class Partida {
 		this.estadisticas = estadisticas;
 		this.resultado = resultado;
 		this.fecha = fecha;
+		this.duracion=duracion;
 	}
 
 	public int getCod_partida() {
@@ -105,7 +115,7 @@ public class Partida {
 	@Override
 	public String toString() {
 
-		return victoria()+"  "+ modo +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha;
+		return victoria()+"  "+ modo +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
 
 	}
 

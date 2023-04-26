@@ -37,11 +37,11 @@ class JugadorTest {
 	
 	@Test
 	void testanyadirPartidas() {
-		Partida partida1 = new Partida(0, jug1, null, null, null, false, null);
+		Partida partida1 = new Partida(0, jug1, null, null, null, false, null, 0);
 		jug1.anyadirPartidas(partida1);
 		assertEquals(jug1.getPartidasRecientes().get(0),partida1);
 		
-		Partida partida2 = new Partida(1, jug1, null, null, null, false, null);
+		Partida partida2 = new Partida(1, jug1, null, null, null, false, null, 0);
 		jug1.anyadirPartidas(partida2);
 		jug1.anyadirPartidas(partida2);
 		jug1.anyadirPartidas(partida2);
@@ -102,7 +102,7 @@ class JugadorTest {
 
 	@Test
 	void testsubidaNivel() {
-		Partida partida1 = new Partida(0, jug1, null, null, null, true, null);
+		Partida partida1 = new Partida(0, jug1, null, null, null, true, null, 0);
 		jug1.anyadirPartidas(partida1);
 		jug1.subidaNivel();
 		assertEquals(jug1.getNivel(),nivel+1);
@@ -125,6 +125,11 @@ class JugadorTest {
 	@Test
 	void testFecha() {
 		assertEquals(jug1.getFecha(),date1);
+	}
+	
+	@Test
+	void testSaludo() {
+		assertEquals(jug1.Saludo(),"Buenas, saludos "+jug1.getNombre()+" ,bienvenido al mundo de LOL");
 	}
 	
 }

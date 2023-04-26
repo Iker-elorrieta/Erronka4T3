@@ -116,7 +116,7 @@ public class PersonajeTest {
     @Test
     public void testcalculateMastery() {
     	Personaje pers = new Personaje(0, null, null, 0, null, 0, 0, 0, 0, 0);
-    	Partida partida= new Partida(0, null, null, pers, null, false, null);
+    	Partida partida= new Partida(0, null, null, pers, null, false, null, 0);
     	pers.calculateMastery(partida);
     	assertEquals(pers.getMastery(),20);
     	partida.setResultado(true);
@@ -133,5 +133,16 @@ public class PersonajeTest {
         assertEquals(personaje1.hashCode(), personaje1.hashCode());
         assertEquals(personaje1.hashCode(), personaje3.hashCode());
         assertNotEquals(personaje1.hashCode(), personaje2.hashCode());
+    }
+    
+    @Test
+    public void testSaludo() {
+    Personaje personaje1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0, 0);
+    personaje1.setDifficulty(1);
+    assertEquals(personaje1.Saludo(),"Recomendado para principientes");
+    personaje1.setDifficulty(2);
+    assertEquals(personaje1.Saludo(),"Ideal para jugadores mas expermientados");
+    personaje1.setDifficulty(3);
+    assertEquals(personaje1.Saludo(),"Solo para expertos en el mundo de LOL");
     }
 }

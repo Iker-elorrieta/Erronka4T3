@@ -22,7 +22,8 @@ class PartidaTest {
 	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true; 
-	Partida partida1 = new Partida(cod1, jug1, modo, pers1, est1, resul1, date1);
+	int dur1=3;
+	Partida partida1 = new Partida(cod1, jug1, modo, pers1, est1, resul1, date1, dur1 );
 
 	@Test
 	void testPartida() {
@@ -131,7 +132,7 @@ class PartidaTest {
 	
 	@Test
 	void testtoString() {
-	 String enviar= "Victoria  Aram  Aatrox  0/0/0  "+date1;
+	 String enviar= "Victoria  Aram  Aatrox  0/0/0  "+date1+" 3";
 	 assertEquals(partida1.toString(),enviar);
 	}
 	
@@ -142,12 +143,24 @@ class PartidaTest {
         assertFalse(partida1.equals(null));
         String obj = "";
         assertFalse(partida1.equals(obj));
-        Partida partida2 = new Partida(0, jug1, modo, pers1, est1, resul1, date1);
+        Partida partida2 = new Partida(0, jug1, modo, pers1, est1, resul1, date1, 0);
         assertTrue(partida1.equals(partida2));
-        Partida partida3 = new Partida(2, jug1, modo, pers1, est1, resul1, date1);
+        Partida partida3 = new Partida(2, jug1, modo, pers1, est1, resul1, date1, 0);
         assertFalse(partida1.equals(partida3));
     }
-	        	    
+	      
+	
+	@Test
+	void testgetDuracion() {
+		assertEquals(partida1.getDuracion(),dur1);
+	}
+	
+	@Test
+	void testsetDuracion() {
+		int dur2=5;  
+		partida1.setDuracion(dur2);
+		assertEquals(partida1.getDuracion(),dur2);
+	}
 	}
 	
 

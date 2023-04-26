@@ -1,17 +1,17 @@
 package modelo;
 
-abstract public class Usuario {
-	protected int id;
+abstract public class Usuario implements Saludar{
 	protected String nombre;
-	protected String contrasena;
+	protected String contrasenya;
+	protected int id;
 	
 	
 	public String getContrasenya() {
-		return contrasena;
+		return contrasenya;
 	}
 
 	public void setContrasenya(String contrasenya) {
-		this.contrasena = contrasenya;
+		this.contrasenya = contrasenya;
 	}
 
 	public int getId() {
@@ -25,11 +25,18 @@ abstract public class Usuario {
 	public Usuario(int id, String nombre,String contrasena )
 	{
 		this.nombre=nombre;
-		this.contrasena=contrasena;
+		this.contrasenya=contrasena;
 		this.id=id;
 	}
 	
-	public abstract boolean comprobarContrasenya(String contra);
+	public boolean comprobarContrasenya(String contra) {
+		boolean inicioSesion = false;
+		if(contra.equals(contrasenya))
+		{
+			inicioSesion=true;
+		}
+		return inicioSesion;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -38,6 +45,10 @@ abstract public class Usuario {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 	
+	@Override
+	public String Saludo()
+	{
+		return "Buenas, saludos "+nombre+" ,bienvenido al mundo de LOL";
+	}
 }

@@ -5,12 +5,11 @@ import java.util.Date;
 
 public class Jugador extends Usuario{
 	
-	protected String rango;
 	protected int nivel;
-	protected ArrayList<Personaje> personajes;
 	protected ArrayList<Partida> partidasRecientes;
+	protected ArrayList<Personaje> personajes;
 	protected Date fecha;
-	
+	protected String rango;
 
 	public Jugador(String contrasenya, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id, Date fecha) {
 		super(id, nombre,contrasenya);
@@ -79,20 +78,10 @@ public class Jugador extends Usuario{
 		this.partidasRecientes = partidasRecientes;
 	}
 
-
-	
 	public void subidaNivel()
 	{
 		if(partidasRecientes.get(partidasRecientes.size()-1).isResultado())
 			nivel++;
-	}
-
-	public boolean comprobarContrasenya(String contra) {
-		boolean inicioSesion = false;
-		if(contra.equals(contrasena))
-			inicioSesion=true;
-		
-		return inicioSesion;
 	}
 	
 
