@@ -3,7 +3,7 @@ package modelo;
 import java.util.Date;
 
 
-import utils.Modos;
+
 
 public class Partida { 
 	public int cod_partida;
