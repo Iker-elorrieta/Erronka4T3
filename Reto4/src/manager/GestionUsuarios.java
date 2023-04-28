@@ -12,9 +12,8 @@ import java.util.Scanner;
 
 import controlador.metodos;
 import exceptions.LoginException;
-import modelo.Administrador;
+
 import modelo.Jugador;
-import modelo.Modo;
 import utils.DBUtils;
 
 public class GestionUsuarios {
@@ -151,7 +150,7 @@ public class GestionUsuarios {
 
             if (rsAdmin.next()) {
             	respuesta= "admin"; // El usuario es un administrador.
-            } else if (rsJugador.next()) {
+            } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	respuesta= "jugador"; // El usuario es un jugador.
             } else {
             	respuesta= null; // No se encontró un usuario con esos datos.
