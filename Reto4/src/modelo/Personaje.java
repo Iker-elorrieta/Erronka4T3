@@ -100,6 +100,10 @@ public class Personaje implements Saludar{
         this.mana = mana;
     }
 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
     @Override
     public String toString() {
         return "Champion{" +

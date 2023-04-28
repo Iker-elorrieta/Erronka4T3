@@ -2,6 +2,7 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,11 +10,39 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import controlador.metodos;
+import exceptions.LoginException;
 import modelo.Administrador;
 import modelo.Jugador;
 import utils.DBUtils;
 
 public class GestionUsuarios {
+	
+	public static ArrayList<Jugador> cargaInicialJugadores(){
+		String consulta="Select * FROM players";
+		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+		try {
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(consulta);
+		     while (rs.next()) 
+				{    
+		    	 	int id= rs.getInt("id");
+					String nombre = rs.getString("name");
+		            String contrasenya = rs.getString("password_hash");
+					int nivel=rs.getInt("level");
+					String rango = rs.getString("rank");
+					Date fechaRegistro = rs.getDate("registratio_date");
+					boolean bloqueado = rs.getBoolean("bloqueado");
+					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
+					jugadores.add(jugador);	
+				}
+		     conexion.close();
+		} catch (SQLException e) {
+		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
+		}
+		return jugadores;
+	}
+	
     
     // Método para eliminar un jugador
     public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
@@ -64,6 +93,7 @@ public class GestionUsuarios {
         }
     }
     
+<<<<<<< HEAD
     public static Administrador iniciarSesionAdmin(String nombre, String contrasenya) {
 		boolean inicioSesion=false;
 		ArrayList<Administrador> usuarios=seleccionAdmin();
@@ -99,44 +129,40 @@ public class GestionUsuarios {
 					String nombre = rs.getString("name");
 		            String contrasenya = rs.getString("password");
 		            int id= rs.getInt("id");
+=======
+    public void login(String username, String password) throws LoginException {
+        String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
+        String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
+        String respuesta;
+        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+             PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
+             PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
-					Administrador jugador = new Administrador(id,nombre,contrasenya);
-					enviar.add(jugador);	
-				}
-		     conexion.close();
-		     return enviar;
-		} catch (SQLException e) {
-		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
-		}
-		return enviar;
-	}
-	public static Jugador iniciarSesionUsuarios(String nombre, String contrasenya) {
-		boolean inicioSesion=false;
-		ArrayList<Jugador> usuarios=seleccionJugador();
-		int i=0;
-		boolean contra=false;
-		Jugador enviar = new Jugador();
-		do {
-			if(usuarios.get(i).getNombre().equals(nombre))
-			{
-				if(usuarios.get(i).comprobarContrasenya(contrasenya))
-				{
-					inicioSesion=true;
-				}
-			}
-			
-			if(i+1==usuarios.size())
-			{
-				contra=true;
-				inicioSesion=true;
-			}
-			i++;
-		}while(!inicioSesion);
-		if(!contra)
-			enviar=usuarios.get(i-1);
-		return enviar;
-	}
+            stmtAdmin.setString(1, username);
+            stmtAdmin.setString(2, password);
+
+            stmtJugador.setString(1, username);
+            stmtJugador.setString(2, password);
+
+            ResultSet rsAdmin = stmtAdmin.executeQuery();
+            ResultSet rsJugador = stmtJugador.executeQuery();
+
+            if (rsAdmin.next()) {
+            	respuesta= "admin"; // El usuario es un administrador.
+            } else if (rsJugador.next()) {
+            	respuesta= "jugador"; // El usuario es un jugador.
+            } else {
+            	respuesta= null; // No se encontró un usuario con esos datos.
+            }
+
+        } catch (SQLException e) {
+        	throw new LoginException("Error al hacer login", e);
+        }
+        metodos.redireccionLogin(respuesta);
+    }
 	
+<<<<<<< HEAD
 	public static ArrayList<Jugador> seleccionJugador() {
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> enviar = new ArrayList<Jugador>();
@@ -164,5 +190,10 @@ public class GestionUsuarios {
 		}
 		return enviar;
 	}
+=======
+	
+	
+	
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
 }

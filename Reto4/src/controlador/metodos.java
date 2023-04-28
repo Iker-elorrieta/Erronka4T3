@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import exceptions.LoginException;
+import manager.GestionPartidas;
+import manager.GestionPersonajes;
+import manager.GestionUsuarios;
 import modelo.Estadisticas;
 import modelo.Habilidad;
 import modelo.Jugador;
@@ -20,6 +23,7 @@ import utils.DBUtils;
 
 
 public class metodos {
+<<<<<<< HEAD
 	public ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -129,6 +133,11 @@ public class metodos {
 			
 			return campeones;
 			}
+=======
+	
+
+		
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
 	public static void conexionBDUpdate(String consulta) {
 		
@@ -143,22 +152,14 @@ public class metodos {
 		
 	}
 	
-	static Estadisticas obtenerEstadistica(String lineaTexto) {
-		String killString=lineaTexto.substring(0);
-		int kills=Integer.parseInt(killString);
-		String assistString=lineaTexto.substring(2);
-		int assists=Integer.parseInt(assistString);
-		String deathString=lineaTexto.substring(4);
-		int death=Integer.parseInt(deathString);
-		Estadisticas estad= new Estadisticas(kills,death,assists);
-		return estad;
-	}
+	
 
 	
 
 
 		
 
+<<<<<<< HEAD
     public void login(String username, String password) throws LoginException {
         String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
@@ -210,73 +211,23 @@ public class metodos {
 
         return modo;
     }
+=======
+  
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
     
-    public static Personaje getPersonajeById(int id) {
-        Personaje personaje = null;
-
-        try (Connection connection = DriverManager.getConnection("url_de_la_bd", "usuario", "contraseña")) {
-            String query = "SELECT * FROM personaje WHERE id = ?";
-
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-    
-			    String name=resultSet.getString("name");
-			    String role=resultSet.getString("role");
-			    int difficulty=resultSet.getInt("difficulty");
-			    int attackDamage=resultSet.getInt("attackDamage");
-			    int abilityPower=resultSet.getInt("abilityPower");
-			    int health=resultSet.getInt("health");
-			    int mana=resultSet.getInt("mana");
-			    ArrayList<Habilidad> abilities= getHabilidadesByChampId(id);
-	             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return personaje;
-    }
+   
 
     
-    public static ArrayList<Habilidad> getHabilidadesByChampId(int id) {
-        ArrayList<Habilidad> habilidades = new ArrayList<>();
-
-        try (Connection connection = DriverManager.getConnection("url_de_la_bd", "usuario", "contraseña")) {
-            String query = "SELECT * FROM abilities WHERE champion_id = ?";
-
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-            
-            while (resultSet.next()) {
-            	int id_habilidad=resultSet.getInt("id");
-            	String nombre=resultSet.getString("name");
-            	String descripcion=resultSet.getString("description");
-            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
-                habilidades.add(habilidad);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return habilidades;
-    }
+    
 
 
 
-	public void redireccionLogin(String userType) {
+	public static void redireccionLogin(String userType) {
     	if (userType != null) {
     	    if (userType.equals("admin")) {
-    	    	ArrayList<Jugador> jugadores =cargaInicialJugadores();
-    	    	ArrayList<Partida> partidas =cargaInicialPartidas();
-    	    	ArrayList<Personaje> campeones =cargaInicialPersonajes();
+    	    	ArrayList<Jugador> jugadores =GestionUsuarios.cargaInicialJugadores();
+    	    	ArrayList<Partida> partidas =GestionPartidas.cargaInicialPartidas();
+    	    	ArrayList<Personaje> campeones =GestionPersonajes.cargaInicialPersonajes();
     	        // Redirigir al usuario a la pantalla de administrador.
     	    } else if (userType.equals("jugador")) {
     	        // Redirigir al usuario a la pantalla de jugador.
@@ -291,6 +242,7 @@ public class metodos {
 		
 		
 		
+<<<<<<< HEAD
 		public static ArrayList<Partida> cargaInicialPartidas() {
 			String consulta="SELECT * FROM matches";
 			ArrayList<Partida> partidas= new ArrayList<>();
@@ -318,6 +270,8 @@ public class metodos {
 			}
 			return partidas;
 		}
+=======
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 		
 		
 }
