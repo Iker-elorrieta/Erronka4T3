@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import exceptions.LoginException;
+<<<<<<< HEAD
 import manager.GestionEstadisticas;
 import manager.GestionHabilidades;
+=======
+import manager.GestionModos;
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 import manager.GestionPartidas;
 import manager.GestionPersonajes;
 import manager.GestionUsuarios;
@@ -222,6 +226,8 @@ public class metodos {
     	    	ArrayList<Jugador> jugadores =GestionUsuarios.cargaInicialJugadores();
     	    	ArrayList<Partida> partidas =GestionPartidas.cargaInicialPartidas();
     	    	ArrayList<Personaje> campeones =GestionPersonajes.cargaInicialPersonajes();
+    	    	ArrayList<Modo> modos =GestionModos.cargaInicialModos();
+    	    	
     	        // Redirigir al usuario a la pantalla de administrador.
     	    } else if (userType.equals("jugador")) {
     	        // Redirigir al usuario a la pantalla de jugador.

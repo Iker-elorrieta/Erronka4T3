@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 import controlador.metodos;
 import exceptions.LoginException;
 import modelo.Administrador;
 import modelo.Jugador;
+import modelo.Modo;
 import utils.DBUtils;
 
 public class GestionUsuarios {
@@ -41,6 +43,43 @@ public class GestionUsuarios {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}
 		return jugadores;
+	}
+	
+	public void preguntarEliminarJugador(ArrayList<Jugador> jugadores,Jugador jugador) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Está seguro que desea eliminar al jugador " + jugador.getNombre() + "? (s/n)");
+        String respuesta = sc.nextLine();
+        if (respuesta.equalsIgnoreCase("s")) {
+            eliminarJugador(jugadores, jugador);
+        }
+    }
+	
+	public static Jugador getJugadorByNombre(String nombre){
+		Jugador jugador =null;
+    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
+            String query = "SELECT nombre FROM modos WHERE name = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, nombre);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+            	int id= resultSet.getInt("id");
+	            String contrasenya = resultSet.getString("password_hash");
+				int nivel=resultSet.getInt("level");
+				String rango = resultSet.getString("rank");
+				Date fechaRegistro = resultSet.getDate("registratio_date");
+				boolean bloqueado = resultSet.getBoolean("bloqueado");
+				 jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
+               
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return jugador;
 	}
 	
     
