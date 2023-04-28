@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import modelo.Estadisticas;
 import modelo.Jugador;
 import modelo.Partida;
 import modelo.Personaje;
@@ -20,7 +19,7 @@ public class metodos {
 	public static void conexionBDUpdate(String consulta) {
 		
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    stmt.executeQuery(consulta);
 		    conexion.close();
@@ -28,17 +27,6 @@ public class metodos {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}
 		
-	}
-	
-	static Estadisticas obtenerEstadistica(String lineaTexto) {
-		String killString=lineaTexto.substring(0);
-		int kills=Integer.parseInt(killString);
-		String assistString=lineaTexto.substring(2);
-		int assists=Integer.parseInt(assistString);
-		String deathString=lineaTexto.substring(4);
-		int death=Integer.parseInt(deathString);
-		Estadisticas estad= new Estadisticas(kills,death,assists);
-		return estad;
 	}
 
 	static Modos validarModo(String modo) {
@@ -68,7 +56,6 @@ public class metodos {
 						inicioSesion=true;
 					}
 				}
-				System.out.println();
 				if(usuarios.size()==i+4)
 				{
 					contra=true;
@@ -84,7 +71,7 @@ public class metodos {
 			String consulta="Select * FROM players";
 			ArrayList<Jugador> enviar = new ArrayList<Jugador>();
 			try {
-			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 			    Statement stmt = conexion.createStatement(); 
 			    ResultSet rs = stmt.executeQuery(consulta);
 			     while (rs.next()) 
@@ -111,7 +98,7 @@ public class metodos {
 			String consulta="SELECT * FROM champions";
 			ArrayList<Personaje> campeones = new ArrayList<Personaje>();
 			try {
-			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 			    Statement stmt = conexion.createStatement(); 
 			    ResultSet rs = stmt.executeQuery(consulta);
 				while (rs.next()) 
@@ -140,7 +127,7 @@ public class metodos {
 			String consulta="SELECT * FROM matches";
 			ArrayList<Partida> partidas= new ArrayList<>();
 			try {
-			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 			    Statement stmt = conexion.createStatement(); 
 			    ResultSet rs = stmt.executeQuery(consulta);
 				while (rs.next()) 
@@ -149,9 +136,9 @@ public class metodos {
 					Modos modo=metodos.validarModo(rs.getString("modo"));
 					boolean resultado=rs.getBoolean("resultado");
 					Date fecha=rs.getDate("date");
-					Estadisticas estadistica=metodos.obtenerEstadistica(rs.getString("estadisticas"));
 					
-					Partida partida = new Partida(id, null, modo, null, estadistica, resultado, fecha, id);
+					
+					Partida partida = new Partida(id, null, modo, null, null, resultado, fecha, id);
 					partidas.add(partida);
 				}
 			} catch (SQLException e) {

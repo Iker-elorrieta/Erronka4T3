@@ -89,7 +89,7 @@ public class GestionUsuarios {
 		String consulta="Select * FROM admins";
 		ArrayList<Administrador> enviar = new ArrayList<Administrador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -139,7 +139,7 @@ public class GestionUsuarios {
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> enviar = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
