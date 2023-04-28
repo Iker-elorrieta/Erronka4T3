@@ -1,6 +1,6 @@
 package modelo;
 
-import java.util.Objects;
+
 
 public class Modo {
     private int id;
