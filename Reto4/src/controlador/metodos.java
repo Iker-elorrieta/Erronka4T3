@@ -59,7 +59,7 @@ public class metodos {
 			boolean inicioSesion=false;
 			ArrayList<Jugador> usuarios=seleccionJugador();
 			int i=0;
-			Jugador enviar = new Jugador();
+			Jugador enviar = new Jugador(contrasenya, contrasenya, contrasenya, i, null, null, i, null, inicioSesion);
 			boolean contra=false;
 			do {
 				if(usuarios.get(i).getNombre().equals(nombre))
@@ -97,7 +97,7 @@ public class metodos {
 						int nivel=rs.getInt("level");
 						String rango = rs.getString("rank");
 						boolean bloqueado = rs.getBoolean("bloqueado");
-						Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,id,bloqueado);
+						Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,id,null, bloqueado);
 						enviar.add(jugador);	
 					}
 			     conexion.close();

@@ -1,35 +1,45 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Jugador extends Usuario{
-	
-	public int nivel;
-	public ArrayList<Partida> partidasRecientes;
-	public ArrayList<Personaje> personajes;
-	public boolean bloqueado;
-	public String rango;
+	protected int id;
+	protected int nivel;
+	protected ArrayList<Partida> partidasRecientes;
+	protected ArrayList<Personaje> personajes;
+	protected Date fecha;
+	protected String rango;
+	protected boolean bloqueado;
 
-	public Jugador( String nombre,String contrasenya, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id, boolean bloqueado) {
+	public boolean isBloqueado() {
+		return bloqueado;
+	}
+
+
+	public void setBloqueado(boolean bloqueado) {
+		this.bloqueado = bloqueado;
+	}
+
+
+	public Jugador(String contrasenya, String nombre, String rango, int nivel, ArrayList<Personaje> personajes, ArrayList<Partida> partidasRecientes,int id, Date fecha, boolean bloqueado) {
 		super(id, nombre,contrasenya);
 		this.rango=rango;
 		this.nivel=nivel;
 		this.personajes=personajes;
 		this.partidasRecientes=partidasRecientes;
+		this.fecha=fecha;
 		this.bloqueado=bloqueado;
-	}
-	public Jugador() {
-		
 	}
 
 	
-	public boolean getbloqueado() {
-		return bloqueado;
+	public Date getFecha() {
+		return fecha;
 	}
 
 
-	public void setbloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 

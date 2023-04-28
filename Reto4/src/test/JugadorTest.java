@@ -19,7 +19,7 @@ class JugadorTest {
 	int nivel = 69;
 	int id=0;   
 	boolean bloqueado=false;
-	Jugador jug1 = new Jugador(nombre, contra, rango, nivel, personajes, partidas,id, bloqueado);
+	Jugador jug1 = new Jugador(nombre, contra, rango, nivel, personajes, partidas,id, null, bloqueado);
 	
 	@Test
 	void testJugador() {
@@ -31,7 +31,7 @@ class JugadorTest {
 		assertEquals(jug1.getNivel(),nivel);
 		assertEquals(jug1.getRango(),rango);
 		assertEquals(jug1.getId(),id);
-		Jugador jug2= new Jugador();
+		Jugador jug2= new Jugador(contra, contra, contra, id, personajes, partidas, id, null, bloqueado);
 		assertEquals(jug2.getContrasenya(),null);
 	}
 	
@@ -118,13 +118,13 @@ class JugadorTest {
 	@Test
 	void testsetbloqueado() {
 		boolean bloqueado2=true;  
-		jug1.setbloqueado(bloqueado2);
-		assertEquals(jug1.getbloqueado(),bloqueado2);
+		jug1.setBloqueado(bloqueado2);
+		assertEquals(jug1.isBloqueado(),bloqueado2);
 	}
 	
 	@Test
 	void testFecha() {
-		assertEquals(jug1.getbloqueado(),bloqueado);
+		assertEquals(jug1.isBloqueado(),bloqueado);
 	}
 	
 	@Test
