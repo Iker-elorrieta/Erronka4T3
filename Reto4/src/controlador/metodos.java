@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import modelo.Estadisticas;
+import modelo.Jugador;
 import modelo.Partida;
 import modelo.Personaje;
 import utils.DBUtils;
@@ -50,6 +51,61 @@ public class metodos {
 			Modo=Modos.Clasificatoria;
 		return Modo;
 	}
+
+
+		
+		public static Jugador iniciarSesionUsuarios(String nombre, String contrasenya) {
+			boolean inicioSesion=false;
+			ArrayList<Jugador> usuarios=seleccionJugador();
+			int i=0;
+			Jugador enviar = new Jugador(contrasenya, contrasenya, contrasenya, i, null, null, i, null, inicioSesion);
+			boolean contra=false;
+			do {
+				if(usuarios.get(i).getNombre().equals(nombre))
+				{
+					if(usuarios.get(i).comprobarContrasenya(contrasenya))
+					{
+						inicioSesion=true;
+					}
+				}
+				System.out.println();
+				if(usuarios.size()==i+4)
+				{
+					contra=true;
+				}
+				i++;
+			}while(!inicioSesion||contra==false);
+			if(!contra)
+				enviar=usuarios.get(i-1);
+			return enviar;
+		}
+		
+		public static ArrayList<Jugador> seleccionJugador() {
+			String consulta="Select * FROM players";
+			ArrayList<Jugador> enviar = new ArrayList<Jugador>();
+			try {
+			    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			    Statement stmt = conexion.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(consulta);
+			     while (rs.next()) 
+					{
+						String nombre = rs.getString("name");
+			            String contrasenya = rs.getString("password_hash");
+			            int id= rs.getInt("id");
+						
+						int nivel=rs.getInt("level");
+						String rango = rs.getString("rank");
+						boolean bloqueado = rs.getBoolean("bloqueado");
+						Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,id,null, bloqueado);
+						enviar.add(jugador);	
+					}
+			     conexion.close();
+			     return enviar;
+			} catch (SQLException e) {
+			    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
+			}
+			return enviar;
+		}
 		
 		public static ArrayList<Personaje> seleccionPersonajes() {
 			String consulta="SELECT * FROM champions";

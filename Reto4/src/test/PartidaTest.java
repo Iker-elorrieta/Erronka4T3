@@ -16,7 +16,7 @@ class PartidaTest {
 	
 	int cod1=0;
 	Date date1=new Date();   
-	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1, false);
+	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1, date1, false);
 	String hola = "Aram";
 	Modos modo= Modos.Aram;
 	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
@@ -81,7 +81,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetJugador() {
-		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1, true);
+		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1, date1, true);
 		partida1.setJugador(jug2);
 		assertEquals(partida1.getJugador(),jug2);
 	}
