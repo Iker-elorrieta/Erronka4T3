@@ -11,6 +11,7 @@ import java.util.Date;
 
 import exceptions.LoginException;
 import modelo.Estadisticas;
+import modelo.Habilidad;
 import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
@@ -118,8 +119,8 @@ public class metodos {
 				    int abilityPower=rs.getInt("abilityPower");
 				    int health=rs.getInt("health");
 				    int mana=rs.getInt("mana");
-				    int mastery=rs.getInt("mastery");
-		            Personaje personaje = new Personaje(id,name,role,difficulty,null,attackDamage,abilityPower,health,mana,mastery);
+				    ArrayList<Habilidad> abilities= getHabilidadesByChampId(id);
+		            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
 		            campeones.add(personaje);
 		            conexion.close();
 				}
@@ -231,8 +232,8 @@ public class metodos {
 			    int abilityPower=resultSet.getInt("abilityPower");
 			    int health=resultSet.getInt("health");
 			    int mana=resultSet.getInt("mana");
-			    int mastery=resultSet.getInt("mastery");
-	             personaje = new Personaje(id,name,role,difficulty,null,attackDamage,abilityPower,health,mana,mastery);
+			    ArrayList<Habilidad> abilities= getHabilidadesByChampId(id);
+	             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
             }
 
         } catch (SQLException e) {
@@ -243,7 +244,35 @@ public class metodos {
     }
 
     
-    public void redireccionLogin(String userType) {
+    public static ArrayList<Habilidad> getHabilidadesByChampId(int id) {
+        ArrayList<Habilidad> habilidades = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection("url_de_la_bd", "usuario", "contraseña")) {
+            String query = "SELECT * FROM abilities WHERE champion_id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+            
+            while (resultSet.next()) {
+            	int id_habilidad=resultSet.getInt("id");
+            	String nombre=resultSet.getString("name");
+            	String descripcion=resultSet.getString("description");
+            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
+                habilidades.add(habilidad);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return habilidades;
+    }
+
+
+
+	public void redireccionLogin(String userType) {
     	if (userType != null) {
     	    if (userType.equals("admin")) {
     	    	ArrayList<Jugador> jugadores =cargaInicialJugadores();
