@@ -5,7 +5,7 @@ import java.util.Date;
 
 import utils.Modos;
 
-public class Partida {
+public class Partida { 
 	public int cod_partida;
 	public Jugador jugador;
 	public Modo modo;
