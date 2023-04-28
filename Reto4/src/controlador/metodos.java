@@ -20,11 +20,11 @@ import utils.DBUtils;
 
 
 public class metodos {
-	public static ArrayList<Jugador> cargaInicialJugadores(){
+	public ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, "root", DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -34,7 +34,7 @@ public class metodos {
 		            String contrasenya = rs.getString("password_hash");
 					int nivel=rs.getInt("level");
 					String rango = rs.getString("rank");
-					Date fechaRegistro = rs.getDate("registratio_date");
+					Date fechaRegistro = rs.getDate("registration_date");
 					boolean bloqueado = rs.getBoolean("bloqueado");
 					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
 					jugadores.add(jugador);	
@@ -60,12 +60,11 @@ public class metodos {
 						inicioSesion=true;
 					}
 				}
-				if(usuarios.size()==i+4)
-				{
-					contra=true;
-				}
+				if(usuarios.size()==i+1)
+					
+				
 				i++;
-			}while(!inicioSesion||contra==false);
+			}while(!inicioSesion);
 			if(!contra)
 				enviar=usuarios.get(i-1);
 			return enviar;

@@ -20,7 +20,7 @@ class JugadorTest {
 	String rango = "Maestro";
 	int nivel = 69;
 	int id=0; 
-	Date fechaReg ;
+	Date fechaReg= new Date() ;
 	boolean bloqueado=false;
 	Jugador jug1 = new Jugador(id, nombre, contra, nivel, rango, fechaReg, bloqueado);
 	
@@ -31,7 +31,7 @@ class JugadorTest {
 		assertEquals(jug1.getContrasenya(),contra);
 		assertEquals(jug1.getNivel(),nivel);
 		assertEquals(jug1.getRango(),rango);
-		assertEquals(jug1.getId(),fechaReg);
+		assertEquals(jug1.getFecha(),fechaReg);
 		assertEquals(jug1.getId(),id);
 		Jugador jug2= new Jugador();
 		assertEquals(jug2.getContrasenya(),null);

@@ -100,21 +100,6 @@ public class Personaje implements Saludar{
         this.mana = mana;
     }
 
-    public int getMastery() {
-        return mastery;
-    }
-
-    public void setMastery(int mastery) {
-        this.mastery = mastery;
-    }
-
-    public void calculateMastery(Partida partida) {
-        if(partida.isResultado())
-        	mastery=mastery+100;
-        else
-        	mastery=mastery+20;
-    }
-
     @Override
     public String toString() {
         return "Champion{" +
@@ -127,7 +112,6 @@ public class Personaje implements Saludar{
                 ", abilityPower=" + abilityPower +
                 ", health=" + health +
                 ", mana=" + mana +
-                ", mastery=" + mastery +
                 '}';
     }
 

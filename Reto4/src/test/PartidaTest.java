@@ -19,7 +19,7 @@ class PartidaTest {
 	Jugador jug1 = new Jugador();
 	String hola = "Aram";
 	Modo modo= new Modo(0,"Aram");
-	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
+	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true; 
 	int dur1=3;
@@ -95,7 +95,7 @@ class PartidaTest {
 	
 	@Test
 	void testsetPersonaje() {
-		Personaje pers2 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
+		Personaje pers2 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0);
 		partida1.setPersonaje(pers2);
 		assertEquals(partida1.getPersonaje(),pers2);
 	}

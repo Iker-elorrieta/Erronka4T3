@@ -112,7 +112,7 @@ public class Partida {
 	@Override
 	public String toString() {
 
-		return victoria()+"  "+ modo +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
+		return victoria()+"  "+ modo.getNombre() +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
 
 	}
 
