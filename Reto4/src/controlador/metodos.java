@@ -17,6 +17,20 @@ import utils.Modos;
 
 public class metodos {
 	
+
+	public static void conexionBDUpdate(String consulta) {
+		
+		try {
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Statement stmt = conexion.createStatement(); 
+		   stmt.executeQuery(consulta);
+		    conexion.close();
+		} catch (SQLException e) {
+		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
+		}
+		
+	}
+	
 	static Estadisticas obtenerEstadistica(String lineaTexto) {
 		String killString=lineaTexto.substring(0);
 		int kills=Integer.parseInt(killString);
@@ -40,23 +54,6 @@ public class metodos {
 	}
 
 
-	public static void borrar(int eleg) { //Unax
-		
-		
-	}
-
-	public static void modificar(int eleg) {
-		
-	}
-
-	public static void insertar(int eleg) { //Gaizka
-		
-	}
-
-	public static void registrarse(Jugador jug) { //Gaizka
-		
-		
-	}
 		
 		public static Jugador iniciarSesionUsuarios(String nombre, String contrasenya) {
 			boolean inicioSesion=false;
