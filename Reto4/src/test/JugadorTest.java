@@ -3,8 +3,6 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 
 import modelo.Jugador;
@@ -19,9 +17,9 @@ class JugadorTest {
 	String contra = "mango123";
 	String rango = "Maestro";
 	int nivel = 69;
-	int id=0;
-	Date date1=new Date();   
-	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id, date1);
+	int id=0;   
+	boolean bloqueado=false;
+	Jugador jug1 = new Jugador(nombre, contra, rango, nivel, personajes, partidas,id, bloqueado);
 	
 	@Test
 	void testJugador() {
@@ -33,6 +31,8 @@ class JugadorTest {
 		assertEquals(jug1.getNivel(),nivel);
 		assertEquals(jug1.getRango(),rango);
 		assertEquals(jug1.getId(),id);
+		Jugador jug2= new Jugador();
+		assertEquals(jug2.getContrasenya(),null);
 	}
 	
 	@Test
@@ -110,26 +110,27 @@ class JugadorTest {
 	
 	@Test
 	void testcomprobarContrasenya() {
-		String contra2= "adios";//
+		String contra2= "adios";
 		assertTrue(jug1.comprobarContrasenya(contra));
 		assertFalse(jug1.comprobarContrasenya(contra2));
 	}
 	
 	@Test
-	void testsetfecha() {
-		Date date2=new Date();  
-		jug1.setFecha(date2);
-		assertEquals(jug1.getFecha(),date2);
+	void testsetbloqueado() {
+		boolean bloqueado2=true;  
+		jug1.setbloqueado(bloqueado2);
+		assertEquals(jug1.getbloqueado(),bloqueado2);
 	}
 	
 	@Test
 	void testFecha() {
-		assertEquals(jug1.getFecha(),date1);
+		assertEquals(jug1.getbloqueado(),bloqueado);
 	}
 	
 	@Test
 	void testSaludo() {
 		assertEquals(jug1.Saludo(),"Buenas, saludos "+jug1.getNombre()+" ,bienvenido al mundo de LOL");
 	}
+	
 	
 }
