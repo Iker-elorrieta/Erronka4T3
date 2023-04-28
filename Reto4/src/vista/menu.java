@@ -26,7 +26,7 @@ package vista;
 				{
 					int nivel=1;
 					String rango="Amateur";
-					Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,0,null, false);
+					Jugador jugador = new Jugador();
 					GestionUsuarios.anyadirJugador(null, jugador);
 				}
 				if(opc==2)

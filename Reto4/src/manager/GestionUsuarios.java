@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+
 import controlador.metodos;
 import modelo.Administrador;
 import modelo.Jugador;
@@ -151,7 +153,8 @@ public class GestionUsuarios {
 					int nivel=rs.getInt("level");
 					String rango = rs.getString("rank");
 					boolean bloqueado = rs.getBoolean("bloqueado");
-					Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,id,null, bloqueado);
+					Date fecha = new Date();
+					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fecha, bloqueado);
 					enviar.add(jugador);	
 				}
 		     conexion.close();
