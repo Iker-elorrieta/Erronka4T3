@@ -18,7 +18,7 @@ public class GestionPersonajes {
 		String consulta="SELECT * FROM champions";
 		ArrayList<Personaje> campeones = new ArrayList<Personaje>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 

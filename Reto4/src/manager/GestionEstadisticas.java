@@ -1,8 +1,5 @@
 package manager;
 
-<<<<<<< HEAD
-public class GestionEstadisticas {
-=======
 import modelo.Estadisticas;
 
 public class GestionEstadisticas {
@@ -17,6 +14,6 @@ public class GestionEstadisticas {
 		Estadisticas stats= new Estadisticas(kills,death,assists);
 		return stats;
 	}
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 
 }

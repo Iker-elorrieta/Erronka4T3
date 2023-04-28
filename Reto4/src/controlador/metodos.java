@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import exceptions.LoginException;
+import manager.GestionEstadisticas;
+import manager.GestionHabilidades;
 import manager.GestionPartidas;
 import manager.GestionPersonajes;
 import manager.GestionUsuarios;
@@ -23,7 +25,7 @@ import utils.DBUtils;
 
 
 public class metodos {
-<<<<<<< HEAD
+
 	public ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -63,10 +65,9 @@ public class metodos {
 					{
 						inicioSesion=true;
 					}
-				}
+				}	
 				if(usuarios.size()==i+1)
-					
-				
+					contra=true;
 				i++;
 			}while(!inicioSesion);
 			if(!contra)
@@ -122,7 +123,7 @@ public class metodos {
 				    int abilityPower=rs.getInt("abilityPower");
 				    int health=rs.getInt("health");
 				    int mana=rs.getInt("mana");
-				    ArrayList<Habilidad> abilities= getHabilidadesByChampId(id);
+				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
 		            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
 		            campeones.add(personaje);
 		            conexion.close();
@@ -133,11 +134,7 @@ public class metodos {
 			
 			return campeones;
 			}
-=======
-	
 
-		
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
 	public static void conexionBDUpdate(String consulta) {
 		
@@ -159,7 +156,7 @@ public class metodos {
 
 		
 
-<<<<<<< HEAD
+
     public void login(String username, String password) throws LoginException {
         String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
@@ -211,10 +208,7 @@ public class metodos {
 
         return modo;
     }
-=======
-  
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
-    
+
    
 
     
@@ -242,7 +236,7 @@ public class metodos {
 		
 		
 		
-<<<<<<< HEAD
+
 		public static ArrayList<Partida> cargaInicialPartidas() {
 			String consulta="SELECT * FROM matches";
 			ArrayList<Partida> partidas= new ArrayList<>();
@@ -259,8 +253,8 @@ public class metodos {
 					Date fecha=rs.getDate("date");
 
 
-					Estadisticas estadistica=metodos.obtenerEstadistica(rs.getString("estadisticas"));
-					Personaje personaje = getPersonajeById(rs.getInt("champion"));
+					Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
+					Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion"));
 
 					Partida partida = new Partida(id, null, modo, personaje, estadistica, resultado, fecha, duracion);
 					partidas.add(partida);
@@ -270,8 +264,7 @@ public class metodos {
 			}
 			return partidas;
 		}
-=======
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 		
 		
 }

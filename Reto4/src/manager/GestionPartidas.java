@@ -21,7 +21,7 @@ public static ArrayList<Partida> cargaInicialPartidas() {
 	String consulta="SELECT * FROM matches";
 	ArrayList<Partida> partidas= new ArrayList<>();
 	try {
-	    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+	    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 	    Statement stmt = conexion.createStatement(); 
 	    ResultSet rs = stmt.executeQuery(consulta);
 		while (rs.next()) 

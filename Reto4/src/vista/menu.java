@@ -35,7 +35,7 @@ package vista;
 					 int usu=sc.nextInt();
 					 if(usu==1)
 					 {
-						usuario= GestionUsuarios.iniciarSesionUsuarios(nombre, contrasenya);
+						//usuario= GestionUsuarios.login(nombre, contrasenya);
 						if(usuario.getNombre()==null)
 							System.out.println("No has iniciado sesion");
 						else

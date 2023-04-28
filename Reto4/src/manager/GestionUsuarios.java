@@ -21,7 +21,7 @@ public class GestionUsuarios {
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -93,7 +93,7 @@ public class GestionUsuarios {
         }
     }
     
-<<<<<<< HEAD
+
     public static Administrador iniciarSesionAdmin(String nombre, String contrasenya) {
 		boolean inicioSesion=false;
 		ArrayList<Administrador> usuarios=seleccionAdmin();
@@ -129,15 +129,23 @@ public class GestionUsuarios {
 					String nombre = rs.getString("name");
 		            String contrasenya = rs.getString("password");
 		            int id= rs.getInt("id");
-=======
+		            Administrador admin=new Administrador(id,nombre,contrasenya);
+				}
+		     conexion.close();
+		     return enviar;
+		} catch (SQLException e) {
+		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
+		}
+		return enviar;
+	}
+		     
     public void login(String username, String password) throws LoginException {
         String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
         String respuesta;
-        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
              PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
             stmtAdmin.setString(1, username);
             stmtAdmin.setString(2, password);
@@ -160,9 +168,9 @@ public class GestionUsuarios {
         	throw new LoginException("Error al hacer login", e);
         }
         metodos.redireccionLogin(respuesta);
+    
     }
-	
-<<<<<<< HEAD
+
 	public static ArrayList<Jugador> seleccionJugador() {
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> enviar = new ArrayList<Jugador>();
@@ -189,11 +197,5 @@ public class GestionUsuarios {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}
 		return enviar;
-	}
-=======
 	
-	
-	
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
-
-}
+	}}

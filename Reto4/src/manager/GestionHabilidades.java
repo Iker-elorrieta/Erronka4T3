@@ -1,8 +1,5 @@
 package manager;
 
-<<<<<<< HEAD
-public class GestionHabilidades {
-=======
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,6 +36,6 @@ public class GestionHabilidades {
 
         return habilidades;
     }
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 
 }
