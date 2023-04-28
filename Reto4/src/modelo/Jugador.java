@@ -23,7 +23,7 @@ public class Jugador extends Usuario{
 	}
 
 	
-	public boolean getbloqueado() {
+	public boolean isbloqueado() {
 		return bloqueado;
 	}
 

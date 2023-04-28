@@ -2,7 +2,7 @@ package vista;
 
 		import java.util.Scanner;
 
-		import controlador.metodos;
+		import manager.GestionUsuarios;
 		import modelo.Administrador;
 		import modelo.Jugador;
 		import modelo.Usuario;
@@ -12,6 +12,8 @@ package vista;
 			public static void main(String[] args) {
 				Scanner sc = new Scanner(System.in);
 				boolean iniciarSesion=false;
+				Administrador admin= new Administrador();
+				Jugador usuario = new Jugador();
 				do {
 				System.out.println("Te tienes que registrar o tienes cuenta? (1-2)");
 				int opc=sc.nextInt();
@@ -25,7 +27,7 @@ package vista;
 					int nivel=1;
 					String rango="Amateur";
 					Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,0,false);
-					metodos.registrarse(jugador);
+					GestionUsuarios.anyadirJugador(null, jugador);
 				}
 				if(opc==2)
 				{
@@ -33,7 +35,7 @@ package vista;
 					 int usu=sc.nextInt();
 					 if(usu==1)
 					 {
-						Jugador usuario= metodos.iniciarSesionUsuarios(nombre, contrasenya);
+						usuario= GestionUsuarios.iniciarSesionUsuarios(nombre, contrasenya);
 						if(usuario.getNombre()==null)
 							System.out.println("No has iniciado sesion");
 						else
@@ -44,7 +46,7 @@ package vista;
 					 }
 					 if(usu==2)
 					 {
-						 Administrador admin= metodos.iniciarSesionAdmin(nombre,contrasenya);
+						 admin= GestionUsuarios.iniciarSesionAdmin(nombre,contrasenya);
 						 if(admin.getNombre()==null)
 								System.out.println("No has iniciado sesion");
 						 else
@@ -55,30 +57,18 @@ package vista;
 					 }
 				}
 				}while(!iniciarSesion);
+				if(admin.getNombre()==null)
+					pestañasJug(usuario);
+				else
+					pestañaAdmin(usuario, sc);
 				sc.close();
 		}
-			public static void pestañasJug(Usuario usuario) {
-				// TODO Auto-generated method stub
+			public static void pestañasJug(Jugador jug) {
+				
 				
 
 		}
 			public static void pestañaAdmin(Usuario usuario, Scanner sc) {
-				System.out.println("Que quieres editar?\n"
-						+ "1- Usuarios \n"
-						+ "2- Personajes \n"
-						+ "3- Partidas");
-				int eleg= sc.nextInt();
-				System.out.println("Que quieres hacer? \n"
-						+ "1- Insertar \n"
-						+ "2- Modificar \n"
-						+ "3- Borrar");
-				int accion= sc.nextInt();
-				
-				switch(accion)
-				{
-				case 1: metodos.insertar(eleg);break;
-				case 2: metodos.modificar(eleg);break;
-				case 3: metodos.borrar(eleg);break;
-				}
-				
-			}}
+			
+			}
+		}

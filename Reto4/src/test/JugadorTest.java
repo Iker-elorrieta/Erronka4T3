@@ -119,12 +119,12 @@ class JugadorTest {
 	void testsetbloqueado() {
 		boolean bloqueado2=true;  
 		jug1.setbloqueado(bloqueado2);
-		assertEquals(jug1.getbloqueado(),bloqueado2);
+		assertEquals(jug1.isbloqueado(),bloqueado2);
 	}
 	
 	@Test
 	void testFecha() {
-		assertEquals(jug1.getbloqueado(),bloqueado);
+		assertEquals(jug1.isbloqueado(),bloqueado);
 	}
 	
 	@Test
