@@ -8,13 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import modelo.Habilidad;
+import utils.DBUtils;
 
 public class GestionHabilidades {
 	
 	public static ArrayList<Habilidad> getHabilidadesByChampId(int id) {
         ArrayList<Habilidad> habilidades = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection("url_de_la_bd", "usuario", "contraseña")) {
+        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
             String query = "SELECT * FROM abilities WHERE champion_id = ?";
 
             PreparedStatement statement = connection.prepareStatement(query);

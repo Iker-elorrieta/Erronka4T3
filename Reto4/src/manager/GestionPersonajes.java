@@ -46,7 +46,7 @@ public class GestionPersonajes {
 	 public static Personaje getPersonajeById(int id) {
 	        Personaje personaje = null;
 
-	        try (Connection connection = DriverManager.getConnection("url_de_la_bd", "usuario", "contraseña")) {
+	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
 	            String query = "SELECT * FROM personaje WHERE id = ?";
 
 	            PreparedStatement statement = connection.prepareStatement(query);
