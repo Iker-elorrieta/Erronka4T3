@@ -11,6 +11,8 @@ package vista;
 
 			public static void main(String[] args) {
 				Scanner sc = new Scanner(System.in);
+				boolean iniciarSesion=false;
+				do {
 				System.out.println("Te tienes que registrar o tienes cuenta? (1-2)");
 				int opc=sc.nextInt();
 				sc.nextLine();
@@ -31,21 +33,28 @@ package vista;
 					 int usu=sc.nextInt();
 					 if(usu==1)
 					 {
-						Usuario usuario= metodos.iniciarSesionUsuarios(nombre, contrasenya);
-						if(usuario==null)
+						Jugador usuario= metodos.iniciarSesionUsuarios(nombre, contrasenya);
+						if(usuario.getNombre()==null)
 							System.out.println("No has iniciado sesion");
 						else
+						{
 							System.out.println("Has iniciado sesion");
+							iniciarSesion=true;
+						}
 					 }
 					 if(usu==2)
 					 {
 						 Administrador admin= metodos.iniciarSesionAdmin(nombre,contrasenya);
-						 if(admin==null)
+						 if(admin.getNombre()==null)
 								System.out.println("No has iniciado sesion");
-							else
-								System.out.println("Has iniciado sesion");
+						 else
+						{
+							System.out.println("Has iniciado sesion");
+							iniciarSesion=true;
+						}
 					 }
 				}
+				}while(!iniciarSesion);
 				sc.close();
 		}
 			public static void pestañasJug(Usuario usuario) {

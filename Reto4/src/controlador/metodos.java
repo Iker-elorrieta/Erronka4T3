@@ -62,8 +62,8 @@ public class metodos {
 			boolean inicioSesion=false;
 			ArrayList<Jugador> usuarios=seleccionJugador();
 			int i=0;
-			Jugador enviar = new Jugador();
 			boolean contra=false;
+			Jugador enviar = new Jugador();
 			do {
 				if(usuarios.get(i).getNombre().equals(nombre))
 				{
@@ -72,13 +72,14 @@ public class metodos {
 						inicioSesion=true;
 					}
 				}
-				System.out.println();
-				if(usuarios.size()==i+4)
+				
+				if(i+1==usuarios.size())
 				{
 					contra=true;
+					inicioSesion=true;
 				}
 				i++;
-			}while(!inicioSesion||contra==false);
+			}while(!inicioSesion);
 			if(!contra)
 				enviar=usuarios.get(i-1);
 			return enviar;
@@ -181,7 +182,7 @@ public class metodos {
 				if(i+1==usuarios.size())
 					contra=true;
 				i++;
-			}while(!inicioSesion||!contra);
+			}while(!inicioSesion);
 			if(!contra)
 				enviar=usuarios.get(i-1);
 			return enviar;
