@@ -151,7 +151,7 @@ public class GestionUsuarios {
 					int nivel=rs.getInt("level");
 					String rango = rs.getString("rank");
 					boolean bloqueado = rs.getBoolean("bloqueado");
-					Jugador jugador = new Jugador(nombre,contrasenya,rango,nivel,null, null,id,null, bloqueado);
+					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, reg, bloqueado);
 					enviar.add(jugador);	
 				}
 		     conexion.close();
