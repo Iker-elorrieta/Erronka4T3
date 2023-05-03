@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import controlador.metodos;
 import exceptions.LoginException;
-import modelo.Administrador;
+
 import modelo.Jugador;
 import utils.DBUtils;
 
@@ -93,7 +93,7 @@ public class GestionUsuarios {
 
             if (rsAdmin.next()) {
             	respuesta= "admin"; // El usuario es un administrador.
-            } else if (rsJugador.next()) {
+            } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	respuesta= "jugador"; // El usuario es un jugador.
             } else {
             	respuesta= null; // No se encontró un usuario con esos datos.
