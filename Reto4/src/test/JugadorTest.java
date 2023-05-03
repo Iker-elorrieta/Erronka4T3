@@ -62,9 +62,17 @@ class JugadorTest {
 		assertEquals(jug1.getNivel(),nivel2);
 	}
 	
-
-
+	@Test
+	void testsetFecha() {
+		Date fechaReg1= new Date();
+		jug1.setFecha(fechaReg1);
+		assertEquals(jug1.getFecha(),fechaReg1);
+	}
 	
+	@Test
+	void testgetFecha() {
+		assertEquals(jug1.getFecha(),fechaReg);
+	}
 	@Test
 	void testcomprobarContrasenya() {
 		String contra2= "adios";

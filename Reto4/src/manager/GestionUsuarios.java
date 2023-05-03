@@ -8,22 +8,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
-
 import controlador.metodos;
 import exceptions.LoginException;
 import modelo.Administrador;
 import modelo.Jugador;
-import modelo.Modo;
 import utils.DBUtils;
 
 public class GestionUsuarios {
 	
+	//SELECT inicial 
 	public static ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -45,19 +43,11 @@ public class GestionUsuarios {
 		return jugadores;
 	}
 	
-	public void preguntarEliminarJugador(ArrayList<Jugador> jugadores,Jugador jugador) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("¿Está seguro que desea eliminar al jugador " + jugador.getNombre() + "? (s/n)");
-        String respuesta = sc.nextLine();
-        if (respuesta.equalsIgnoreCase("s")) {
-            eliminarJugador(jugadores, jugador);
-        }
-    }
-	
+	//SELECT by nombre 
 	public static Jugador getJugadorByNombre(String nombre){
 		Jugador jugador =null;
-    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
-            String query = "SELECT nombre FROM modos WHERE name = ?";
+    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT * FROM players WHERE name ="+nombre;
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, nombre);
@@ -82,105 +72,11 @@ public class GestionUsuarios {
         return jugador;
 	}
 	
-    
-    // Método para eliminar un jugador
-    public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
-        jugadores.remove(jugador);
-        eliminarUsuario(jugador);
-    }
-    
-    // Método para eliminar el usuario de la base de datos
-    private void eliminarUsuario(Jugador jugador) {
-    	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
-		metodos.conexionBDUpdate(consulta);
-    }
-    
- // Método para añadir un jugador
-    public static void anyadirJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
-        jugadores.add(jugador);
-        insertarUsuario(jugador);
-    }
-    
-    // Método para añadir el usuario a la base de datos
-    public static  void insertarUsuario(Jugador jugador) { 
-		String consulta="INSERT INTO `players`(`id`, `name`, `password_hash`, `registration_date`, `level`, `rank`, `bloqueado`) VALUES ('"+jugador.getId()+"','"+jugador.getNombre()+"','"+jugador.getContrasenya()+"',','"+jugador.getNivel()+"','"+jugador.getRango()+"','"+jugador.isbloqueado()+"')";
-		metodos.conexionBDUpdate(consulta);
-	}
-    
-    // Método para cambiar el estado de bloqueo del jugador
-    public void cambiarEstadoBloqueo( Jugador jugador, boolean bloqueado) {
-    	jugador.setBloqueado(bloqueado);
-        actualizarEstadoBloqueo(jugador, bloqueado);
-    }
-    
-    // Método para actualizar el estado de bloqueo en la base de datos
-    private void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
-        String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
-        metodos.conexionBDUpdate(consulta);
-    }
-    
-    // Método para cambiar el estado de bloqueo de un jugador en el ArrayList y en la base de datos
-    public void cambiarEstadoBloqueo(ArrayList<Jugador> jugadores, int idJugador, boolean bloqueado) {
-    	int i = 0;
-       while(jugadores.get(i).getId() != idJugador) {
-    	   
-            if (jugadores.get(i).getId() == idJugador) {
-                cambiarEstadoBloqueo(jugadores.get(i), bloqueado);
-            }else {
-            	i++;
-            }
-        }
-    }
-    
-
-    public static Administrador iniciarSesionAdmin(String nombre, String contrasenya) {
-		boolean inicioSesion=false;
-		ArrayList<Administrador> usuarios=seleccionAdmin();
-		int i=0;
-		Administrador enviar = new Administrador();
-		boolean contra=false;
-		do {
-			if(usuarios.get(i).getNombre().equals(nombre))
-			{
-				if(usuarios.get(i).comprobarContrasenya(contrasenya))
-				{
-					inicioSesion=true;
-				}
-			}
-			if(i+1==usuarios.size())
-				contra=true;
-			i++;
-		}while(!inicioSesion);
-		if(!contra)
-			enviar=usuarios.get(i-1);
-		return enviar;
-	}
-	
-	public static ArrayList<Administrador> seleccionAdmin() {
-		String consulta="Select * FROM admins";
-		ArrayList<Administrador> enviar = new ArrayList<Administrador>();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-		     while (rs.next()) 
-				{
-					String nombre = rs.getString("name");
-		            String contrasenya = rs.getString("password");
-		            int id= rs.getInt("id");
-		            Administrador admin=new Administrador(id,nombre,contrasenya);
-				}
-		     conexion.close();
-		     return enviar;
-		} catch (SQLException e) {
-		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
-		}
-		return enviar;
-	}
-		     
+	//Login 
     public void login(String username, String password) throws LoginException {
-        String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
-        String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
+    	
+        String sqlAdmin = "SELECT * FROM admins WHERE username ="+username+" AND password ="+password;
+        String sqlJugador = "SELECT * FROM jugadores WHERE username ="+username+" AND password ="+password;
         String respuesta;
         try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
@@ -209,32 +105,55 @@ public class GestionUsuarios {
         metodos.redireccionLogin(respuesta);
     
     }
+    
+    //UPDATE Jugador 
+  	public void actualizarJugador(Jugador jugador) {
+  	        String consulta = "UPDATE players SET name="+jugador.getNombre()+",password_hash="+jugador.getContrasenya()+",registration_date="+jugador.getNivel()+",rank="+jugador.getRango()+",bloqueado="+jugador.isbloqueado()+" WHERE id ="+jugador.getId();
+  	        metodos.conexionBDUpdate(consulta);
+  	    }
+  	
+  	//UPDATE Bloqueo 
+    private void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
+        String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
+        metodos.conexionBDUpdate(consulta);
+    }
+    
+    //ARRAY UPDATE Bloqueo 
+    public void cambiarEstadoBloqueo( Jugador jugador, boolean bloqueado) {
+    	actualizarEstadoBloqueo(jugador, bloqueado);
+    	jugador.setBloqueado(bloqueado);
+        
+    }
 
-	public static ArrayList<Jugador> seleccionJugador() {
-		String consulta="Select * FROM players";
-		ArrayList<Jugador> enviar = new ArrayList<Jugador>();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-		     while (rs.next()) 
-				{
-					String nombre = rs.getString("name");
-		            String contrasenya = rs.getString("password_hash");
-		            int id= rs.getInt("id");
-					
-					int nivel=rs.getInt("level");
-					String rango = rs.getString("rank");
-					boolean bloqueado = rs.getBoolean("bloqueado");
-					Date fecha = new Date();
-					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fecha, bloqueado);
-					enviar.add(jugador);	
-				}
-		     conexion.close();
-		     return enviar;
-		} catch (SQLException e) {
-		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
-		}
-		return enviar;
-	
-	}}
+    //Array Bloqueo 
+    public void cambiarEstadoBloqueo(ArrayList<Jugador> jugadores, int idJugador, boolean bloqueado) {
+    	int i = 0;
+       while(jugadores.get(i).getId() != idJugador) {
+    	   
+            if (jugadores.get(i).getId() == idJugador) {
+                cambiarEstadoBloqueo(jugadores.get(i), bloqueado);
+            }else {
+            	i++;
+            }
+       }}
+    
+    //INSERT Usuario Array 
+    public static  void insertarUsuario(Jugador jugador,ArrayList<Jugador> jugadores) { 
+    	jugadores.add(jugador);
+		String consulta="INSERT INTO `players`(`id`, `name`, `password_hash`, `registration_date`, `level`, `rank`, `bloqueado`) VALUES ('"+jugador.getId()+"','"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"','"+jugador.isbloqueado();
+		metodos.conexionBDUpdate(consulta);
+	}
+    
+    //DELETE Admin 
+	public void eliminarAdministrador(Administrador Administrador,ArrayList<Administrador> Administradores) {
+    	Administradores.remove(Administrador);
+    	String consulta="DELETE FROM `admins` WHERE id="+Administrador.getId();
+		metodos.conexionBDUpdate(consulta);
+    }
+
+    //DELETE Jugador
+    public void eliminarJugador(Jugador jugador) {
+    	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
+		metodos.conexionBDUpdate(consulta);
+    }
+}
