@@ -10,6 +10,7 @@ package vista;
 		public class menu {
 
 			public static void main(String[] args) {
+				GestionUsuarios gestionUsur = new GestionUsuarios();
 				Scanner sc = new Scanner(System.in);
 				boolean iniciarSesion=false;
 				Administrador admin= new Administrador();
@@ -35,7 +36,7 @@ package vista;
 					 int usu=sc.nextInt();
 					 if(usu==1)
 					 {
-						usuario= GestionUsuarios.iniciarSesionUsuarios(nombre, contrasenya);
+						usuario= gestionUsur.login(nombre, contrasenya);
 						if(usuario.getNombre()==null)
 							System.out.println("No has iniciado sesion");
 						else

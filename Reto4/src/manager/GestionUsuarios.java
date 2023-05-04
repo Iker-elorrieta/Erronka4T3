@@ -12,7 +12,8 @@ import java.util.Scanner;
 
 import controlador.metodos;
 import exceptions.LoginException;
-
+import exceptions.PasswordMismatchException;
+import exceptions.PlayerNotFoundException;
 import modelo.Jugador;
 import utils.DBUtils;
 
@@ -131,10 +132,10 @@ public class GestionUsuarios {
         }
     }
     
-    public void login(String username, String password) throws LoginException {
+    public void login(String username, String password) throws PlayerNotFoundException, PasswordMismatchException {
         String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
-        String respuesta;
+        String respuesta = null;
         try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
              PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
@@ -153,11 +154,11 @@ public class GestionUsuarios {
             } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	respuesta= "jugador"; // El usuario es un jugador.
             } else {
-            	respuesta= null; // No se encontró un usuario con esos datos.
+            	 throw new PlayerNotFoundException("No se pudo encontrar el usuario.");
             }
 
         } catch (SQLException e) {
-        	throw new LoginException("Error al hacer login", e);
+        	
         }
         metodos.redireccionLogin(respuesta);
     }

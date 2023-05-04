@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import exceptions.LoginException;
+import exceptions.PasswordMismatchException;
 import manager.GestionModos;
 import manager.GestionPartidas;
 import manager.GestionPersonajes;
@@ -40,24 +41,9 @@ public class metodos {
 		}
 		
 	}
-	
-	
-
-	
 
 
-		
-
-  
-    
-   
-
-    
-    
-
-
-
-	public static void redireccionLogin(String userType) {
+	public static void redireccionLogin(String userType) throws PasswordMismatchException {
     	if (userType != null) {
     	    if (userType.equals("admin")) {
     	    	ArrayList<Jugador> jugadores =GestionUsuarios.cargaInicialJugadores();
@@ -71,7 +57,7 @@ public class metodos {
     	    	
     	    }
     	} else {
-    	    // Mostrar un mensaje de error al usuario.
+    		 throw new PasswordMismatchException();
     	}
     }
 

@@ -2,6 +2,7 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,6 +11,8 @@ import java.util.Date;
 
 import controlador.metodos;
 import modelo.Estadisticas;
+import modelo.Habilidad;
+import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
@@ -43,5 +46,35 @@ public static ArrayList<Partida> cargaInicialPartidas() {
 	return partidas;
 }
 
+public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
+    ArrayList<Partida> partidas = new ArrayList<>();
+
+    try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
+        String query = "SELECT * FROM matches WHERE player_id = ?";
+
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, jugador.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+        
+        while (resultSet.next()) {
+        	int id=resultSet.getInt("id");
+			int duracion = resultSet.getInt("duracion");
+			Modo modo= GestionModos.getModoById(resultSet.getInt("modo"));
+			boolean resultado=resultSet.getBoolean("resultado");
+			Date fecha=resultSet.getDate("date");
+			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("estadisticas"));
+			Personaje personaje = GestionPersonajes.getPersonajeById(resultSet.getInt("champion"));
+			
+			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
+			partidas.add(partida);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return partidas;
+}
 
 }
