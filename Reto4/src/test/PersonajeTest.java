@@ -29,7 +29,10 @@ public class PersonajeTest {
         assertEquals(0, champion.getAbilityPower());
         assertEquals(580, champion.getHealth());
         assertEquals(0, champion.getMana());
+<<<<<<< HEAD
      
+=======
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
     }
 
     @Test
@@ -110,9 +113,22 @@ public class PersonajeTest {
          assertEquals(champion.getRole(),role);
     }
     
+<<<<<<< HEAD
   
     
   
+=======
+    @Test
+    public void testhashCode() {
+    	Personaje personaje1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+        Personaje personaje2 = new Personaje(2, null, null, 0, null, 0, 0, 0, 0);
+        Personaje personaje3 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+
+        assertEquals(personaje1.hashCode(), personaje1.hashCode());
+        assertEquals(personaje1.hashCode(), personaje3.hashCode());
+        assertNotEquals(personaje1.hashCode(), personaje2.hashCode());
+    }
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
     
     @Test
     public void testSaludo() {

@@ -99,8 +99,6 @@ public class Personaje implements Saludar{
     public void setMana(int mana) {
         this.mana = mana;
     }
-
-  
     @Override
     public String toString() {
         return "Champion{" +

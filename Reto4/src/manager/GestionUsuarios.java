@@ -8,22 +8,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
-
 import controlador.metodos;
 import exceptions.LoginException;
+<<<<<<< HEAD
 import exceptions.PasswordMismatchException;
 import exceptions.PlayerNotFoundException;
+=======
+import modelo.Administrador;
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 import modelo.Jugador;
 import utils.DBUtils;
 
 public class GestionUsuarios {
 	
+	//SELECT inicial 
 	public static ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -45,19 +48,11 @@ public class GestionUsuarios {
 		return jugadores;
 	}
 	
-	public void preguntarEliminarJugador(ArrayList<Jugador> jugadores,Jugador jugador) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("¿Está seguro que desea eliminar al jugador " + jugador.getNombre() + "? (s/n)");
-        String respuesta = sc.nextLine();
-        if (respuesta.equalsIgnoreCase("s")) {
-            eliminarJugador(jugadores, jugador);
-        }
-    }
-	
+	//SELECT by nombre 
 	public static Jugador getJugadorByNombre(String nombre){
 		Jugador jugador =null;
-    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
-            String query = "SELECT nombre FROM modos WHERE name = ?";
+    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT * FROM players WHERE name ="+nombre;
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, nombre);
@@ -82,6 +77,7 @@ public class GestionUsuarios {
         return jugador;
 	}
 	
+<<<<<<< HEAD
     
     // Método para eliminar un jugador
     public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
@@ -137,6 +133,15 @@ public class GestionUsuarios {
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
         String respuesta = null;
         try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+=======
+	//Login 
+    public void login(String username, String password) throws LoginException {
+    	
+        String sqlAdmin = "SELECT * FROM admins WHERE username ="+username+" AND password ="+password;
+        String sqlJugador = "SELECT * FROM jugadores WHERE username ="+username+" AND password ="+password;
+        String respuesta;
+        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
              PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
 
@@ -161,10 +166,57 @@ public class GestionUsuarios {
         	
         }
         metodos.redireccionLogin(respuesta);
+    
     }
-	
-	
-	
-	
+    
+    //UPDATE Jugador 
+  	public void actualizarJugador(Jugador jugador) {
+  	        String consulta = "UPDATE players SET name="+jugador.getNombre()+",password_hash="+jugador.getContrasenya()+",registration_date="+jugador.getNivel()+",rank="+jugador.getRango()+",bloqueado="+jugador.isbloqueado()+" WHERE id ="+jugador.getId();
+  	        metodos.conexionBDUpdate(consulta);
+  	    }
+  	
+  	//UPDATE Bloqueo 
+    private void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
+        String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
+        metodos.conexionBDUpdate(consulta);
+    }
+    
+    //ARRAY UPDATE Bloqueo 
+    public void cambiarEstadoBloqueo( Jugador jugador, boolean bloqueado) {
+    	actualizarEstadoBloqueo(jugador, bloqueado);
+    	jugador.setBloqueado(bloqueado);
+        
+    }
 
+    //Array Bloqueo 
+    public void cambiarEstadoBloqueo(ArrayList<Jugador> jugadores, int idJugador, boolean bloqueado) {
+    	int i = 0;
+       while(jugadores.get(i).getId() != idJugador) {
+    	   
+            if (jugadores.get(i).getId() == idJugador) {
+                cambiarEstadoBloqueo(jugadores.get(i), bloqueado);
+            }else {
+            	i++;
+            }
+       }}
+    
+    //INSERT Usuario Array 
+    public static  void insertarUsuario(Jugador jugador,ArrayList<Jugador> jugadores) { 
+    	jugadores.add(jugador);
+		String consulta="INSERT INTO `players`(`id`, `name`, `password_hash`, `registration_date`, `level`, `rank`, `bloqueado`) VALUES ('"+jugador.getId()+"','"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"','"+jugador.isbloqueado();
+		metodos.conexionBDUpdate(consulta);
+	}
+    
+    //DELETE Admin 
+	public void eliminarAdministrador(Administrador Administrador,ArrayList<Administrador> Administradores) {
+    	Administradores.remove(Administrador);
+    	String consulta="DELETE FROM `admins` WHERE id="+Administrador.getId();
+		metodos.conexionBDUpdate(consulta);
+    }
+
+    //DELETE Jugador
+    public void eliminarJugador(Jugador jugador) {
+    	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
+		metodos.conexionBDUpdate(consulta);
+    }
 }

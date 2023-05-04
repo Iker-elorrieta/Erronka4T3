@@ -11,7 +11,10 @@ import java.util.Date;
 
 import controlador.metodos;
 import modelo.Estadisticas;
+<<<<<<< HEAD
 import modelo.Habilidad;
+=======
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
@@ -20,11 +23,12 @@ import utils.DBUtils;
 
 public class GestionPartidas {
 
-public static ArrayList<Partida> cargaInicialPartidas() {
+	//SELECT inicial 
+	public static ArrayList<Partida> cargaInicialPartidas() {
 	String consulta="SELECT * FROM matches";
 	ArrayList<Partida> partidas= new ArrayList<>();
 	try {
-	    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+	    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 	    Statement stmt = conexion.createStatement(); 
 	    ResultSet rs = stmt.executeQuery(consulta);
 		while (rs.next()) 
@@ -34,11 +38,13 @@ public static ArrayList<Partida> cargaInicialPartidas() {
 			Modo modo= GestionModos.getModoById(rs.getInt("modo"));
 			boolean resultado=rs.getBoolean("resultado");
 			Date fecha=rs.getDate("date");
+			Jugador jugador=GestionUsuarios.getJugadorByNombre(rs.getString("player"));
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion"));
 			
-			Partida partida = new Partida(id, null, modo, personaje, estadistica, resultado, fecha, duracion);
+			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
+			conexion.close();
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
@@ -46,6 +52,7 @@ public static ArrayList<Partida> cargaInicialPartidas() {
 	return partidas;
 }
 
+<<<<<<< HEAD
 public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
 
@@ -76,5 +83,55 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 
     return partidas;
 }
+=======
+	//SELECT by jugador 
+	public static  ArrayList<Partida> getPartidaByUsuario(Jugador jugador){
+		String consulta="SELECT * FROM matches Where player="+jugador.getId();
+		ArrayList<Partida> partidas= new ArrayList<>();
+		try {
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		    Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(consulta);
+			while (rs.next()) 
+			{
+				int id=rs.getInt("id");
+				int duracion = rs.getInt("duration");
+				Modo modo= GestionModos.getModoById(rs.getInt("modo"));
+				boolean resultado=rs.getBoolean("result");
+				Date fecha=rs.getDate("date");
+				Jugador jugador1=GestionUsuarios.getJugadorByNombre(rs.getString("player"));
+				Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
+				Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion"));
+				
+				Partida partida1 = new Partida(id, jugador1, modo, personaje, estadistica, resultado, fecha, duracion);
+				partidas.add(partida1);
+				conexion.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return partidas;
+	}
+
+	//UPDATE partida 
+	public static  void updatePartida(Partida partida) {
+		 String consulta = "UPDATE matches SET duration="+partida.getDuracion()+",result="+partida.isResultado()+",modo="+partida.getModo()+",date="+partida.getFecha()+",player="+partida.getJugador().getId()+",champion="+partida.getPersonaje().getId()+" WHERE id ="+partida.getCod_partida();
+	     metodos.conexionBDUpdate(consulta);
+	}
+	
+	//INSERT partida 
+	public static  void insertarPartida(Partida partida) { 
+	String consulta="INSERT INTO `matches`(`id`, `date`, `duration`, `result`, `champion`, `player`,`estadisticas`) VALUES ('"
+			+ ""+partida.getCod_partida()+"','"+partida.getFecha()+"','"+partida.getDuracion()+"','"+partida.isResultado()+"','"+partida.getPersonaje()+"','"+partida.getJugador()+"','"+partida.getEstadisticas()+")";
+	metodos.conexionBDUpdate(consulta);
+}
+
+	//DELETE partida 
+	public void eliminarUsuario(Jugador jugador) {
+	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
+	metodos.conexionBDUpdate(consulta);
+}
+
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
 }

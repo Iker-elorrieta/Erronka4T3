@@ -11,7 +11,10 @@ import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 
 class PartidaTest {
 	
@@ -19,7 +22,11 @@ class PartidaTest {
 	Date date1=new Date();   
 	Jugador jug1 = new Jugador();
 	String hola = "Aram";
+<<<<<<< HEAD
 	Modo modo= new Modo(1, "Aram");
+=======
+	Modo modo= new Modo(0,"Aram");
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true; 
@@ -89,7 +96,11 @@ class PartidaTest {
 	
 	@Test
 	void testsetModo() {
+<<<<<<< HEAD
 		Modo modo2= new Modo();
+=======
+		Modo modo2= new Modo(2, "clasificatorio");
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 		partida1.setModo(modo2);
 		assertEquals(partida1.getModo(),modo2);
 	}

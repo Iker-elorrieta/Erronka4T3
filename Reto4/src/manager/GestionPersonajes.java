@@ -8,17 +8,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import controlador.metodos;
 import modelo.Habilidad;
 import modelo.Personaje;
 import utils.DBUtils;
 
 public class GestionPersonajes {
 	
+	//SELECT inicial 
 	public static ArrayList<Personaje> cargaInicialPersonajes(){
 		String consulta="SELECT * FROM champions";
 		ArrayList<Personaje> campeones = new ArrayList<Personaje>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 
@@ -43,10 +45,11 @@ public class GestionPersonajes {
 		return campeones;
 		}
 	
-	 public static Personaje getPersonajeById(int id) {
+	//SELECT by id 
+	public static Personaje getPersonajeById(int id) {
 	        Personaje personaje = null;
 
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
+	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
 	            String query = "SELECT * FROM personaje WHERE id = ?";
 
 	            PreparedStatement statement = connection.prepareStatement(query);
@@ -109,5 +112,25 @@ public class GestionPersonajes {
 	        }
 	        return personaje;
 	    }
+
+	//UPDATE personaje
+	public static  void updatePersonaje(Personaje personaje){
+		String consulta = "UPDATE players SET name="+personaje.getName()+",role="+personaje.getRole()+",difficulty="+personaje.getDifficulty()+",attack_damage="+personaje.getAttackDamage()+",ability_power="+personaje.getAbilityPower()+",life"+personaje.getHealth()+",mana"+personaje.getMana()+" WHERE id ="+personaje.getId();
+		metodos.conexionBDUpdate(consulta);
+		
+	}
+	
+	//INSERT personaje 
+	public static  void insertarPersonaje(Personaje personaje) { 
+			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
+					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+")";
+			metodos.conexionBDUpdate(consulta);
+		}
+
+	//DELETE personaje 
+	public void eliminarPersonaje(Personaje personaje) {
+			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
+			metodos.conexionBDUpdate(consulta);
+		}
 
 }
