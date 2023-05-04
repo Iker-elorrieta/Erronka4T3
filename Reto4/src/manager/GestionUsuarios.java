@@ -15,6 +15,7 @@ import exceptions.PasswordMismatchException;
 import exceptions.PlayerNotFoundException;
 import modelo.Administrador;
 import modelo.Jugador;
+import modelo.Usuario;
 import utils.DBUtils;
 
 public class GestionUsuarios {
@@ -34,7 +35,7 @@ public class GestionUsuarios {
 		            String contrasenya = rs.getString("password_hash");
 					int nivel=rs.getInt("level");
 					String rango = rs.getString("rank");
-					Date fechaRegistro = rs.getDate("registratio_date");
+					Date fechaRegistro = rs.getDate("registration_date");
 					boolean bloqueado = rs.getBoolean("bloqueado");
 					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
 					jugadores.add(jugador);	
@@ -110,7 +111,7 @@ public class GestionUsuarios {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        metodos.redireccionLogin(respuesta);
+        metodos.redireccionLogin(respuesta, null );
     
     }
     

@@ -22,7 +22,9 @@ import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
+import modelo.Usuario;
 import utils.DBUtils;
+import vista.MenuJugador;
 
 
 public class metodos {
@@ -43,7 +45,7 @@ public class metodos {
 
 
 	//Redireccion ArrayList H
-	public static void redireccionLogin(String userType) throws PlayerNotFoundException {
+	public static void redireccionLogin(String userType, Usuario usuario) throws PlayerNotFoundException {
 
     	if (userType != null) {
     	    if (userType.equals("admin")) {
@@ -54,9 +56,10 @@ public class metodos {
     	    	ArrayList<Habilidad> habilidades=GestionHabilidades.getHabilidad();
     	    	
     	        // Redirigir al usuario a la pantalla de administrador.
+    	    	
     	    } else if (userType.equals("jugador")) {
     	        // Redirigir al usuario a la pantalla de jugador.
-    	    	
+    	    	new MenuJugador(usuario);
     	    }
     	} else {
     		 throw new PlayerNotFoundException("El usuario o la contraseña no son correctos.");
