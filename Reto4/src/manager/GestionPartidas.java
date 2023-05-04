@@ -11,10 +11,9 @@ import java.util.Date;
 
 import controlador.metodos;
 import modelo.Estadisticas;
-<<<<<<< HEAD
+
 import modelo.Habilidad;
-=======
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
@@ -52,7 +51,7 @@ public class GestionPartidas {
 	return partidas;
 }
 
-<<<<<<< HEAD
+
 public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
 
@@ -83,35 +82,6 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 
     return partidas;
 }
-=======
-	//SELECT by jugador 
-	public static  ArrayList<Partida> getPartidaByUsuario(Jugador jugador){
-		String consulta="SELECT * FROM matches Where player="+jugador.getId();
-		ArrayList<Partida> partidas= new ArrayList<>();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-			while (rs.next()) 
-			{
-				int id=rs.getInt("id");
-				int duracion = rs.getInt("duration");
-				Modo modo= GestionModos.getModoById(rs.getInt("modo"));
-				boolean resultado=rs.getBoolean("result");
-				Date fecha=rs.getDate("date");
-				Jugador jugador1=GestionUsuarios.getJugadorByNombre(rs.getString("player"));
-				Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
-				Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion"));
-				
-				Partida partida1 = new Partida(id, jugador1, modo, personaje, estadistica, resultado, fecha, duracion);
-				partidas.add(partida1);
-				conexion.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return partidas;
-	}
 
 	//UPDATE partida 
 	public static  void updatePartida(Partida partida) {
@@ -132,6 +102,6 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	metodos.conexionBDUpdate(consulta);
 }
 
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 
 }

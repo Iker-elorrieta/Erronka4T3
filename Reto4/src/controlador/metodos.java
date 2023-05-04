@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-<<<<<<< HEAD
+
 import java.util.Date;
 
-import exceptions.LoginException;
+
 import exceptions.PasswordMismatchException;
-=======
+
 import manager.GestionHabilidades;
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 import manager.GestionModos;
 import manager.GestionPartidas;
 import manager.GestionPersonajes;
@@ -41,13 +41,10 @@ public class metodos {
 		
 	}
 
-<<<<<<< HEAD
 
-	public static void redireccionLogin(String userType) throws PasswordMismatchException {
-=======
 	//Redireccion ArrayList H
 	public static void redireccionLogin(String userType) {
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
     	if (userType != null) {
     	    if (userType.equals("admin")) {
     	    	ArrayList<Jugador> jugadores =GestionUsuarios.cargaInicialJugadores();

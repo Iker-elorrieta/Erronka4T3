@@ -10,12 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import controlador.metodos;
 import exceptions.LoginException;
-<<<<<<< HEAD
+
 import exceptions.PasswordMismatchException;
 import exceptions.PlayerNotFoundException;
-=======
 import modelo.Administrador;
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 import modelo.Jugador;
 import utils.DBUtils;
 
@@ -77,71 +75,13 @@ public class GestionUsuarios {
         return jugador;
 	}
 	
-<<<<<<< HEAD
-    
-    // Método para eliminar un jugador
-    public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
-        jugadores.remove(jugador);
-        eliminarUsuario(jugador);
-    }
-    
-    // Método para eliminar el usuario de la base de datos
-    private void eliminarUsuario(Jugador jugador) {
-    	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
-		metodos.conexionBDUpdate(consulta);
-    }
-    
- // Método para añadir un jugador
-    public static void anyadirJugador(ArrayList<Jugador> jugadores, Jugador jugador) {
-        jugadores.add(jugador);
-        insertarUsuario(jugador);
-    }
-    
-    // Método para añadir el usuario a la base de datos
-    public static  void insertarUsuario(Jugador jugador) { 
-		String consulta="INSERT INTO `players`(`id`, `name`, `password_hash`, `registration_date`, `level`, `rank`, `bloqueado`) VALUES ('"+jugador.getId()+"','"+jugador.getNombre()+"','"+jugador.getContrasenya()+"',','"+jugador.getNivel()+"','"+jugador.getRango()+"','"+jugador.isbloqueado()+"')";
-		metodos.conexionBDUpdate(consulta);
-	}
-    
-    // Método para cambiar el estado de bloqueo del jugador
-    public void cambiarEstadoBloqueo( Jugador jugador, boolean bloqueado) {
-    	jugador.setBloqueado(bloqueado);
-        actualizarEstadoBloqueo(jugador, bloqueado);
-    }
-    
-    // Método para actualizar el estado de bloqueo en la base de datos
-    private void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
-        String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
-        metodos.conexionBDUpdate(consulta);
-    }
-    
-    // Método para cambiar el estado de bloqueo de un jugador en el ArrayList y en la base de datos
-    public void cambiarEstadoBloqueo(ArrayList<Jugador> jugadores, int idJugador, boolean bloqueado) {
-    	int i = 0;
-       while(jugadores.get(i).getId() != idJugador) {
-    	   
-            if (jugadores.get(i).getId() == idJugador) {
-                cambiarEstadoBloqueo(jugadores.get(i), bloqueado);
-            }else {
-            	i++;
-            }
-        }
-    }
-    
+
     public void login(String username, String password) throws PlayerNotFoundException, PasswordMismatchException {
         String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
         String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
         String respuesta = null;
         try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-=======
-	//Login 
-    public void login(String username, String password) throws LoginException {
-    	
-        String sqlAdmin = "SELECT * FROM admins WHERE username ="+username+" AND password ="+password;
-        String sqlJugador = "SELECT * FROM jugadores WHERE username ="+username+" AND password ="+password;
-        String respuesta;
-        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
              PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
 
