@@ -10,7 +10,7 @@ import java.util.Date;
 
 
 import exceptions.PasswordMismatchException;
-
+import exceptions.PlayerNotFoundException;
 import manager.GestionHabilidades;
 
 import manager.GestionModos;
@@ -43,7 +43,7 @@ public class metodos {
 
 
 	//Redireccion ArrayList H
-	public static void redireccionLogin(String userType) {
+	public static void redireccionLogin(String userType) throws PlayerNotFoundException {
 
     	if (userType != null) {
     	    if (userType.equals("admin")) {
@@ -59,7 +59,7 @@ public class metodos {
     	    	
     	    }
     	} else {
-    		 throw new PasswordMismatchException();
+    		 throw new PlayerNotFoundException("El usuario o la contraseña no son correctos.");
     	}
     }	
 		

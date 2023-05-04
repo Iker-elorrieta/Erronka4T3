@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
+import java.awt.Window.Type;
 
 class RegisterFrame extends JFrame {
 	private JTextField textUsuario;
@@ -28,6 +29,8 @@ class RegisterFrame extends JFrame {
 	private JPasswordField passwordField_2;
     
     public RegisterFrame() {
+    	setType(Type.UTILITY);
+    	setResizable(false);
     	setBackground(new Color(192, 192, 192));
     	getContentPane().setBackground(new Color(255, 255, 255));
         // Configurar el JFrame de registro
@@ -153,6 +156,7 @@ class RegisterFrame extends JFrame {
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		 dispose(); // Cierra el JFrame
         	}
         });
         btnCancelar.setBounds(123, 227, 81, 23);

@@ -76,14 +76,18 @@ public class GestionUsuarios {
 	}
 	
 
-    public void login(String username, String password) throws PlayerNotFoundException, PasswordMismatchException {
-        String sqlAdmin = "SELECT * FROM admins WHERE username = ? AND password = ?";
-        String sqlJugador = "SELECT * FROM jugadores WHERE username = ? AND password = ?";
+    public void login(String username, String password) throws PlayerNotFoundException{
+        String sqlAdmin = "SELECT * FROM admins WHERE name = ? AND password = ?";
+        String sqlJugador = "SELECT * FROM players WHERE name = ? AND password_hash = ?";
         String respuesta = null;
-        try (Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+        
+        Connection conn;
+		try {
+			conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		
 
              PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
-             PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador)) {
+             PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador);
 
             stmtAdmin.setString(1, username);
             stmtAdmin.setString(2, password);
@@ -99,12 +103,13 @@ public class GestionUsuarios {
             } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	respuesta= "jugador"; // El usuario es un jugador.
             } else {
-            	 throw new PlayerNotFoundException("No se pudo encontrar el usuario.");
+            	 respuesta = null;
             }
 
-        } catch (SQLException e) {
-        	
-        }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         metodos.redireccionLogin(respuesta);
     
     }
