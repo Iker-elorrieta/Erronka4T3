@@ -34,7 +34,7 @@ public class metodos {
 	public static void conexionBDUpdate(String consulta) {
 		
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    stmt.executeUpdate(consulta);
 		    conexion.close();

@@ -12,12 +12,16 @@ import javax.swing.JTabbedPane;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Label;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -37,8 +41,10 @@ import modelo.Usuario;
 
 import javax.swing.JSeparator;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 
 public class MenuJugador extends JFrame {
+	private MenuJugador frame;
 	private ArrayList<ImageIcon> imagenes;
     private JLabel labelImagen;
 	private JPanel contentPane;
@@ -49,6 +55,19 @@ public class MenuJugador extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuJugador(Usuario UsurJugador) {
+		
+		frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                // Muestra un mensaje preguntando si está seguro de cerrar sesión
+                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Estás seguro de cerrar sesión?",
+                        "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                // Si el usuario confirma que quiere cerrar sesión, cierra la ventana
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    e.getWindow().dispose();
+                }
+            }
+        });
 		
 		  // Obtener imágenes de la carpeta
         imagenes = new ArrayList<>();
@@ -72,49 +91,57 @@ public class MenuJugador extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 67, 100));
-		panel.setBounds(0, 0, 720, 56);
-		contentPane.add(panel);
-		
 		 ImageIcon imageIcon = new ImageIcon("ImagenesAplicacion/Utils/boton.png");
 	        Image image = imageIcon.getImage().getScaledInstance(380,220, Image.SCALE_SMOOTH);
 	      ImageIcon jugar = new ImageIcon(image);
+	      
+        JLabel lblJugar = new JLabel();
+        lblJugar.setFocusCycleRoot(true);
+        lblJugar.setBounds(10, 0, 170, 56);
+        lblJugar.setIcon(jugar);
+        lblJugar.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(lblJugar);
+        
+		   // Crear la barra de navegación
+        JToolBar navBar = new JToolBar();
+        navBar.setBounds(0, 0, 712, 56);
+        contentPane.add(navBar);
+        
+        navBar.setFloatable(false);
+        navBar.setForeground(Color.WHITE);
+        navBar.setBackground(new Color(0, 67, 100));
+        // Configurar el administrador de diseño
+        navBar.setLayout(new BoxLayout(navBar, BoxLayout.X_AXIS));
 		
-		JLabel lblJugar = new JLabel();
-		lblJugar.setFocusCycleRoot(true);
-		lblJugar.setBounds(10, 0, 170, 56);
-		lblJugar.setIcon(jugar);
-		lblJugar.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.setLayout(null);
-		panel.add(lblJugar);
 		
-		JLabel lblPersonajes = new JLabel("Personajes");
+		
+		Label lblPlaceholder = new Label("");
+		navBar.add(lblPlaceholder);
+		lblPlaceholder.setForeground(Color.WHITE);
+		lblPlaceholder.setAlignment(SwingConstants.CENTER);
+		lblPlaceholder.setFont(new Font("Georgia", Font.BOLD, 15));
+		
+		Label lblPerfil = new Label("Perfil");
+		lblPerfil.setForeground(Color.WHITE);
+		lblPerfil.setFont(new Font("Georgia", Font.BOLD, 15));
+		lblPerfil.setAlignment(Label.CENTER);
+		navBar.add(lblPerfil);
+		
+		Label lblPersonajes = new Label("Personajes");
 		lblPersonajes.setForeground(Color.WHITE);
-		lblPersonajes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPersonajes.setAlignment(Label.CENTER);
 		lblPersonajes.setFont(new Font("Georgia", Font.BOLD, 15));
 		lblPersonajes.setBounds(209, 20, 103, 20);
-		panel.add(lblPersonajes);
-		
-		JLabel lblPerfil = new JLabel("Perfil");
-		lblPerfil.setForeground(Color.WHITE);
-		lblPerfil.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPerfil.setFont(new Font("Georgia", Font.BOLD, 15));
-		lblPerfil.setBounds(334, 20, 103, 20);
-		panel.add(lblPerfil);
+		navBar.add(lblPersonajes);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(-10, -30, 730, 429);
+		tabbedPane.setBounds(-5, 0, 725, 395);
 		tabbedPane.setBackground(Color.WHITE);
 		contentPane.add(tabbedPane);
 		
-		JTabbedPane tabbedPerfil = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPerfil.setBackground(Color.WHITE);
-		tabbedPane.addTab("New tab", null, tabbedPerfil, null);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(0, 41, 62));
-		tabbedPerfil.addTab("New tab", null, panel_1, null);
+		JPanel panelPerfil = new JPanel();
+		panelPerfil.setBackground(new Color(0, 41, 62));
+		tabbedPane.addTab("New tab", null, panelPerfil, null);
 		
 		 JPanel panelImagen = new JPanel();
 	        labelImagen = new JLabel(imagenes.get(0));
@@ -131,15 +158,15 @@ public class MenuJugador extends JFrame {
 	                labelImagen.setIcon(imagenSiguiente);
 	            }
 	        });
-	        panel_1.setLayout(null);
-	        panel_1.add(labelImagen);
+	        panelPerfil.setLayout(null);
+	        panelPerfil.add(labelImagen);
 	        
 	        JLabel lblBienvenido = new JLabel("Bienvenido *");
 	        lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblBienvenido.setForeground(new Color(255, 255, 255));
 	        lblBienvenido.setFont(new Font("Georgia", Font.BOLD, 19));
 	        lblBienvenido.setBounds(164, 55, 426, 20);
-	        panel_1.add(lblBienvenido);
+	        panelPerfil.add(lblBienvenido);
 	        
 	         imageIcon = new ImageIcon("ImagenesAplicacion/Utils/nivel.png");
 	         image = imageIcon.getImage().getScaledInstance(45,50, Image.SCALE_SMOOTH);
@@ -150,14 +177,14 @@ public class MenuJugador extends JFrame {
 	        lblLvL.setFont(new Font("Georgia", Font.BOLD, 15));
 	        lblLvL.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblLvL.setBounds(67, 187, 45, 14);
-	        panel_1.add(lblLvL);
+	        panelPerfil.add(lblLvL);
 	        
 	        JLabel lblNivel = new JLabel();
 	        lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblNivel.setBackground(Color.RED);
 	        lblNivel.setIcon(new RotatedIcon(nivel, 180));
 	        lblNivel.setBounds(67, 173, 45, 40);
-	        panel_1.add(lblNivel);
+	        panelPerfil.add(lblNivel);
 	        
 	        // Crear un JPanel para contener los JLabels
 	        JPanel panelPartidas = new JPanel();
@@ -172,26 +199,21 @@ public class MenuJugador extends JFrame {
 	        
 	        JScrollPane scrollPane = new JScrollPane(panelPartidas);
 	        scrollPane.setBounds(216, 265, 465, 75);
-	        panel_1.add(scrollPane);
+	        panelPerfil.add(scrollPane);
 	        
 	        JLabel lblRank = new JLabel("");
 	        lblRank.setOpaque(true);
 	        lblRank.setBackground(Color.WHITE);
 	        lblRank.setBounds(55, 240, 73, 80);
-	        panel_1.add(lblRank);
-		
-		JTabbedPane tabbedPersonajes = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab("New tab", null, tabbedPersonajes, null);
-		
-		JPanel panel_2 = new JPanel();
-		tabbedPersonajes.addTab("New tab", null, panel_2, null);
-		
-		JTabbedPane tabbedJugar = new JTabbedPane(JTabbedPane.TOP);
-		tabbedJugar.setBackground(Color.WHITE);
-		tabbedPane.addTab("New tab", null, tabbedJugar, null);
-		
-		JPanel panel_3 = new JPanel();
-		tabbedJugar.addTab("New tab", null, panel_3, null);
+	        panelPerfil.add(lblRank);
+	        
+	     
+	        
+	        JPanel panelPersonajes = new JPanel();
+	        tabbedPane.addTab("New tab", null, panelPersonajes, null);
+	        
+	        JPanel panelJugar = new JPanel();
+	        tabbedPane.addTab("New tab", null, panelJugar, null);
 		
 		
 	}
