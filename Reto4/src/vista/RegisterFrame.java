@@ -12,6 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import com.mysql.cj.exceptions.DataConversionException;
+
+import manager.GestionUsuarios;
+import modelo.Jugador;
+import utils.DateConverter;
 import utils.TextPrompt;
 
 import java.awt.Font;
@@ -20,6 +25,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 
@@ -27,7 +33,7 @@ class RegisterFrame extends JFrame {
 	private JTextField textUsuario;
 	private JPasswordField passwordField_1;
 	private JPasswordField passwordField_2;
-    
+    public GestionUsuarios gestionUsur;
     public RegisterFrame() {
     	setType(Type.UTILITY);
     	setResizable(false);
@@ -127,12 +133,17 @@ class RegisterFrame extends JFrame {
         	    	  lblError.setVisible(false);
         	      }
         	      
-        	      if (passwordField_1.getPassword().length == 0 || passwordField_1.getPassword().length == 0) {
+        	      if (passwordField_1.getPassword().length == 0 ) {
         	          // Mostrar un mensaje de error al usuario
         	    	  lblError_1.setVisible(true);
-        	    	  lblError_2.setVisible(true);
         	       }else {
         	    	   lblError_1.setVisible(false);
+				}
+        	      
+        	      if (passwordField_2.getPassword().length == 0) {
+        	          // Mostrar un mensaje de error al usuario
+        	    	  lblError_2.setVisible(true);
+        	       }else {
          	    	  lblError_2.setVisible(false);
 				}
         	      
@@ -147,6 +158,11 @@ class RegisterFrame extends JFrame {
         	      }
         	      
         	      // Si todo está bien, continua
+        	      if(!lblError_2.isVisible()&&!lblError_1.isVisible()&&!lblError.isVisible()){
+        	      Date fechareg = new Date();
+        	      Jugador jugador = new Jugador(0, textUsuario.getText(),String.valueOf(passwordField_1.getPassword()), 1, "Iron", DateConverter.toSqlDate(fechareg), false);
+        	      gestionUsur.insertarUsuario(jugador, null);
+        	      }
         	   }
         	
         });

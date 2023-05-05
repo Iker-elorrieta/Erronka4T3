@@ -81,7 +81,7 @@ public class GestionUsuarios {
         String sqlAdmin = "SELECT * FROM admins WHERE name = ? AND password = ?";
         String sqlJugador = "SELECT * FROM players WHERE name = ? AND password_hash = ?";
         String respuesta = null;
-        
+        Usuario usur= null;
         Connection conn;
 		try {
 			conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
@@ -100,8 +100,10 @@ public class GestionUsuarios {
             ResultSet rsJugador = stmtJugador.executeQuery();
 
             if (rsAdmin.next()) {
+            	 usur= new Administrador(rsAdmin.getInt(1), rsAdmin.getString(2), rsAdmin.getString(3));
             	respuesta= "admin"; // El usuario es un administrador.
             } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
+            	 usur= new Jugador(rsJugador.getInt(1), rsJugador.getString(2), rsJugador.getString(3),rsJugador.getInt(5), rsJugador.getString(6), rsJugador.getDate(4), rsJugador.getBoolean(7));
             	respuesta= "jugador"; // El usuario es un jugador.
             } else {
             	 respuesta = null;
@@ -111,7 +113,7 @@ public class GestionUsuarios {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        metodos.redireccionLogin(respuesta, null );
+        metodos.redireccionLogin(respuesta, usur );
     
     }
     
@@ -148,8 +150,10 @@ public class GestionUsuarios {
     
     //INSERT Usuario Array 
     public static  void insertarUsuario(Jugador jugador,ArrayList<Jugador> jugadores) { 
+    	if (jugadores!=null)
     	jugadores.add(jugador);
-		String consulta="INSERT INTO `players`(`id`, `name`, `password_hash`, `registration_date`, `level`, `rank`, `bloqueado`) VALUES ('"+jugador.getId()+"','"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"','"+jugador.isbloqueado();
+    	
+		String consulta="INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
 		metodos.conexionBDUpdate(consulta);
 	}
     

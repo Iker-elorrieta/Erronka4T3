@@ -24,6 +24,7 @@ import modelo.Partida;
 import modelo.Personaje;
 import modelo.Usuario;
 import utils.DBUtils;
+import vista.MenuAdministrador;
 import vista.MenuJugador;
 
 
@@ -49,17 +50,12 @@ public class metodos {
 
     	if (userType != null) {
     	    if (userType.equals("admin")) {
-    	    	ArrayList<Jugador> jugadores =GestionUsuarios.cargaInicialJugadores();
-    	    	ArrayList<Partida> partidas =GestionPartidas.cargaInicialPartidas();
-    	    	ArrayList<Personaje> campeones =GestionPersonajes.cargaInicialPersonajes();
-    	    	ArrayList<Modo> modos =GestionModos.cargaInicialModos();
-    	    	ArrayList<Habilidad> habilidades=GestionHabilidades.getHabilidad();
-    	    	
     	        // Redirigir al usuario a la pantalla de administrador.
-    	    	
+    	    	new MenuAdministrador(usuario).setVisible(true);;
     	    } else if (userType.equals("jugador")) {
     	        // Redirigir al usuario a la pantalla de jugador.
-    	    	new MenuJugador(usuario);
+    	    	new MenuJugador(usuario).setVisible(true);
+    	    	
     	    }
     	} else {
     		 throw new PlayerNotFoundException("El usuario o la contraseña no son correctos.");

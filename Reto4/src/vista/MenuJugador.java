@@ -33,6 +33,7 @@ import javax.swing.JTree;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import modelo.Jugador;
+import modelo.Usuario;
 
 import javax.swing.JSeparator;
 import javax.swing.JScrollPane;
@@ -42,26 +43,12 @@ public class MenuJugador extends JFrame {
     private JLabel labelImagen;
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuJugador frame = new MenuJugador();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public MenuJugador(Jugador jugador) {
+	public MenuJugador(Usuario UsurJugador) {
 		
 		  // Obtener imágenes de la carpeta
         imagenes = new ArrayList<>();
@@ -162,7 +149,7 @@ public class MenuJugador extends JFrame {
 	        lblLvL.setForeground(Color.WHITE);
 	        lblLvL.setFont(new Font("Georgia", Font.BOLD, 15));
 	        lblLvL.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblLvL.setBounds(67, 185, 45, 14);
+	        lblLvL.setBounds(67, 187, 45, 14);
 	        panel_1.add(lblLvL);
 	        
 	        JLabel lblNivel = new JLabel();
@@ -184,8 +171,14 @@ public class MenuJugador extends JFrame {
 	        }
 	        
 	        JScrollPane scrollPane = new JScrollPane(panelPartidas);
-	        scrollPane.setBounds(152, 265, 529, 75);
+	        scrollPane.setBounds(216, 265, 465, 75);
 	        panel_1.add(scrollPane);
+	        
+	        JLabel lblRank = new JLabel("");
+	        lblRank.setOpaque(true);
+	        lblRank.setBackground(Color.WHITE);
+	        lblRank.setBounds(55, 240, 73, 80);
+	        panel_1.add(lblRank);
 		
 		JTabbedPane tabbedPersonajes = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.addTab("New tab", null, tabbedPersonajes, null);
