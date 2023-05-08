@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -29,6 +30,8 @@ import java.awt.Button;
 import java.awt.Label;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
@@ -68,7 +71,24 @@ public class MenuAdministrador extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuAdministrador(Usuario UsurJugador) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(MenuAdministrador.this,
+                        "¿Estás seguro de que deseas cerrar sesión?", "Confirmar cierre de sesión",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Cerrar la ventana actual
+                    dispose();
+
+                    // Abrir la ventana de inicio de sesión
+                    LogIn loginFrame = new LogIn();
+                    loginFrame.setVisible(true);
+                }
+            }
+        });
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 728, 430);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -276,12 +296,7 @@ public class MenuAdministrador extends JFrame {
                 if (selectedRow != -1) {
                     // Eliminar la fila seleccionada del modelo de tabla
                    DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-                  try {
-					metodos.guardarCambios(modelo, selectedPanelInt);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                  metodos.guardarCambios(modelo, selectedPanelInt);
 
 
                
@@ -319,6 +334,10 @@ public class MenuAdministrador extends JFrame {
          panelModos.setBackground(new Color(225, 240, 255));
         tabbedPane.addTab("modos", null, panelModos, null);
         panelModos.setLayout(null);
+        
+        JLabel lblIntroduccion = new JLabel("New label");
+        lblIntroduccion.setBounds(220, 150, 220, 54);
+        contentPane.add(lblIntroduccion);
         
      
 		

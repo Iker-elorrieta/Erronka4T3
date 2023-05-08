@@ -2,7 +2,6 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,16 +15,14 @@ public class GestionModos {
 	//SELECT by ID 
 	public static Modo getModoById(int id) {
     	Modo modo =null;
-    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+    	try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
             String query = "SELECT nombre FROM modos WHERE id ="+id;
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
 
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String nombre = resultSet.getString("nombre");
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
                 modo = new Modo(id, nombre);
             }
 
@@ -59,20 +56,45 @@ public class GestionModos {
     
 	//UPDATE modo 
 	public static  void updateModo(Modo modo) {
+
 		 String consulta = "UPDATE matches SET name="+modo.getNombre()+"  WHERE id ="+modo.getId();
 	     Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT modo 
 	public static  void insertarModo(Modo modo) { 
+
 			String consulta="INSERT INTO `modos`(`id`, `name`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
 			Metodos.conexionBDUpdate(consulta);
 		}
 	 
 	//DELETE modo 
-	public void eliminarModo(Modo modo,ArrayList<Modo> modos) {
+	public static void eliminarModo(Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
+
 	    	String consulta="DELETE FROM `modo` WHERE id="+modo.getId();
 			Metodos.conexionBDUpdate(consulta);
+
 	    }
+	
+	//Seleccion compleja: SElecciona los modos
+	public static Modo modosJugador(int id) {
+		String consulta="SELECT id, nombre FROM modos WHERE id = (SELECT modo_id FROM matches WHERE player_id ="+id+" GROUP BY modo_id ORDER BY COUNT(*)";
+
+		Modo modo=new Modo();
+		try {
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		    Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(consulta);
+			while (rs.next()) 
+			{
+				modo.setId(rs.getInt("id"));
+				modo.setNombre(rs.getString("nombre"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return modo;
+	}
 }
