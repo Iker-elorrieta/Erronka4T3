@@ -7,11 +7,11 @@ import modelo.Estadisticas;
 public class GestionEstadisticas {
 	
 	public static Estadisticas obtenerEstadistica(String estadistica) {
-		String killString=estadistica.substring(0);
+		String killString=estadistica.substring(0,1);
 		int kills=Integer.parseInt(killString);
-		String assistString=estadistica.substring(2);
+		String assistString=estadistica.substring(2,3);
 		int assists=Integer.parseInt(assistString);
-		String deathString=estadistica.substring(4);
+		String deathString=estadistica.substring(4,5);
 		int death=Integer.parseInt(deathString);
 		Estadisticas stats= new Estadisticas(kills,death,assists);
 		return stats;
@@ -29,4 +29,5 @@ public class GestionEstadisticas {
 	    }
 
 	
+
 }

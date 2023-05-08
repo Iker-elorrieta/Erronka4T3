@@ -1,27 +1,16 @@
 package controlador;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
 import java.util.Date;
 
 
-import exceptions.PasswordMismatchException;
 import exceptions.PlayerNotFoundException;
-import manager.GestionHabilidades;
-
-import manager.GestionModos;
-import manager.GestionPartidas;
-import manager.GestionPersonajes;
-import manager.GestionUsuarios;
-import modelo.Habilidad;
-import modelo.Jugador;
-import modelo.Modo;
-import modelo.Partida;
-import modelo.Personaje;
 import modelo.Usuario;
 import utils.DBUtils;
 import vista.MenuAdministrador;
@@ -30,11 +19,11 @@ import vista.MenuJugador;
 
 public class metodos {
 
-	//Conexion a BD H
+	//Conexion a BD 
 	public static void conexionBDUpdate(String consulta) {
 		
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    stmt.executeUpdate(consulta);
 		    conexion.close();
@@ -43,10 +32,9 @@ public class metodos {
 		}
 		
 	}
-
-
 	//Redireccion ArrayList H
 	public static void redireccionLogin(String userType, Usuario usuario) throws PlayerNotFoundException {
+
 
     	if (userType != null) {
     	    if (userType.equals("admin")) {
@@ -62,4 +50,20 @@ public class metodos {
     	}
     }	
 		
+	//Registro de los inicios de sesion a txt
+	public static void inicioSesionTXT(Usuario usuario) {
+		File file = new File("Archivos/Log.txt");
+		Date fecha = new Date();
+			try {
+				FileWriter fichero= new FileWriter(file);
+				String date = fecha.toString();
+				String dia=date.substring(0,10);
+				String hora=date.substring(12,20);
+				fichero.write("El usuario: "+usuario.getNombre()+" ha iniciado sesion el dia: "+dia+" a las: "+hora);
+				fichero.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+	}
 }

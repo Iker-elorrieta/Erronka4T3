@@ -2,7 +2,6 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,14 +28,13 @@ public class GestionPersonajes {
 			    String name=rs.getString("name");
 			    String role=rs.getString("role");
 			    int difficulty=rs.getInt("difficulty");
-			    int attackDamage=rs.getInt("attackDamage");
-			    int abilityPower=rs.getInt("abilityPower");
-			    int health=rs.getInt("health");
+			    int attackDamage=rs.getInt("attack_Damage");
+			    int abilityPower=rs.getInt("ability_Power");
+			    int health=rs.getInt("life");
 			    int mana=rs.getInt("mana");
 			    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
 	            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
 	            campeones.add(personaje);
-	            conexion.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -49,23 +47,21 @@ public class GestionPersonajes {
 	public static Personaje getPersonajeById(int id) {
 	        Personaje personaje = null;
 
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-	            String query = "SELECT * FROM personaje WHERE id = ?";
+	        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+	            String query = "SELECT * FROM champions WHERE id='"+id+"'";
 
-	            PreparedStatement statement = connection.prepareStatement(query);
-	            statement.setInt(1, id);
+	            Statement stmt = conexion.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(query);
 
-	            ResultSet resultSet = statement.executeQuery();
-
-	            if (resultSet.next()) {
+	            if (rs.next()) {
 	    
-				    String name=resultSet.getString("name");
-				    String role=resultSet.getString("role");
-				    int difficulty=resultSet.getInt("difficulty");
-				    int attackDamage=resultSet.getInt("attackDamage");
-				    int abilityPower=resultSet.getInt("abilityPower");
-				    int health=resultSet.getInt("health");
-				    int mana=resultSet.getInt("mana");
+				    String name=rs.getString("name");
+				    String role=rs.getString("role");
+				    int difficulty=rs.getInt("difficulty");
+				    int attackDamage=rs.getInt("attack_Damage");
+				    int abilityPower=rs.getInt("ability_Power");
+				    int health=rs.getInt("life");
+				    int mana=rs.getInt("mana");
 				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
 		             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
 	            }
@@ -77,40 +73,37 @@ public class GestionPersonajes {
 	        return personaje;
 	    }
 	 
-	 public static Personaje getPersonajeByJugadorLvL(int lvl) {
+	 public static ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
 	        Personaje personaje = null;
 	        int cantidadDesbloqueos = lvl / 10;
 	        ArrayList<Personaje> personajes = new ArrayList<>();
-	        for (int id = 0; id < cantidadDesbloqueos; id++) {
+	        for (int id = 1; id < cantidadDesbloqueos+1; id++) {
 				
-			
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
-	            String query = "SELECT * FROM personaje WHERE id = ?";
+	        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+	            String query = "SELECT * FROM champions WHERE id='"+id+"'";
 
-	            PreparedStatement statement = connection.prepareStatement(query);
-	            statement.setInt(1, id);
-
-	            ResultSet resultSet = statement.executeQuery();
+	            Statement stmt = conexion.createStatement(); 
+			    ResultSet resultSet = stmt.executeQuery(query);
 
 	            if (resultSet.next()) {
 	    
 				    String name=resultSet.getString("name");
 				    String role=resultSet.getString("role");
 				    int difficulty=resultSet.getInt("difficulty");
-				    int attackDamage=resultSet.getInt("attackDamage");
-				    int abilityPower=resultSet.getInt("abilityPower");
-				    int health=resultSet.getInt("health");
+				    int attackDamage=resultSet.getInt("attack_Damage");
+				    int abilityPower=resultSet.getInt("ability_Power");
+				    int health=resultSet.getInt("life");
 				    int mana=resultSet.getInt("mana");
 				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
-		             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
-		             personajes.add(personaje);
+		            personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		            personajes.add(personaje);
 	            }
 
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
 	        }
-	        return personaje;
+	        return personajes;
 	    }
 
 	//UPDATE personaje
@@ -123,12 +116,12 @@ public class GestionPersonajes {
 	//INSERT personaje 
 	public static  void insertarPersonaje(Personaje personaje) { 
 			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
-					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+")";
+					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+"')";
 			metodos.conexionBDUpdate(consulta);
 		}
 
 	//DELETE personaje 
-	public void eliminarPersonaje(Personaje personaje) {
+	public static void eliminarPersonaje(Personaje personaje) {
 			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
 			metodos.conexionBDUpdate(consulta);
 		}

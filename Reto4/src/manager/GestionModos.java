@@ -2,7 +2,6 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,16 +15,14 @@ public class GestionModos {
 	//SELECT by ID 
 	public static Modo getModoById(int id) {
     	Modo modo =null;
-    	try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+    	try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
             String query = "SELECT nombre FROM modos WHERE id ="+id;
 
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
 
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String nombre = resultSet.getString("nombre");
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
                 modo = new Modo(id, nombre);
             }
 
@@ -59,20 +56,20 @@ public class GestionModos {
     
 	//UPDATE modo 
 	public static  void updateModo(Modo modo) {
-		 String consulta = "UPDATE matches SET name="+modo.getNombre()+"  WHERE id ="+modo.getId();
+		 String consulta = "UPDATE modos SET nombre='"+modo.getNombre()+"'  WHERE id ="+modo.getId();
 	     metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT modo 
 	public static  void insertarModo(Modo modo) { 
-			String consulta="INSERT INTO `modos`(`id`, `name`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
+			String consulta="INSERT INTO `modos`(`id`, `nombre`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
 			metodos.conexionBDUpdate(consulta);
 		}
 	 
 	//DELETE modo 
-	public void eliminarModo(Modo modo,ArrayList<Modo> modos) {
+	public static void eliminarModo(Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
-	    	String consulta="DELETE FROM `modo` WHERE id="+modo.getId();
+	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
 			metodos.conexionBDUpdate(consulta);
 	    }
 }
