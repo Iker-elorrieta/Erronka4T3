@@ -72,4 +72,25 @@ public class GestionModos {
 	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
 			metodos.conexionBDUpdate(consulta);
 	    }
+	
+	//Seleccion compleja: SElecciona los modos
+	public static Modo modosJugador(int id) {
+		String consulta="SELECT id, nombre FROM modos WHERE id = (SELECT modo_id FROM matches WHERE player_id ="+id+" GROUP BY modo_id ORDER BY COUNT(*)";
+
+		Modo modo=new Modo();
+		try {
+		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		    Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(consulta);
+			while (rs.next()) 
+			{
+				modo.setId(rs.getInt("id"));
+				modo.setNombre(rs.getString("nombre"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return modo;
+	}
 }
