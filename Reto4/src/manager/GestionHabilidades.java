@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Habilidad;
 import utils.DBUtils;
 
@@ -67,19 +67,19 @@ public class GestionHabilidades {
 	//UPDATE Habilidad 
 	public static  void updateHabilidad(Habilidad habilidad) { 
 		String consulta = "UPDATE matches SET name="+habilidad.getNombre()+",description="+habilidad.getDescripcion()+" WHERE id ="+habilidad.getCod();
-	    metodos.conexionBDUpdate(consulta);
+	    Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT 
 	public static  void insertarHabilidad(Habilidad Habilidad, int cod) { 
 		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ("+Habilidad.getCod()+"','"+cod+"','"+Habilidad.getNombre()+","+Habilidad.getDescripcion()+")";
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//DELETE habilidad 
 	public void eliminarHabilidad(Habilidad habilidad) {
     	String consulta="DELETE FROM `abilities` WHERE id="+habilidad.getCod();
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
     }
 	
 

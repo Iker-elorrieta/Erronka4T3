@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Estadisticas;
 
 import modelo.Habilidad;
@@ -55,7 +55,7 @@ public class GestionPartidas {
 public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
 
-    try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS)) {
+    try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
         String query = "SELECT * FROM matches WHERE player_id = ?";
 
         PreparedStatement statement = connection.prepareStatement(query);
@@ -86,20 +86,20 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	//UPDATE partida 
 	public static  void updatePartida(Partida partida) {
 		 String consulta = "UPDATE matches SET duration="+partida.getDuracion()+",result="+partida.isResultado()+",modo="+partida.getModo()+",date="+partida.getFecha()+",player="+partida.getJugador().getId()+",champion="+partida.getPersonaje().getId()+" WHERE id ="+partida.getCod_partida();
-	     metodos.conexionBDUpdate(consulta);
+	     Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT partida 
 	public static  void insertarPartida(Partida partida) { 
 	String consulta="INSERT INTO `matches`(`id`, `date`, `duration`, `result`, `champion`, `player`,`estadisticas`) VALUES ('"
 			+ ""+partida.getCod_partida()+"','"+partida.getFecha()+"','"+partida.getDuracion()+"','"+partida.isResultado()+"','"+partida.getPersonaje()+"','"+partida.getJugador()+"','"+partida.getEstadisticas()+")";
-	metodos.conexionBDUpdate(consulta);
+	Metodos.conexionBDUpdate(consulta);
 }
 
 	//DELETE partida 
 	public void eliminarUsuario(Jugador jugador) {
 	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
-	metodos.conexionBDUpdate(consulta);
+	Metodos.conexionBDUpdate(consulta);
 }
 
 

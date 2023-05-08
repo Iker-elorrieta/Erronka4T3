@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Modo;
 import utils.DBUtils;
 
@@ -60,19 +60,19 @@ public class GestionModos {
 	//UPDATE modo 
 	public static  void updateModo(Modo modo) {
 		 String consulta = "UPDATE matches SET name="+modo.getNombre()+"  WHERE id ="+modo.getId();
-	     metodos.conexionBDUpdate(consulta);
+	     Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT modo 
 	public static  void insertarModo(Modo modo) { 
 			String consulta="INSERT INTO `modos`(`id`, `name`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
-			metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(consulta);
 		}
 	 
 	//DELETE modo 
 	public void eliminarModo(Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
 	    	String consulta="DELETE FROM `modo` WHERE id="+modo.getId();
-			metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(consulta);
 	    }
 }
