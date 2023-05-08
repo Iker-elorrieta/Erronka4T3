@@ -58,7 +58,7 @@ public class metodos {
 				FileWriter fichero= new FileWriter(file);
 				String date = fecha.toString();
 				String dia=date.substring(0,10);
-				String hora=date.substring(12,20);
+				String hora=date.substring(11,20);
 				fichero.write("El usuario: "+usuario.getNombre()+" ha iniciado sesion el dia: "+dia+" a las: "+hora);
 				fichero.close();
 			} catch (IOException e1) {
