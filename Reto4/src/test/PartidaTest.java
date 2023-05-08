@@ -8,18 +8,21 @@ import org.junit.jupiter.api.Test;
 
 import modelo.Estadisticas;
 import modelo.Jugador;
+import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
-import utils.Modos;
+
 
 class PartidaTest {
 	
 	int cod1=0;
 	Date date1=new Date();   
-	Jugador jug1 = new Jugador(null, null, null, 0, null, null, cod1, date1);
+	Jugador jug1 = new Jugador();
 	String hola = "Aram";
-	Modos modo= Modos.Aram;
-	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
+
+	Modo modo= new Modo(1, "Aram");
+
+	Personaje pers1 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0);
 	Estadisticas est1 = new Estadisticas(0, 0, 0);
 	boolean resul1 = true; 
 	int dur1=3;
@@ -81,21 +84,23 @@ class PartidaTest {
 	
 	@Test
 	void testsetJugador() {
-		Jugador jug2 = new Jugador(null, null, null, 1, null, null, cod1, date1);
+		Jugador jug2 = new Jugador();
 		partida1.setJugador(jug2);
 		assertEquals(partida1.getJugador(),jug2);
 	}
 	
 	@Test
 	void testsetModo() {
-		Modos modo2= Modos.Normal;
+
+		Modo modo2= new Modo(2, "clasificatorio");
+
 		partida1.setModo(modo2);
 		assertEquals(partida1.getModo(),modo2);
 	}
 	
 	@Test
 	void testsetPersonaje() {
-		Personaje pers2 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0, 0);
+		Personaje pers2 = new Personaje(1, "Aatrox", "Fighter", 3, null, 60, 0, 580, 0);
 		partida1.setPersonaje(pers2);
 		assertEquals(partida1.getPersonaje(),pers2);
 	}

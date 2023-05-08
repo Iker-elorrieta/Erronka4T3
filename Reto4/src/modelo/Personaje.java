@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Personaje implements Saludar{
     private int id;
-    private int mastery;
+ 
     private ArrayList<Habilidad> abilities = new ArrayList<>();
     private String name;
     private String role;
@@ -15,7 +15,7 @@ public class Personaje implements Saludar{
     private int health;
     private int mana;
 
-    public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana, int mastery) {
+    public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana) {
         this.id = id;
         this.name = name;
         this.role = role;
@@ -25,7 +25,7 @@ public class Personaje implements Saludar{
         this.abilityPower = abilityPower;
         this.health = health;
         this.mana = mana;
-        this.mastery = mastery;
+   
     }
 
     public int getId() {
@@ -99,22 +99,6 @@ public class Personaje implements Saludar{
     public void setMana(int mana) {
         this.mana = mana;
     }
-
-    public int getMastery() {
-        return mastery;
-    }
-
-    public void setMastery(int mastery) {
-        this.mastery = mastery;
-    }
-
-    public void calculateMastery(Partida partida) {
-        if(partida.isResultado())
-        	mastery=mastery+100;
-        else
-        	mastery=mastery+20;
-    }
-
     @Override
     public String toString() {
         return "Champion{" +
@@ -127,7 +111,6 @@ public class Personaje implements Saludar{
                 ", abilityPower=" + abilityPower +
                 ", health=" + health +
                 ", mana=" + mana +
-                ", mastery=" + mastery +
                 '}';
     }
 

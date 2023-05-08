@@ -9,6 +9,9 @@ abstract public class Usuario implements Saludar{
 	public String getContrasenya() {
 		return contrasenya;
 	}
+	public Usuario(){
+		
+	}
 
 	public void setContrasenya(String contrasenya) {
 		this.contrasenya = contrasenya;

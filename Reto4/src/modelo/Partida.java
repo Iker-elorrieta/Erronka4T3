@@ -2,13 +2,10 @@ package modelo;
 
 import java.util.Date;
 
-
-import utils.Modos;
-
-public class Partida {
+public class Partida { 
 	public int cod_partida;
 	public Jugador jugador;
-	public Modos modo;
+	public Modo modo;
 	public Estadisticas estadisticas;
 	public boolean resultado;
 	public Personaje personaje;
@@ -23,7 +20,7 @@ public class Partida {
 		this.duracion = duracion;
 	}
 
-	public Partida(int cod_partida, Jugador jugador, Modos modo, Personaje personaje, Estadisticas estadisticas,
+	public Partida(int cod_partida, Jugador jugador, Modo modo, Personaje personaje, Estadisticas estadisticas,
 			boolean resultado, Date fecha, int duracion) {
 		super();
 		this.cod_partida = cod_partida;
@@ -44,7 +41,7 @@ public class Partida {
 		return jugador;
 	}
 
-	public Modos getModo() {
+	public Modo getModo() {
 		return modo;
 	}
 
@@ -72,7 +69,7 @@ public class Partida {
 		this.jugador = jugador;
 	}
 
-	public void setModo(Modos modo) {
+	public void setModo(Modo modo) {
 		this.modo = modo;
 	}
 
@@ -115,7 +112,7 @@ public class Partida {
 	@Override
 	public String toString() {
 
-		return victoria()+"  "+ modo +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
+		return victoria()+"  "+ modo.getNombre() +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
 
 	}
 
