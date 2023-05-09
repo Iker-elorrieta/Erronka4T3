@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import javax.swing.table.DefaultTableModel;
 
 import exceptions.PlayerNotFoundException;
 import modelo.Usuario;
@@ -17,7 +18,7 @@ import vista.MenuAdministrador;
 import vista.MenuJugador;
 
 
-public class metodos {
+public class Metodos {
 
 	//Conexion a BD 
 	public static void conexionBDUpdate(String consulta) {
@@ -58,12 +59,16 @@ public class metodos {
 				FileWriter fichero= new FileWriter(file);
 				String date = fecha.toString();
 				String dia=date.substring(0,10);
-				String hora=date.substring(11,20);
+				String hora=date.substring(12,20);
 				fichero.write("El usuario: "+usuario.getNombre()+" ha iniciado sesion el dia: "+dia+" a las: "+hora);
 				fichero.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			
+	}
+	public void guardarCambios(DefaultTableModel modelo, int selectedPanelInt) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -49,6 +49,18 @@ public class MenuJugador extends JFrame {
     private JLabel labelImagen;
 	private JPanel contentPane;
 
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MenuJugador frame = new MenuJugador(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 
 	/**
@@ -56,18 +68,25 @@ public class MenuJugador extends JFrame {
 	 */
 	public MenuJugador(Usuario UsurJugador) {
 		
-		frame.addWindowListener(new WindowAdapter() {
+		addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
-                // Muestra un mensaje preguntando si está seguro de cerrar sesión
-                int respuesta = JOptionPane.showConfirmDialog(frame, "¿Estás seguro de cerrar sesión?",
-                        "Cerrar sesión", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                int confirm = JOptionPane.showConfirmDialog(MenuJugador.this,
+                        "¿Estás seguro de que deseas cerrar sesión?", "Confirmar cierre de sesión",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Cerrar la ventana actual
+                    dispose();
 
-                // Si el usuario confirma que quiere cerrar sesión, cierra la ventana
-                if (respuesta == JOptionPane.YES_OPTION) {
-                    e.getWindow().dispose();
+                    // Abrir la ventana de inicio de sesión
+                    LogIn loginFrame = new LogIn();
+                    loginFrame.setVisible(true);
                 }
             }
         });
+    
+		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		  // Obtener imágenes de la carpeta
         imagenes = new ArrayList<>();

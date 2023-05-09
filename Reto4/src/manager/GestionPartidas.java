@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Estadisticas;
 
 import modelo.Jugador;
@@ -52,10 +52,12 @@ public class GestionPartidas {
 public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
 
-    try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-        String query = "SELECT * FROM matches WHERE player_id='"+jugador.getId()+"'";
 
-        Statement stmt = conexion.createStatement(); 
+    try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+        String query = "SELECT * FROM matches WHERE player_id = ?";
+
+
+        Statement stmt = connection.createStatement(); 
 	    ResultSet resultSet = stmt.executeQuery(query);
         
         while (resultSet.next()) {
@@ -110,25 +112,30 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	
 	//UPDATE partida 
 	public static  void updatePartida(Partida partida) {
+
 		int result=0;
 		if(partida.isResultado())
 			result=1;
 		 String consulta = "UPDATE matches SET duration='"+partida.getDuracion()+"',result='"+result+"',modo_id='"+partida.getModo().getId()+"',date='"+partida.getFecha()+"',player_id='"+partida.getJugador().getId()+"',champion_id='"+partida.getPersonaje().getId()+"' WHERE id ="+partida.getCod_partida();
-	     metodos.conexionBDUpdate(consulta);
+	     Metodos.conexionBDUpdate(consulta);
+
 	}
 	
 	//INSERT partida 
 	public static  void insertarPartida(Partida partida) { 
 	String consulta="INSERT INTO `matches`(`id`, `date`, `duration`, `result`, `champion`, `player`,`estadisticas`) VALUES ('"
+
 			+ "'"+partida.getCod_partida()+"','"+partida.getFecha()+"','"+partida.getDuracion()+"','"+partida.isResultado()+"','"+partida.getPersonaje()+"','"+partida.getJugador()+"','"+partida.getEstadisticas().toString()+")";
-	metodos.conexionBDUpdate(consulta);
+	Metodos.conexionBDUpdate(consulta);
+
 }
 
 	//DELETE partida 
+
 	public static void eliminarPartida(Partida partida) {
 	String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
-	metodos.conexionBDUpdate(consulta);
-}
+	Metodos.conexionBDUpdate(consulta);
+	}
 
 
 

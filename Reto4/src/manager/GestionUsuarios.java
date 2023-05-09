@@ -8,7 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import controlador.metodos;
+
+import controlador.Metodos;
+import exceptions.LoginException;
+
+import exceptions.PasswordMismatchException;
+
 import exceptions.PlayerNotFoundException;
 import modelo.Administrador;
 import modelo.Jugador;
@@ -104,7 +109,7 @@ public class GestionUsuarios {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-        metodos.redireccionLogin(respuesta, usur );
+        Metodos.redireccionLogin(respuesta, usur );
     
     }
     
@@ -136,15 +141,17 @@ public class GestionUsuarios {
 	}
     
     //UPDATE Jugador 
+
   	public static void actualizarJugador(Jugador jugador) {
-  	        String consulta = "UPDATE players SET level="+jugador.getNivel()+",name='"+jugador.getNombre()+"',password_hash='"+jugador.getContrasenya()+"',registration_date='"+jugador.getFecha()+"',rank='"+jugador.getRango()+"',bloqueado='"+jugador.isbloqueado()+"' WHERE id ='"+jugador.getId()+"'";
-  	        metodos.conexionBDUpdate(consulta);
+  	        String consulta = "UPDATE players SET name="+jugador.getNombre()+",password_hash="+jugador.getContrasenya()+",registration_date="+jugador.getNivel()+",rank="+jugador.getRango()+",bloqueado="+jugador.isbloqueado()+" WHERE id ="+jugador.getId();
+  	        Metodos.conexionBDUpdate(consulta);
+
   	    }
   	
   	//UPDATE Bloqueo 
     public static void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
         String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
-        metodos.conexionBDUpdate(consulta);
+        Metodos.conexionBDUpdate(consulta);
     }
     
     //ARRAY UPDATE Bloqueo 
@@ -171,19 +178,19 @@ public class GestionUsuarios {
     	jugadores.add(jugador);
     	
 		String consulta="INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
 	}
     
     //DELETE Admin 
 	public static void eliminarAdministrador(Administrador Administrador,ArrayList<Administrador> Administradores) {
     	Administradores.remove(Administrador);
     	String consulta="DELETE FROM `admins` WHERE id="+Administrador.getId();
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
     }
 
     //DELETE Jugador
     public static void eliminarJugador(Jugador jugador) {
     	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
     }
 }

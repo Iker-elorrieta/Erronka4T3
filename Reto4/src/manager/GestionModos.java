@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Modo;
 import utils.DBUtils;
 
@@ -56,21 +56,25 @@ public class GestionModos {
     
 	//UPDATE modo 
 	public static  void updateModo(Modo modo) {
-		 String consulta = "UPDATE modos SET nombre='"+modo.getNombre()+"'  WHERE id ="+modo.getId();
-	     metodos.conexionBDUpdate(consulta);
+
+		 String consulta = "UPDATE matches SET name="+modo.getNombre()+"  WHERE id ="+modo.getId();
+	     Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT modo 
 	public static  void insertarModo(Modo modo) { 
-			String consulta="INSERT INTO `modos`(`id`, `nombre`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
-			metodos.conexionBDUpdate(consulta);
+
+			String consulta="INSERT INTO `modos`(`id`, `name`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
+			Metodos.conexionBDUpdate(consulta);
 		}
 	 
 	//DELETE modo 
 	public static void eliminarModo(Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
-	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
-			metodos.conexionBDUpdate(consulta);
+
+	    	String consulta="DELETE FROM `modo` WHERE id="+modo.getId();
+			Metodos.conexionBDUpdate(consulta);
+
 	    }
 	
 	//Seleccion compleja: SElecciona los modos

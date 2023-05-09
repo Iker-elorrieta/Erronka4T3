@@ -62,7 +62,7 @@ public class LogIn extends JFrame {
 	 * Create the frame.
 	 */
 	public LogIn() {
-		setType(Type.POPUP);
+		
 		setResizable(false);
 		
 		
@@ -177,6 +177,7 @@ public class LogIn extends JFrame {
 						
 							try {
 								gestionUsur.login(textUsuario.getText(), new String(passwordField.getPassword()));
+								dispose();
 							} catch (PlayerNotFoundException e1) {
 								// TODO Auto-generated catch block
 								 lblError.setVisible(true);

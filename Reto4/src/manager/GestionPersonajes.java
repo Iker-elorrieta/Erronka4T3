@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import controlador.metodos;
+import controlador.Metodos;
 import modelo.Habilidad;
 import modelo.Personaje;
 import utils.DBUtils;
@@ -78,11 +78,13 @@ public class GestionPersonajes {
 	        int cantidadDesbloqueos = lvl / 10;
 	        ArrayList<Personaje> personajes = new ArrayList<>();
 	        for (int id = 1; id < cantidadDesbloqueos+1; id++) {
-				
-	        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-	            String query = "SELECT * FROM champions WHERE id='"+id+"'";
 
-	            Statement stmt = conexion.createStatement(); 
+			
+	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+	            String query = "SELECT * FROM personaje WHERE id = ?";
+
+
+	            Statement stmt = connection.createStatement(); 
 			    ResultSet resultSet = stmt.executeQuery(query);
 
 	            if (resultSet.next()) {
@@ -138,21 +140,22 @@ public class GestionPersonajes {
 	//UPDATE personaje
 	public static  void updatePersonaje(Personaje personaje){
 		String consulta = "UPDATE players SET name="+personaje.getName()+",role="+personaje.getRole()+",difficulty="+personaje.getDifficulty()+",attack_damage="+personaje.getAttackDamage()+",ability_power="+personaje.getAbilityPower()+",life"+personaje.getHealth()+",mana"+personaje.getMana()+" WHERE id ="+personaje.getId();
-		metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(consulta);
 		
 	}
 	
 	//INSERT personaje 
 	public static  void insertarPersonaje(Personaje personaje) { 
 			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
-					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+"')";
-			metodos.conexionBDUpdate(consulta);
-		}
+
+					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+")";
+			Metodos.conexionBDUpdate(consulta);
+	}
 
 	//DELETE personaje 
 	public static void eliminarPersonaje(Personaje personaje) {
 			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
-			metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(consulta);
 		}
 
 }

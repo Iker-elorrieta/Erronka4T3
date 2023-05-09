@@ -27,7 +27,7 @@ class GestionHabilidadesTest {
 	@Test
 	void testupdateHabilidad() {
 		Habilidad habilidad= new Habilidad(2,"Ataque lodo","Una bomba de lodo inunda el campo de batalla");
-		GestionHabilidades.updateHabilidad(habilidad, 0);
+		GestionHabilidades.updateHabilidad(habilidad);
 	}
 	
 	@Test
