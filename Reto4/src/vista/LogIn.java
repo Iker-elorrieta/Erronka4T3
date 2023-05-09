@@ -134,6 +134,8 @@ public class LogIn extends JFrame {
 		textUsuario.setColumns(10);
 		
 		TextPrompt placeholderUsur = new TextPrompt(" Usuario", textUsuario);
+		placeholderUsur.setForeground(Color.DARK_GRAY);
+		placeholderUsur.setBackground(Color.ORANGE);
 		placeholderUsur.changeAlpha(0.75f);
 		placeholderUsur.changeStyle(Font.ITALIC);
 		
@@ -156,6 +158,7 @@ public class LogIn extends JFrame {
 		panel.add(passwordField);
 		
 		TextPrompt placeholderPass = new TextPrompt(" Password", passwordField);
+		placeholderPass.setForeground(Color.DARK_GRAY);
 		placeholderPass.changeAlpha(0.75f);
 		placeholderPass.changeStyle(Font.ITALIC);
 		
