@@ -12,6 +12,7 @@ import utils.DBUtils;
 
 public class GestionModos {
 	
+	
 	//SELECT by ID 
 	public static Modo getModoById(int id) {
     	Modo modo =null;
