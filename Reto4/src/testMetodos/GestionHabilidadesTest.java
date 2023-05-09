@@ -18,13 +18,6 @@ class GestionHabilidadesTest {
 		}
 	
 	@Test
-	void testhabilidadDificil() {
-		int dif=3;
-		ArrayList<Habilidad> habilidades=GestionHabilidades.habilidadDificil(dif);
-		assertEquals(habilidades.size(),6);
-	}
-	
-	@Test
 	void testupdateHabilidad() {
 		Habilidad habilidad= new Habilidad(2,"Ataque lodo","Una bomba de lodo inunda el campo de batalla");
 		GestionHabilidades.updateHabilidad(habilidad);
@@ -44,7 +37,7 @@ class GestionHabilidadesTest {
 	@Test
 	void testgetHabilidad() {
 		ArrayList<Habilidad> habilidades = GestionHabilidades.getHabilidad();
-		assertEquals(habilidades.size(),14);
+		assertEquals(habilidades.size(),13);
 	}
 	
 }

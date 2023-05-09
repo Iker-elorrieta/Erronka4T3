@@ -54,7 +54,7 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 
 
     try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-        String query = "SELECT * FROM matches WHERE player_id = ?";
+        String query = "SELECT * FROM matches WHERE player_id ='"+jugador.getId()+"'";
 
 
         Statement stmt = connection.createStatement(); 
@@ -79,36 +79,6 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 
     return partidas;
 }
-
-	//SELECT complejo: Partidos jugados con un personaje de maxima dificultad de un jugador
-    public static ArrayList<Partida> partidosDificultad(Jugador jugador) {
-    	String consulta="SELECT * FROM matches,champions WHERE champions.difficulty=3 AND champions.id=matches.champion_id AND player_id="+jugador.getId()+"";
-		ArrayList<Partida> partidas= new ArrayList<>();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-			while (rs.next()) 
-			{
-				int id=rs.getInt("id");
-				int duracion = rs.getInt("duration");
-				Modo modo= GestionModos.getModoById(rs.getInt("modo_id"));
-				boolean resultado=rs.getBoolean("result");
-				Date fecha=rs.getDate("date");
-				Jugador jugador1=GestionUsuarios.getJugadorByNombre(rs.getString("player_id"));
-				Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
-				Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion_id"));
-				
-				Partida partida1 = new Partida(id, jugador1, modo, personaje, estadistica, resultado, fecha, duracion);
-				partidas.add(partida1);
-				
-			}
-			conexion.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return partidas;
-	}
 	
 	//UPDATE partida 
 	public static  void updatePartida(Partida partida) {
@@ -123,10 +93,13 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	
 	//INSERT partida 
 	public static  void insertarPartida(Partida partida) { 
-	String consulta="INSERT INTO `matches`(`id`, `date`, `duration`, `result`, `champion`, `player`,`estadisticas`) VALUES ('"
-
-			+ "'"+partida.getCod_partida()+"','"+partida.getFecha()+"','"+partida.getDuracion()+"','"+partida.isResultado()+"','"+partida.getPersonaje()+"','"+partida.getJugador()+"','"+partida.getEstadisticas().toString()+")";
-	Metodos.conexionBDUpdate(consulta);
+	int resultado=0;
+	if(partida.isResultado())
+		resultado=1;
+	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`, `champion_id`,`modo_id`, `player_id`,`date`) VALUES ("
+			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"','"+partida.getFecha()+"')";
+	System.out.println(consulta);
+			Metodos.conexionBDUpdate(consulta);
 
 }
 

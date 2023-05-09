@@ -24,12 +24,6 @@ class GestionPersonajesTest {
 		assertEquals(personaje.getName(),"Ashe");
 	}
 	@Test
-	void testgetPErsonajeByJugadorLvL() {
-		int lvl=20;
-		ArrayList<Personaje> personajes = GestionPersonajes.getPersonajeByJugadorLvL(lvl);
-		assertEquals(personajes.size(),2);
-	}
-	@Test
 	void testupdatePersonaje() {
 		Personaje personaje=new Personaje(1, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
 		GestionPersonajes.updatePersonaje(personaje);

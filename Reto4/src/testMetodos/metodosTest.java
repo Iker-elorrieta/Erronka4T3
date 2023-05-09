@@ -16,4 +16,11 @@ class metodosTest {
 		Metodos.inicioSesionTXT(jugador);
 	}
 
+	@Test
+	void testconexionBDUpdate() {
+		String update="UPDATE players SET name='Faker1' WHERE id='1'";
+		Metodos.conexionBDUpdate(update);
+		
+		
+	}
 }

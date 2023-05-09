@@ -71,71 +71,7 @@ public class GestionPersonajes {
 	        }
 
 	        return personaje;
-	    }
-	 
-	 public static ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
-	        Personaje personaje = null;
-	        int cantidadDesbloqueos = lvl / 10;
-	        ArrayList<Personaje> personajes = new ArrayList<>();
-	        for (int id = 1; id < cantidadDesbloqueos+1; id++) {
-
-			
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-	            String query = "SELECT * FROM personaje WHERE id = ?";
-
-
-	            Statement stmt = connection.createStatement(); 
-			    ResultSet resultSet = stmt.executeQuery(query);
-
-	            if (resultSet.next()) {
-	    
-				    String name=resultSet.getString("name");
-				    String role=resultSet.getString("role");
-				    int difficulty=resultSet.getInt("difficulty");
-				    int attackDamage=resultSet.getInt("attack_Damage");
-				    int abilityPower=resultSet.getInt("ability_Power");
-				    int health=resultSet.getInt("life");
-				    int mana=resultSet.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
-		            personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
-		            personajes.add(personaje);
-	            }
-
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        }
-	        return personajes;
-	    }
-
-	 public static ArrayList<Personaje> getPersonajeByPartida(int cod) {
-	        ArrayList<Personaje> personajes = new ArrayList<>();
-				
-	        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-	            String query = "";
-	            Statement stmt = conexion.createStatement(); 
-			    ResultSet resultSet = stmt.executeQuery(query);
-
-	            if (resultSet.next()) {
-	            	int id=resultSet.getInt("id");
-				    String name=resultSet.getString("name");
-				    String role=resultSet.getString("role");
-				    int difficulty=resultSet.getInt("difficulty");
-				    int attackDamage=resultSet.getInt("attack_Damage");
-				    int abilityPower=resultSet.getInt("ability_Power");
-				    int health=resultSet.getInt("life");
-				    int mana=resultSet.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
-		           Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
-		            personajes.add(personaje);
-	            }
-
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        return personajes;
-	    }
+	    }  
 	 
 	//UPDATE personaje
 	public static  void updatePersonaje(Personaje personaje){
