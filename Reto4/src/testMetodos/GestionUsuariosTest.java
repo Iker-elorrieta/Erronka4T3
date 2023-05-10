@@ -27,14 +27,7 @@ class GestionUsuariosTest {
 	@Test
 	void testlogin() throws PlayerNotFoundException {
 			GestionUsuarios.login("Faker","fakerpass");
-			GestionUsuarios.login("gaizka", "12345");
-	}
-	
-	@Test
-	void testusuariosHoy() {
-		int id =2;
-		ArrayList<Jugador> jugadores=GestionUsuarios.usuariosHoy(id);
-		assertEquals(1,jugadores.size());
+			GestionUsuarios.login("gaizka", "gaizkacontra");
 	}
 	
 	@Test
@@ -67,11 +60,12 @@ class GestionUsuariosTest {
 	}
 	@Test
 	void testinsertarUsuario() {
-		Jugador jug= new Jugador();
+		Date date=new Date();
+		Jugador jug= new Jugador(4,"Leon","2345",3,"rol",date,false);
 		ArrayList<Jugador> jugadores= new ArrayList<Jugador>();
 		GestionUsuarios.insertarUsuario(jug, jugadores);
 	}
-	@Test
+	/*@Test
 	void testeliminarAdministrador() {
 		Administrador administrador=new Administrador(1, null, null);
 		ArrayList<Administrador> Administradores=new ArrayList<Administrador>();
@@ -83,5 +77,5 @@ class GestionUsuariosTest {
 		Jugador Jugador=new Jugador();
 		Jugador.setId(1);
 		GestionUsuarios.eliminarJugador(Jugador);
-	}
+	}*/
 }

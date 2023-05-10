@@ -75,7 +75,7 @@ public class GestionPersonajes {
 	 
 	//UPDATE personaje
 	public static  void updatePersonaje(Personaje personaje){
-		String consulta = "UPDATE players SET name="+personaje.getName()+",role="+personaje.getRole()+",difficulty="+personaje.getDifficulty()+",attack_damage="+personaje.getAttackDamage()+",ability_power="+personaje.getAbilityPower()+",life"+personaje.getHealth()+",mana"+personaje.getMana()+" WHERE id ="+personaje.getId();
+		String consulta = "UPDATE champions SET name='"+personaje.getName()+"',role='"+personaje.getRole()+"',difficulty='"+personaje.getDifficulty()+"',attack_damage='"+personaje.getAttackDamage()+"',ability_power='"+personaje.getAbilityPower()+"',life='"+personaje.getHealth()+"',mana='"+personaje.getMana()+"' WHERE id ="+personaje.getId();
 		Metodos.conexionBDUpdate(consulta);
 		
 	}
@@ -84,7 +84,7 @@ public class GestionPersonajes {
 	public static  void insertarPersonaje(Personaje personaje) { 
 			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
 
-					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+")";
+					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+"')";
 			Metodos.conexionBDUpdate(consulta);
 	}
 

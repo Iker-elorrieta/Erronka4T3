@@ -12,6 +12,8 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 import exceptions.PlayerNotFoundException;
+import modelo.Administrador;
+import modelo.Jugador;
 import modelo.Usuario;
 import utils.DBUtils;
 import vista.MenuAdministrador;
@@ -34,14 +36,14 @@ public class Metodos {
 		
 	}
 	//Redireccion ArrayList H
-	public static void redireccionLogin(String userType, Usuario usuario) throws PlayerNotFoundException {
+	public static void redireccionLogin(Usuario usuario) throws PlayerNotFoundException {
 
 
-    	if (userType != null) {
-    	    if (userType.equals("admin")) {
+    	if (usuario != null) {
+    	    if (usuario instanceof Administrador) {
     	        // Redirigir al usuario a la pantalla de administrador.
     	    	new MenuAdministrador(usuario).setVisible(true);;
-    	    } else if (userType.equals("jugador")) {
+    	    } else if (usuario instanceof Jugador) {
     	        // Redirigir al usuario a la pantalla de jugador.
     	    	new MenuJugador(usuario).setVisible(true);
     	    	

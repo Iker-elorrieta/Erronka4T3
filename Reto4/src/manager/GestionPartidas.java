@@ -86,7 +86,7 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 		int result=0;
 		if(partida.isResultado())
 			result=1;
-		 String consulta = "UPDATE matches SET duration='"+partida.getDuracion()+"',result='"+result+"',modo_id='"+partida.getModo().getId()+"',date='"+partida.getFecha()+"',player_id='"+partida.getJugador().getId()+"',champion_id='"+partida.getPersonaje().getId()+"' WHERE id ="+partida.getCod_partida();
+		 String consulta = "UPDATE matches SET duration='"+partida.getDuracion()+"',result='"+result+"',modo_id='"+partida.getModo().getId()+"',date='"+partida.StringFecha()+"',player_id='"+partida.getJugador().getId()+"',champion_id='"+partida.getPersonaje().getId()+"' WHERE id ="+partida.getCod_partida();
 	     Metodos.conexionBDUpdate(consulta);
 
 	}
@@ -96,9 +96,8 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	int resultado=0;
 	if(partida.isResultado())
 		resultado=1;
-	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`, `champion_id`,`modo_id`, `player_id`,`date`) VALUES ("
-			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"','"+partida.getFecha()+"')";
-	System.out.println(consulta);
+	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`,`date`) VALUES ("
+			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"')";
 			Metodos.conexionBDUpdate(consulta);
 
 }

@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import controlador.Metodos;
-import exceptions.LoginException;
-
-import exceptions.PasswordMismatchException;
-
 import exceptions.PlayerNotFoundException;
 import modelo.Administrador;
 import modelo.Jugador;
@@ -79,7 +75,6 @@ public class GestionUsuarios {
     public static void login(String username, String password) throws PlayerNotFoundException{
         String sqlAdmin = "SELECT * FROM admins WHERE name = ? AND password = ?";
         String sqlJugador = "SELECT * FROM players WHERE name = ? AND password_hash = ?";
-        String respuesta = null;
         Usuario usur= null;
 		try {
 			Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
@@ -98,52 +93,25 @@ public class GestionUsuarios {
 
             if (rsAdmin.next()) {
             	 usur= new Administrador(rsAdmin.getInt(1), rsAdmin.getString(2), rsAdmin.getString(3));
-            	respuesta= "admin"; // El usuario es un administrador.
             } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	 usur= new Jugador(rsJugador.getInt(1), rsJugador.getString(2), rsJugador.getString(3),rsJugador.getInt(5), rsJugador.getString(6), rsJugador.getDate(4), rsJugador.getBoolean(7));
-            	respuesta= "jugador"; // El usuario es un jugador.
-            } else {
-            	 respuesta = null;
             }
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-        Metodos.redireccionLogin(respuesta, usur );
+        Metodos.redireccionLogin(usur );
     
     }
-    
-    //SELECT complejo: Usuarios que han jugado con un personaje especifico
-    public static ArrayList<Jugador> usuariosHoy(int id) {
-    	ArrayList <Jugador> jugadores = new ArrayList<Jugador>();
-    	try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-            String query = "SELECT * FROM players,matches WHERE players.id=matches.player_id AND champion_id='"+id+"'";
-            Statement stmt = conexion.createStatement(); 
-		    ResultSet resultSet = stmt.executeQuery(query);
-
-            if (resultSet.next()) {
-            	int id1= resultSet.getInt("id");
-            	String nombre=resultSet.getString("name");
-	            String contrasenya = resultSet.getString("password_hash");
-				int nivel=resultSet.getInt("level");
-				String rango = resultSet.getString("rank");
-				Date fechaRegistro = resultSet.getDate("registration_date");
-				boolean bloqueado = resultSet.getBoolean("bloqueado");
-				Jugador jugador = new Jugador(id1, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
-				jugadores.add(jugador);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return jugadores;
-	}
     
     //UPDATE Jugador 
 
   	public static void actualizarJugador(Jugador jugador) {
-  	        String consulta = "UPDATE players SET name="+jugador.getNombre()+",password_hash="+jugador.getContrasenya()+",registration_date="+jugador.getNivel()+",rank="+jugador.getRango()+",bloqueado="+jugador.isbloqueado()+" WHERE id ="+jugador.getId();
+  			int bloqueado=0;
+  			if(jugador.isbloqueado())
+  				bloqueado=1;
+  		
+  	        String consulta = "UPDATE players SET name='"+jugador.getNombre()+"',password_hash='"+jugador.getContrasenya()+"',level='"+jugador.getNivel()+"',rank='"+jugador.getRango()+"',bloqueado='"+bloqueado+"',registration_date='"+jugador.StringFecha()+"' WHERE id ="+jugador.getId();
   	        Metodos.conexionBDUpdate(consulta);
 
   	    }
@@ -176,8 +144,8 @@ public class GestionUsuarios {
     public static  void insertarUsuario(Jugador jugador,ArrayList<Jugador> jugadores) { 
     	if (jugadores!=null)
     	jugadores.add(jugador);
-    	
-		String consulta="INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.getFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
+
+		String consulta="INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.StringFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
 		Metodos.conexionBDUpdate(consulta);
 	}
     
