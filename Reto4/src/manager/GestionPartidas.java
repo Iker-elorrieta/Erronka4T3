@@ -98,19 +98,22 @@ public static ArrayList<Partida> getPartidasByJugador(String jugador) {
 	//SELECT Complejo: sacar victorias y derrotas de usuario
 	public static Integer[] sacarResultados(String nombre) {
 		Integer[] result= new Integer[2];
+		result[0]=0;
+		result[1]=0;
 		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-		        String query = "SELECT result FROM matches,players WHERE players.name="+nombre+" AND players.id=matches.player_id ";
+		        String query = "SELECT result FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id ";
 
 
 		        Statement stmt = connection.createStatement(); 
 			    ResultSet resultSet = stmt.executeQuery(query);
 		        
 		        while (resultSet.next()) {
-		        	boolean resul=resultSet.getBoolean("Estadisticas");
-		        	if(resul)
-		        		result[0]=result[0]++;
+		        	byte resul=resultSet.getByte("result");
+		        	int intValue = resul;
+		        	if(resul==1)
+		        		result[0]++;
 		        	else
-		        		result[1]=result[1]++;
+		        		result[1]++;
 		        }
 
 		    } catch (SQLException e) {

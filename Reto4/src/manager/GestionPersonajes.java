@@ -167,33 +167,28 @@ public class GestionPersonajes {
 		
 
 	//SELECT Complejo: Buscar personaje por id de habilidad
-	public static ArrayList<Personaje> buscarPorhabilidad(int id) {
-		
-		ArrayList<Personaje> campeones = new ArrayList<Personaje>();
+	public static Personaje buscarPorhabilidad(int id) {
+		  Personaje personaje = new Personaje();
 		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-		        String query = "SELECT * FROM champions,abilities WHERE abilities.id="+id+" AND abilities.id_champion=champions.id";
-
+		        String query = "SELECT champions.id,champions.name FROM champions,abilities WHERE abilities.id='"+id+"' AND abilities.champion_id=champions.id";
 		        Statement stmt = connection.createStatement(); 
 			    ResultSet rs = stmt.executeQuery(query);
 			    if (rs.next()) {
-				    
-				    String name=rs.getString("name");
-				    String role=rs.getString("role");
-				    int difficulty=rs.getInt("difficulty");
-				    int attackDamage=rs.getInt("attack_Damage");
-				    int abilityPower=rs.getInt("ability_Power");
-				    int health=rs.getInt("life");
-				    int mana=rs.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
-		            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
-		            campeones.add(personaje);
+				    personaje.setId(rs.getInt("id"));
+				    personaje.setName(rs.getString("name"));
+				    personaje.setRole(rs.getString("role"));
+				   personaje.setAbilities(GestionHabilidades.getHabilidadesByChampId(id));
 	            }
 		      
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
+<<<<<<< HEAD
 		 return campeones;
 
+=======
+		 return personaje;
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 	}
 
 }

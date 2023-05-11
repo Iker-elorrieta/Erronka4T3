@@ -28,7 +28,11 @@ public class Personaje implements Saludar{
    
     }
 
-    public int getId() {
+    public Personaje() {
+		
+	}
+
+	public int getId() {
         return id;
     }
 

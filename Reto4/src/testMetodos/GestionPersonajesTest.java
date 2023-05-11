@@ -38,6 +38,7 @@ class GestionPersonajesTest {
 		GestionPersonajes.eliminarPersonaje(personaje);
 }
 	@Test
+<<<<<<< HEAD
 	void testpersonajeMasJugado() {
 		ArraylistGestionPersonajes.personajeMasJugado()
 	}
@@ -45,3 +46,11 @@ class GestionPersonajesTest {
 }
 
 
+=======
+	void testbuscarPorHabilidad() {
+		Personaje pers =GestionPersonajes.buscarPorhabilidad(3);
+		assertEquals(pers.getName(),"Ruben");
+	}
+
+}
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
