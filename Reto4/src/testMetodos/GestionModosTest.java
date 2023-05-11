@@ -30,13 +30,13 @@ class GestionModosTest {
 		GestionModos.insertarModo(modo);
 	}
 	
-	/*@Test
+	@Test
 	void testeliminarModo() {
-		Modo Modo=new Modo(1, "Aram");
+		Modo Modo=new Modo(4, "Congelacion");
 		ArrayList<Modo> modos= new ArrayList<Modo>();
 		modos.add(Modo);
 		GestionModos.eliminarModo(Modo, modos);
-	}*/
+	}
 	@Test
 	void testcargaInicialModos() {
 		ArrayList<Modo>modos=GestionModos.cargaInicialModos();

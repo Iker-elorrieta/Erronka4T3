@@ -90,8 +90,37 @@ public class GestionPersonajes {
 
 	//DELETE personaje 
 	public static void eliminarPersonaje(Personaje personaje) {
-			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
+			String consulta="DELETE FROM `champions` WHERE id="+personaje.getId();
 			Metodos.conexionBDUpdate(consulta);
 		}
+	
+	//SELECT Complejo: Buscar personaje por id de habilidad
+	public static ArrayList<Personaje> buscarPorhabilidad(int id) {
+		
+		ArrayList<Personaje> campeones = new ArrayList<Personaje>();
+		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+		        String query = "SELECT * FROM champions,abilities WHERE abilities.id="+id+" AND abilities.id_champion=champions.id";
+
+		        Statement stmt = connection.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(query);
+			    if (rs.next()) {
+				    
+				    String name=rs.getString("name");
+				    String role=rs.getString("role");
+				    int difficulty=rs.getInt("difficulty");
+				    int attackDamage=rs.getInt("attack_Damage");
+				    int abilityPower=rs.getInt("ability_Power");
+				    int health=rs.getInt("life");
+				    int mana=rs.getInt("mana");
+				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
+		            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		            campeones.add(personaje);
+	            }
+		      
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		 return campeones;
+	}
 
 }

@@ -37,8 +37,8 @@ public class GestionEstadisticas {
 
 	 //Seleccion compleja: suma de estadisticas
 	public static Estadisticas estadisticasJugador(String nombre) {
-		ArrayList<Estadisticas> estad= new ArrayList<Estadisticas>();
-		String consulta="SELECT Estadisticas FROM players,matches WHERE name='"+nombre+"' AND players.id=matches.player_id";
+		Estadisticas estad= new Estadisticas(0, 0, 0);
+		String consulta="SELECT Estadisticas FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id";
 		try {
 		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
@@ -46,20 +46,15 @@ public class GestionEstadisticas {
 			while (rs.next()) 
 			{
 				Estadisticas est=obtenerEstadistica(rs.getString("Estadisticas"));
-				estad.add(est);
+				estad.setKills(estad.getKills()+est.getKills());
+				estad.setDeath(estad.getDeath()+est.getDeath());
+				estad.setAssists(estad.getAssists()+est.getAssists());
 			}
 			conexion.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		Estadisticas total= new Estadisticas(0, 0, 0);
-		for(int i=0;i<estad.size();i++)
-		{
-			total.setKills(total.getKills()+estad.get(i).getKills());
-			total.setDeath(total.getDeath()+estad.get(i).getDeath());
-			total.setAssists(total.getAssists()+estad.get(i).getAssists());
-		}
-		return total;
+		}	
+		return estad;
 		
 	}
 }

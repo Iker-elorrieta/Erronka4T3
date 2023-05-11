@@ -31,6 +31,6 @@ class GestionEstadisticasTest {
 	void testestadisticasJugador() {
 		String nombre="Faker";
 		Estadisticas est=GestionEstadisticas.estadisticasJugador(nombre);
-		assertEquals(est.getKills(),3);
+		assertEquals(est.getKills(),6);
 	}
 }

@@ -80,24 +80,13 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
     return partidas;
 }
 	
-	//UPDATE partida 
-	public static  void updatePartida(Partida partida) {
-
-		int result=0;
-		if(partida.isResultado())
-			result=1;
-		 String consulta = "UPDATE matches SET duration='"+partida.getDuracion()+"',result='"+result+"',modo_id='"+partida.getModo().getId()+"',date='"+partida.StringFecha()+"',player_id='"+partida.getJugador().getId()+"',champion_id='"+partida.getPersonaje().getId()+"' WHERE id ="+partida.getCod_partida();
-	     Metodos.conexionBDUpdate(consulta);
-
-	}
-	
 	//INSERT partida 
 	public static  void insertarPartida(Partida partida) { 
 	int resultado=0;
 	if(partida.isResultado())
 		resultado=1;
-	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`,`date`) VALUES ("
-			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"')";
+	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
+			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
 			Metodos.conexionBDUpdate(consulta);
 
 }
@@ -107,6 +96,32 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	public static void eliminarPartida(Partida partida) {
 	String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
 	Metodos.conexionBDUpdate(consulta);
+	}
+	
+	//SELECT Complejo: sacar victorias y derrotas de usuario
+	public static Integer[] sacarResultados(String nombre) {
+		Integer[] result= new Integer[2];
+		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+		        String query = "SELECT result FROM matches,players WHERE players.name="+nombre+" AND players.id=matches.player_id ";
+
+
+		        Statement stmt = connection.createStatement(); 
+			    ResultSet resultSet = stmt.executeQuery(query);
+		        
+		        while (resultSet.next()) {
+		        	boolean resul=resultSet.getBoolean("Estadisticas");
+		        	if(resul)
+		        		result[0]=result[0]++;
+		        	else
+		        		result[1]=result[1]++;
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		
+		return result;
+		
 	}
 
 

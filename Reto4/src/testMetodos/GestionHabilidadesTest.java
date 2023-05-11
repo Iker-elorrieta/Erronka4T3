@@ -25,15 +25,15 @@ class GestionHabilidadesTest {
 	
 	@Test
 	void testinsertarHabilidad() {
-		Habilidad habilidad=new Habilidad(14, "Botellazo","Coje una botella y te ataca con ella");
+		Habilidad habilidad=new Habilidad(13, "Botellazo","Coje una botella y te ataca con ella");
 		int cod=2;
 		GestionHabilidades.insertarHabilidad(habilidad, cod);
 	}
-	/*@Test
+	@Test
 	void testeliminarHabilidad() {
-		Habilidad habilidad=new Habilidad(0, "Lechazo", "Un Ostion que te deja tontorron");
+		Habilidad habilidad=new Habilidad(1, "Lechazo", "Un Ostion que te deja tontorron");
 		GestionHabilidades.eliminarHabilidad(habilidad);
-	}*/
+	}
 	@Test
 	void testgetHabilidad() {
 		ArrayList<Habilidad> habilidades = GestionHabilidades.getHabilidad();
