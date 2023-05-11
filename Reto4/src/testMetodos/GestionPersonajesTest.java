@@ -36,21 +36,24 @@ class GestionPersonajesTest {
 	void testeliminarPersonaje() {
 		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, null, 100, 20, 50, 60);
 		GestionPersonajes.eliminarPersonaje(personaje);
-}
-	@Test
-<<<<<<< HEAD
-	void testpersonajeMasJugado() {
-		ArraylistGestionPersonajes.personajeMasJugado()
 	}
-
-}
-
-
-=======
+	@Test
+	void testpersonajeMasJugado() {
+		ArrayList<String> pers=GestionPersonajes.personajeMasJugado();
+		assertEquals(pers.get(0),"Faker");
+		assertEquals(pers.get(1),"Ashe");
+	}
+	@Test
+	void testhabilidadesDePersonajes() {
+		ArrayList<String> pers=GestionPersonajes.habilidadesDePersonajes();
+		assertEquals(pers.get(0),"Ganondorf");
+		assertEquals(pers.get(1),"Flecha de hielo");
+		assertEquals(pers.get(2),"Ashe dispara una flecha que inflige daño y ralentiza al enemigo alcanzado.");
+	}
+	@Test
 	void testbuscarPorHabilidad() {
 		Personaje pers =GestionPersonajes.buscarPorhabilidad(3);
 		assertEquals(pers.getName(),"Ruben");
 	}
-
 }
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+

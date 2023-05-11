@@ -99,13 +99,12 @@ public class GestionPersonajes {
 	public static ArrayList <String> personajeMasJugado() {
 		
 		int contador=0;
-		
 		ArrayList <Jugador> jugadores;
 		jugadores=GestionUsuarios.cargaInicialJugadores();
 		ArrayList <String> resultado = new ArrayList<String>();
 		
         try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion FROM matches WHERE id=(SELECT id FROM players where id="+jugadores.get(contador).getId()+") GROUP BY champion ORDER BY COUNT(*) DESC LIMIT 1) ;";
+            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE id=(SELECT id FROM players where id='"+jugadores.get(contador).getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
 
             Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(query);
@@ -116,7 +115,6 @@ public class GestionPersonajes {
 			    resultado.add(jugadores.get(contador).getNombre());
 			    resultado.add(personaje);
 			    contador++;
-	             
             }
             
             
@@ -132,11 +130,9 @@ public class GestionPersonajes {
 	public static ArrayList <String> habilidadesDePersonajes() {
 	
 		ArrayList <String> resultado = new ArrayList<String>();
-		
 		String unNombre="";
-		
         try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-            String query = "SELECT champions.name AS champion, abilities.name, description FROM abilities join champions on abilities.champion_id=champions.id ;";
+            String query = "SELECT champions.name AS champion, abilities.name, description FROM abilities join champions on abilities.champion_id=champions.id";
 
             Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(query);
@@ -176,19 +172,13 @@ public class GestionPersonajes {
 			    if (rs.next()) {
 				    personaje.setId(rs.getInt("id"));
 				    personaje.setName(rs.getString("name"));
-				    personaje.setRole(rs.getString("role"));
 				   personaje.setAbilities(GestionHabilidades.getHabilidadesByChampId(id));
 	            }
 		      
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
-<<<<<<< HEAD
-		 return campeones;
-
-=======
 		 return personaje;
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 	}
 
 }

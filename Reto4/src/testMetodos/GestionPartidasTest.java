@@ -19,22 +19,15 @@ class GestionPartidasTest {
 	@Test
 	void testcargaInicialPartidas() {
 		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas();
-<<<<<<< HEAD
 		assertEquals(partidas.size(),2);
-=======
+
 		assertEquals(partidas.size(),4);
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 	}
 	
 	@Test
 	void testgetPartidasByJugador() {
-<<<<<<< HEAD
 		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador("Fernando");
-=======
-		Jugador jugador=new Jugador();
-		jugador.setId(2);
-		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador(jugador);
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 		assertEquals(partidas.size(),1);
 	}
 	

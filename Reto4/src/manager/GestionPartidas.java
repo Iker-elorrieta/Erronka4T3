@@ -109,7 +109,6 @@ public static ArrayList<Partida> getPartidasByJugador(String jugador) {
 		        
 		        while (resultSet.next()) {
 		        	byte resul=resultSet.getByte("result");
-		        	int intValue = resul;
 		        	if(resul==1)
 		        		result[0]++;
 		        	else
