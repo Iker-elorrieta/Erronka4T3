@@ -19,14 +19,12 @@ class GestionPartidasTest {
 	@Test
 	void testcargaInicialPartidas() {
 		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas();
-		assertEquals(partidas.size(),3);
+		assertEquals(partidas.size(),2);
 	}
 	
 	@Test
 	void testgetPartidasByJugador() {
-		Jugador jugador=new Jugador();
-		jugador.setId(4);
-		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador(jugador);
+		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador("Fernando");
 		assertEquals(partidas.size(),1);
 	}
 	

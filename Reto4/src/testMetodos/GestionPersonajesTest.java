@@ -36,4 +36,12 @@ class GestionPersonajesTest {
 	void testeliminarPersonaje() {
 		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, null, 100, 20, 50, 60);
 		GestionPersonajes.eliminarPersonaje(personaje);
-}}
+}
+	@Test
+	void testpersonajeMasJugado() {
+		ArraylistGestionPersonajes.personajeMasJugado()
+	}
+
+}
+
+

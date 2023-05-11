@@ -51,12 +51,9 @@ public class GestionPartidas {
 
 public static ArrayList<Partida> getPartidasByJugador(String jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
-
+    String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM player WHERE name='"+jugador+"'";
 
     try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-        String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM player WHERE name='"+jugador+"'";
-
-
         Statement stmt = connection.createStatement(); 
 	    ResultSet resultSet = stmt.executeQuery(query);
         

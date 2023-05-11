@@ -95,7 +95,7 @@ public class GestionPersonajes {
 			Metodos.conexionBDUpdate(consulta);
 		}
 	
-<<<<<<< HEAD
+
 	public static ArrayList <String> personajeMasJugado() {
 		
 		int contador=0;
@@ -163,8 +163,9 @@ public class GestionPersonajes {
         }
 
         return resultado;
+	}
 		
-=======
+
 	//SELECT Complejo: Buscar personaje por id de habilidad
 	public static ArrayList<Personaje> buscarPorhabilidad(int id) {
 		
@@ -192,7 +193,7 @@ public class GestionPersonajes {
 		        e.printStackTrace();
 		    }
 		 return campeones;
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 	}
 
 }
