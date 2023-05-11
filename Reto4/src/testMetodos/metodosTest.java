@@ -18,7 +18,7 @@ class metodosTest {
 
 	@Test
 	void testconexionBDUpdate() {
-		String update="UPDATE players SET name='Faker1' WHERE id='1'";
+		String update="UPDATE players SET name='Manolito' WHERE id='2'";
 		Metodos.conexionBDUpdate(update);
 	}
 }

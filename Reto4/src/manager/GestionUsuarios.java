@@ -118,7 +118,11 @@ public class GestionUsuarios {
   	
   	//UPDATE Bloqueo 
     public static void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
-        String consulta = "UPDATE players SET bloqueado = "+bloqueado+" WHERE id ="+jugador.getId();
+    	int bloquiado=0;
+    	if(bloqueado)
+    		bloquiado++;
+    		
+        String consulta = "UPDATE players SET bloqueado = "+bloquiado+" WHERE id ="+jugador.getId();
         Metodos.conexionBDUpdate(consulta);
     }
     
