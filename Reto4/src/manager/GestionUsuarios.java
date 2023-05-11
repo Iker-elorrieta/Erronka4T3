@@ -161,4 +161,6 @@ public class GestionUsuarios {
     	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
 		Metodos.conexionBDUpdate(consulta);
     }
+    
+    
 }

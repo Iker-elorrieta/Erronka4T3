@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import controlador.Metodos;
 import modelo.Habilidad;
+import modelo.Jugador;
 import modelo.Personaje;
 import utils.DBUtils;
 
@@ -93,5 +94,75 @@ public class GestionPersonajes {
 			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
 			Metodos.conexionBDUpdate(consulta);
 		}
+	
+	public static ArrayList <String> personajeMasJugado() {
+		
+		int contador=0;
+		
+		ArrayList <Jugador> jugadores;
+		jugadores=GestionUsuarios.cargaInicialJugadores();
+		ArrayList <String> resultado = new ArrayList<String>();
+		
+        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion FROM matches WHERE id=(SELECT id FROM players where id="+jugadores.get(contador).getId()+") GROUP BY champion ORDER BY COUNT(*) DESC LIMIT 1) ;";
+
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+			    String personaje=rs.getString("name");
+			    
+			    resultado.add(jugadores.get(contador).getNombre());
+			    resultado.add(personaje);
+			    contador++;
+	             
+            }
+            
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    	
+	}
+	
+	public static ArrayList <String> habilidadesDePersonajes() {
+	
+		ArrayList <String> resultado = new ArrayList<String>();
+		
+		String unNombre="";
+		
+        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT champions.name AS champion, abilities.name, description FROM abilities join champions on abilities.champion_id=champions.id ;";
+
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+            	
+			    String personaje=rs.getString("champion");
+			    String habilidad=rs.getString("name");
+			    String descripcion=rs.getString("description");
+			   
+			    if(!unNombre.equals(personaje)) {
+			    	resultado.add(personaje);
+			    	unNombre=personaje;
+			    }
+			    resultado.add(habilidad);
+			    resultado.add(descripcion);
+			   
+            }
+            
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+		
+	}
 
 }

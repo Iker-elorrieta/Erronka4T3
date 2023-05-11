@@ -49,12 +49,12 @@ public class GestionPartidas {
 }
 
 
-public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
+public static ArrayList<Partida> getPartidasByJugador(String jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
 
 
     try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-        String query = "SELECT * FROM matches WHERE player_id ='"+jugador.getId()+"'";
+        String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM player WHERE name='"+jugador+"'";
 
 
         Statement stmt = connection.createStatement(); 
@@ -69,7 +69,7 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(resultSet.getInt("champion_id"));
 			
-			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
+			Partida partida = new Partida(id, GestionUsuarios.getJugadorByNombre(jugador), modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
         }
 
@@ -105,10 +105,13 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 	//DELETE partida 
 
 	public static void eliminarPartida(Partida partida) {
-	String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
-	Metodos.conexionBDUpdate(consulta);
+		String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
+		Metodos.conexionBDUpdate(consulta);
 	}
 
 
+	
 
+
+	
 }
