@@ -8,6 +8,7 @@ public class Modo {
 
     public Modo() {
     }
+    
     public Modo(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
