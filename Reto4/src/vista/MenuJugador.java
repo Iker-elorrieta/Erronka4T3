@@ -44,6 +44,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JTree;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
+import controlador.Metodos;
+import controlador.MetodosVista;
+import manager.GestionPersonajes;
 import modelo.Jugador;
 import modelo.Usuario;
 
@@ -61,6 +64,10 @@ public class MenuJugador extends JFrame {
 	private  JPanel panelPersonajes;
 	private  JPanel panelJugar;
 	private JTabbedPane tabbedPane;
+	MetodosVista metodosVista = new MetodosVista();
+	GestionPersonajes gestionP = new GestionPersonajes();
+	Metodos metodos = new Metodos();
+	private JScrollPane scrollPersonajes ;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -80,7 +87,7 @@ public class MenuJugador extends JFrame {
 	 * Create the frame.
 	 * @throws IOException 
 	 */
-	public MenuJugador(Usuario UsurJugador){
+	public MenuJugador(Usuario usuario){
 		
 	/*	addWindowListener(new WindowAdapter() {
             @Override
@@ -175,6 +182,8 @@ public class MenuJugador extends JFrame {
 		lblPersonajes.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	tabbedPane.setSelectedIndex(1);
+            	Jugador j1 = (Jugador) usuario;
+            	metodosVista.crearCartas(gestionP.getPersonajeByJugadorLvL(j1.getNivel()), scrollPersonajes);
             }
         });
 		navBar.add(lblPersonajes);
@@ -259,14 +268,22 @@ public class MenuJugador extends JFrame {
 	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
 	      ImageIcon fondo = new ImageIcon(image);
 	        
-	        JLabel lblFondo = new JLabel();
-	        lblFondo.setBounds(0, 0, 720, 367);
-	        lblFondo.setIcon(fondo);
-	        panelPerfil.add(lblFondo);
+	        JLabel lblFondoPerfil = new JLabel();
+	        lblFondoPerfil.setBounds(0, 0, 720, 367);
+	        lblFondoPerfil.setIcon(fondo);
+	        panelPerfil.add(lblFondoPerfil);
 	      
 	     
 	         panelPersonajes = new JPanel();
 	        tabbedPane.addTab("New tab", null, panelPersonajes, null);
+	        panelPersonajes.setLayout(null);
+	      
+	        
+	         scrollPersonajes = new JScrollPane();
+	        scrollPersonajes.setBounds(0, 30, 720, 337);
+	        scrollPersonajes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	        scrollPersonajes.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	        panelPersonajes.add(scrollPersonajes);
 	        
 	        JLabel lblFondoPersonajes = new JLabel();
 	        lblFondoPersonajes.setBounds(0, 0, 720, 367);
@@ -340,4 +357,7 @@ public class MenuJugador extends JFrame {
 	        
 	        
 	}
+
+
+	
 }

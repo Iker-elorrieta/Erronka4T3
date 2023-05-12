@@ -2,6 +2,7 @@ package manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -73,7 +74,7 @@ public class GestionPersonajes {
 	        return personaje;
 	    }
 	 
-	 public static ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
+	 public ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
 	        Personaje personaje = null;
 	        int cantidadDesbloqueos = lvl / 10;
 	        ArrayList<Personaje> personajes = new ArrayList<>();
@@ -81,12 +82,14 @@ public class GestionPersonajes {
 
 			
 	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-	            String query = "SELECT * FROM personaje WHERE id = ?";
+	            String query = "SELECT * FROM champions WHERE id = ?";
 
 
-	            Statement stmt = connection.createStatement(); 
-			    ResultSet resultSet = stmt.executeQuery(query);
-
+	            PreparedStatement stmt = connection.prepareStatement(query); 
+	            stmt.setInt(1, id);
+			    ResultSet resultSet = stmt.executeQuery();
+			   
+			    
 	            if (resultSet.next()) {
 	    
 				    String name=resultSet.getString("name");
