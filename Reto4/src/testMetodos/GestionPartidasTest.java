@@ -19,44 +19,30 @@ class GestionPartidasTest {
 	@Test
 	void testcargaInicialPartidas() {
 		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas();
-		assertEquals(partidas.size(),3);
-	}
-	@Test
-	void testgetPartidasByJugador() {
-		Jugador jugador=new Jugador();
-		jugador.setId(3);
-		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador(jugador);
 		assertEquals(partidas.size(),2);
-	}
-	@Test
-	void testpartidosDificultad() {
-		Date date = new Date();
-		Jugador jug= new Jugador(4, "Faker", "fakerpass", 0, "Maestro", date, true);
-		ArrayList<Partida> partidas=GestionPartidas.partidosDificultad(jug);
-		assertEquals(partidas.get(0).isResultado(),false);
-		
+
+		assertEquals(partidas.size(),4);
+
 	}
 	
 	@Test
-	void testupdatePartida() {
-		Jugador jug= new Jugador();
-		Date date= new Date();
-		Modo modo= new Modo(1, "Clasificatorio");
-		Estadisticas est= new Estadisticas(0, 0, 0);
-		Personaje personaje=new Personaje(9, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
-		Partida partida= new Partida(2, jug, modo, personaje, est, false, date, 40);
-		GestionPartidas.updatePartida(partida);
+	void testgetPartidasByJugador() {
+		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador("Fernando");
+		assertEquals(partidas.size(),1);
 	}
+	
 	@Test
 	void testinsertarPartida() {
 		Jugador jug= new Jugador();
+		jug.setId(1);
 		Date date= new Date();
-		Modo modo= new Modo(1, "Clasificatorio");
+		Modo modo= new Modo(1, "Aram");
 		Estadisticas est= new Estadisticas(0, 0, 0);
-		Personaje personaje=new Personaje(9, "Ruben", "Tecnico de sistemas", 4, null, 100, 20, 50, 60);
+		Personaje personaje=new Personaje(2, "Ruben", "Tecnico de sistemas", 4, null, 100, 20, 50, 60);
 		Partida partida= new Partida(5, jug, modo, personaje, est, false, date, 40);
 		GestionPartidas.insertarPartida(partida);
 	}
+	
 	@Test
 	void testeliminarPartida() {
 		Jugador jug= new Jugador();
@@ -64,7 +50,15 @@ class GestionPartidasTest {
 		Modo modo= new Modo(1, "Clasificatorio");
 		Estadisticas est= new Estadisticas(0, 0, 0);
 		Personaje personaje=new Personaje(9, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
-		Partida partida= new Partida(5, jug, modo, personaje, est, false, date, 40);
+		Partida partida= new Partida(1, jug, modo, personaje, est, false, date, 40);
 		GestionPartidas.eliminarPartida(partida);
+	}
+	
+	@Test
+	void testsacarResultados() {
+		String nombre="Faker";
+		Integer[] resultados=GestionPartidas.sacarResultados(nombre);
+		assertEquals(resultados[0],1);
+		assertEquals(resultados[1],2);
 	}
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import controlador.Metodos;
 import modelo.Habilidad;
+import modelo.Jugador;
 import modelo.Personaje;
 import utils.DBUtils;
 
@@ -72,6 +73,7 @@ public class GestionPersonajes {
 	        }
 
 	        return personaje;
+<<<<<<< HEAD
 	    }
 	 
 	 public ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
@@ -139,10 +141,13 @@ public class GestionPersonajes {
 	        
 	        return personajes;
 	    }
+=======
+	    }  
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
 	 
 	//UPDATE personaje
 	public static  void updatePersonaje(Personaje personaje){
-		String consulta = "UPDATE players SET name="+personaje.getName()+",role="+personaje.getRole()+",difficulty="+personaje.getDifficulty()+",attack_damage="+personaje.getAttackDamage()+",ability_power="+personaje.getAbilityPower()+",life"+personaje.getHealth()+",mana"+personaje.getMana()+" WHERE id ="+personaje.getId();
+		String consulta = "UPDATE champions SET name='"+personaje.getName()+"',role='"+personaje.getRole()+"',difficulty='"+personaje.getDifficulty()+"',attack_damage='"+personaje.getAttackDamage()+"',ability_power='"+personaje.getAbilityPower()+"',life='"+personaje.getHealth()+"',mana='"+personaje.getMana()+"' WHERE id ="+personaje.getId();
 		Metodos.conexionBDUpdate(consulta);
 		
 	}
@@ -151,14 +156,100 @@ public class GestionPersonajes {
 	public static  void insertarPersonaje(Personaje personaje) { 
 			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
 
-					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+")";
+					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+"')";
 			Metodos.conexionBDUpdate(consulta);
 	}
 
 	//DELETE personaje 
 	public static void eliminarPersonaje(Personaje personaje) {
-			String consulta="DELETE FROM `players` WHERE id="+personaje.getId();
+			String consulta="DELETE FROM `champions` WHERE id="+personaje.getId();
 			Metodos.conexionBDUpdate(consulta);
 		}
+	
+
+	public static ArrayList <String> personajeMasJugado() {
+		
+		int contador=0;
+		ArrayList <Jugador> jugadores;
+		jugadores=GestionUsuarios.cargaInicialJugadores();
+		ArrayList <String> resultado = new ArrayList<String>();
+		
+        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE id=(SELECT id FROM players where id='"+jugadores.get(contador).getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
+
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+			    String personaje=rs.getString("name");
+			    
+			    resultado.add(jugadores.get(contador).getNombre());
+			    resultado.add(personaje);
+			    contador++;
+            }
+            
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    	
+	}
+	
+	public static ArrayList <String> habilidadesDePersonajes() {
+	
+		ArrayList <String> resultado = new ArrayList<String>();
+		String unNombre="";
+        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+            String query = "SELECT champions.name AS champion, abilities.name, description FROM abilities join champions on abilities.champion_id=champions.id";
+
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+            	
+			    String personaje=rs.getString("champion");
+			    String habilidad=rs.getString("name");
+			    String descripcion=rs.getString("description");
+			   
+			    if(!unNombre.equals(personaje)) {
+			    	resultado.add(personaje);
+			    	unNombre=personaje;
+			    }
+			    resultado.add(habilidad);
+			    resultado.add(descripcion);
+			   
+            }
+            
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+	}
+		
+
+	//SELECT Complejo: Buscar personaje por id de habilidad
+	public static Personaje buscarPorhabilidad(int id) {
+		  Personaje personaje = new Personaje();
+		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+		        String query = "SELECT champions.id,champions.name FROM champions,abilities WHERE abilities.id='"+id+"' AND abilities.champion_id=champions.id";
+		        Statement stmt = connection.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(query);
+			    if (rs.next()) {
+				    personaje.setId(rs.getInt("id"));
+				    personaje.setName(rs.getString("name"));
+				   personaje.setAbilities(GestionHabilidades.getHabilidadesByChampId(id));
+	            }
+		      
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		 return personaje;
+	}
 
 }

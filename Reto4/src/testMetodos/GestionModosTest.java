@@ -13,9 +13,9 @@ class GestionModosTest {
 
 	@Test
 	void testgetModoById() {
-		int id=1;
+		int id=3;
 		Modo modo=GestionModos.getModoById(id);
-		assertEquals(modo.getNombre(),"Fuertenocturno");
+		assertEquals(modo.getNombre(),"Normal");
 	}
 	
 	@Test
@@ -24,15 +24,15 @@ class GestionModosTest {
 		GestionModos.updateModo(Modo);
 	}
 	
-	/*@Test
+	@Test
 	void testinsertarModo() {
 		Modo modo= new Modo(38, "Fuertenocurno");
 		GestionModos.insertarModo(modo);
-	}*/
+	}
 	
 	@Test
 	void testeliminarModo() {
-		Modo Modo=new Modo(1, "Fuertenocturno");
+		Modo Modo=new Modo(4, "Congelacion");
 		ArrayList<Modo> modos= new ArrayList<Modo>();
 		modos.add(Modo);
 		GestionModos.eliminarModo(Modo, modos);
@@ -40,7 +40,7 @@ class GestionModosTest {
 	@Test
 	void testcargaInicialModos() {
 		ArrayList<Modo>modos=GestionModos.cargaInicialModos();
-		assertEquals(modos.size(),5);
+		assertEquals(modos.size(),3);
 		
 	}
 }

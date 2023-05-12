@@ -12,6 +12,8 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 import exceptions.PlayerNotFoundException;
+import modelo.Administrador;
+import modelo.Jugador;
 import modelo.Usuario;
 import utils.DBUtils;
 import vista.MenuAdministrador;
@@ -34,14 +36,14 @@ public class Metodos {
 		
 	}
 	//Redireccion ArrayList H
-	public static void redireccionLogin(String userType, Usuario usuario) throws PlayerNotFoundException {
+	public static void redireccionLogin(Usuario usuario) throws PlayerNotFoundException {
 
 
-    	if (userType != null) {
-    	    if (userType.equals("admin")) {
+    	if (usuario != null) {
+    	    if (usuario instanceof Administrador) {
     	        // Redirigir al usuario a la pantalla de administrador.
     	    	new MenuAdministrador(usuario).setVisible(true);;
-    	    } else if (userType.equals("jugador")) {
+    	    } else if (usuario instanceof Jugador) {
     	        // Redirigir al usuario a la pantalla de jugador.
     	    	new MenuJugador(usuario).setVisible(true);
     	    	
@@ -51,22 +53,19 @@ public class Metodos {
     	}
     }	
 		
-	//Registro de los inicios de sesion a txt
-	public static void inicioSesionTXT(Usuario usuario) {
-		File file = new File("Archivos/Log.txt");
-		Date fecha = new Date();
-			try {
-				FileWriter fichero= new FileWriter(file);
-				String date = fecha.toString();
-				String dia=date.substring(0,10);
-				String hora=date.substring(12,20);
-				fichero.write("El usuario: "+usuario.getNombre()+" ha iniciado sesion el dia: "+dia+" a las: "+hora);
-				fichero.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			
-	}
+	 public static void inicioSesionTXT(Usuario usuario) {
+		 	Date fecha = new Date();
+	        String nombreArchivo = "Archivos/Log.txt";
+	        String date = fecha.toString();
+			String dia=date.substring(0,10);
+			String hora=date.substring(12,20);
+			String contenido =("El usuario: "+usuario.getNombre()+" ha iniciado sesion el dia: "+dia+" a las: "+hora);
+	        try (FileWriter escritor = new FileWriter(nombreArchivo, true)) {
+	            escritor.write(contenido);
+	            escritor.write(System.lineSeparator()); 
+	        } catch (IOException e) {
+	        }
+	    }
 	public void guardarCambios(DefaultTableModel modelo, int selectedPanelInt) {
 		// TODO Auto-generated method stub
 		

@@ -122,4 +122,20 @@ public class PersonajeTest {
     personaje1.setDifficulty(3);
     assertEquals(personaje1.Saludo(),"Solo para expertos en el mundo de LOL");
     }
+    
+    @Test
+    public void testhashCode()  {
+
+    	Personaje pers1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+        Personaje pers2 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+
+        // Verificar que el hash code sea el mismo
+        assertEquals(pers1.hashCode(), pers2.hashCode());
+
+        // Crear objeto con un id diferente
+        Personaje pers3 = new Personaje(2, null, null, 0, null, 0, 0, 0, 0);
+
+        // Verificar que el hash code sea diferente
+        assertNotEquals(pers1.hashCode(), pers3.hashCode());
+    }
 }

@@ -16,7 +16,6 @@ class GestionPersonajesTest {
 		ArrayList<Personaje> personajes =GestionPersonajes.cargaInicialPersonajes();
 		assertEquals(personajes.size(),4);
 	}
-
 	@Test
 	void testgetPersonajesById() {
 		int id=1;
@@ -24,25 +23,37 @@ class GestionPersonajesTest {
 		assertEquals(personaje.getName(),"Ashe");
 	}
 	@Test
-	void testgetPErsonajeByJugadorLvL() {
-		int lvl=20;
-		ArrayList<Personaje> personajes = GestionPersonajes.getPersonajeByJugadorLvL(lvl);
-		assertEquals(personajes.size(),2);
-	}
-	@Test
 	void testupdatePersonaje() {
-		Personaje personaje=new Personaje(1, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
+		Personaje personaje=new Personaje(2, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 40);
 		GestionPersonajes.updatePersonaje(personaje);
 	}
-	
 	@Test
 	void testinsertarPersonaje() {
-		Personaje personaje=new Personaje(9, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
+		Personaje personaje=new Personaje(4, "Iker", "Profe de marcas", 3, null, 100, 20, 50, 50);
 		GestionPersonajes.insertarPersonaje(personaje);
 	}
-	
 	@Test
 	void testeliminarPersonaje() {
-		Personaje personaje=new Personaje(1, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 60);
+		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, null, 100, 20, 50, 60);
 		GestionPersonajes.eliminarPersonaje(personaje);
-}}
+	}
+	@Test
+	void testpersonajeMasJugado() {
+		ArrayList<String> pers=GestionPersonajes.personajeMasJugado();
+		assertEquals(pers.get(0),"Faker");
+		assertEquals(pers.get(1),"Ashe");
+	}
+	@Test
+	void testhabilidadesDePersonajes() {
+		ArrayList<String> pers=GestionPersonajes.habilidadesDePersonajes();
+		assertEquals(pers.get(0),"Ganondorf");
+		assertEquals(pers.get(1),"Flecha de hielo");
+		assertEquals(pers.get(2),"Ashe dispara una flecha que inflige daño y ralentiza al enemigo alcanzado.");
+	}
+	@Test
+	void testbuscarPorHabilidad() {
+		Personaje pers =GestionPersonajes.buscarPorhabilidad(3);
+		assertEquals(pers.getName(),"Ruben");
+	}
+}
+

@@ -39,29 +39,6 @@ public class GestionHabilidades {
         return habilidades;
     }
 	
-	//SELECT complejo: Habilidades de un campeon de una determinada dificultad
-	public static ArrayList<Habilidad> habilidadDificil(int dif) {
-		  ArrayList<Habilidad> habilidades = new ArrayList<>();
-	      try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {;
-	      String query="SELECT * FROM abilities,champions WHERE abilities.champion_id=champions.id AND difficulty="+dif;
-	      Statement stmt = conexion.createStatement(); 
-		  ResultSet rs = stmt.executeQuery(query);
-	            
-	            while (rs.next()) {
-	            	int id_habilidad=rs.getInt("id");
-	            	String nombre=rs.getString("name");
-	            	String descripcion=rs.getString("description");
-	            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
-	                habilidades.add(habilidad);
-	            }
-
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        return habilidades;
-	    }
-	
 	//SELECT all 
 	public static  ArrayList<Habilidad> getHabilidad() {
 		 ArrayList<Habilidad> habilidades = new ArrayList<>();
@@ -89,7 +66,7 @@ public class GestionHabilidades {
 	//UPDATE Habilidad 
 
 	public static  void updateHabilidad(Habilidad habilidad) { 
-		String consulta = "UPDATE matches SET name="+habilidad.getNombre()+",description="+habilidad.getDescripcion()+" WHERE id ="+habilidad.getCod();
+		String consulta = "UPDATE abilities SET name='"+habilidad.getNombre()+"',description='"+habilidad.getDescripcion()+"' WHERE id ='"+habilidad.getCod()+"'";
 	    Metodos.conexionBDUpdate(consulta);
 
 
@@ -98,7 +75,7 @@ public class GestionHabilidades {
 	//INSERT 
 
 	public static  void insertarHabilidad(Habilidad Habilidad, int cod) { 
-		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ("+Habilidad.getCod()+"','"+cod+"','"+Habilidad.getNombre()+","+Habilidad.getDescripcion()+")";
+		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ('"+Habilidad.getCod()+"','"+cod+"','"+Habilidad.getNombre()+"','"+Habilidad.getDescripcion()+"')";
 		Metodos.conexionBDUpdate(consulta);
 	}
 	

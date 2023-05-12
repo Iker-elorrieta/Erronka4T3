@@ -1,0 +1,8 @@
+<<<<<<< HEAD
+El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 3:44:27 
+=======
+<<<<<<< HEAD
+El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 2:52:21 
+=======
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+>>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git

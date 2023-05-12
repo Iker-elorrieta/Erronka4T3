@@ -1,5 +1,6 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Partida { 
@@ -114,6 +115,11 @@ public class Partida {
 
 		return victoria()+"  "+ modo.getNombre() +"  "+ personaje.getName() + "  " + estadisticas.toString() + "  " + fecha+" "+duracion;
 
+	}
+	public String StringFecha() {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaString = formato.format(fecha);
+		return fechaString;
 	}
 
 	

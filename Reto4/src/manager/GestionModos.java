@@ -58,14 +58,14 @@ public class GestionModos {
 	//UPDATE modo 
 	public static  void updateModo(Modo modo) {
 
-		 String consulta = "UPDATE matches SET name="+modo.getNombre()+"  WHERE id ="+modo.getId();
+		 String consulta = "UPDATE modos SET nombre='"+modo.getNombre()+"'  WHERE id ="+modo.getId();
 	     Metodos.conexionBDUpdate(consulta);
 	}
 	
 	//INSERT modo 
 	public static  void insertarModo(Modo modo) { 
 
-			String consulta="INSERT INTO `modos`(`id`, `name`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
+			String consulta="INSERT INTO `modos`(`id`, `nombre`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
 			Metodos.conexionBDUpdate(consulta);
 		}
 	 
@@ -73,29 +73,7 @@ public class GestionModos {
 	public static void eliminarModo(Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
 
-	    	String consulta="DELETE FROM `modo` WHERE id="+modo.getId();
+	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
 			Metodos.conexionBDUpdate(consulta);
-
-	    }
-	
-	//Seleccion compleja: SElecciona los modos
-	public static Modo modosJugador(int id) {
-		String consulta="SELECT id, nombre FROM modos WHERE id = (SELECT modo_id FROM matches WHERE player_id ="+id+" GROUP BY modo_id ORDER BY COUNT(*)";
-
-		Modo modo=new Modo();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-			while (rs.next()) 
-			{
-				modo.setId(rs.getInt("id"));
-				modo.setNombre(rs.getString("nombre"));
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return modo;
 	}
 }

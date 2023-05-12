@@ -5,15 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import modelo.Estadisticas;
-import modelo.Jugador;
-import modelo.Modo;
-import modelo.Partida;
-import modelo.Personaje;
 import utils.DBUtils;
 
 public class GestionEstadisticas {
@@ -40,23 +34,25 @@ public class GestionEstadisticas {
 	        return estadisticas;
 	    }
 
-	 //Seleccion compleja: estadisticas de jugadores.
-	public ArrayList<Estadisticas> estadisticasJugador(String nombre) {
-		ArrayList<Estadisticas> estad= new ArrayList<Estadisticas>();
-		String consulta="SELECT m.estadisticas FROM matches m INNER JOIN players p ON m.player_id = p.id WHERE p.name = 'nombre_del_jugador' AND m.id = 'ID_de_partida";
+	 //Seleccion compleja: suma de estadisticas
+	public static Estadisticas estadisticasJugador(String nombre) {
+		Estadisticas estad= new Estadisticas(0, 0, 0);
+		String consulta="SELECT Estadisticas FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id";
 		try {
 		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 
 			{
-				Estadisticas est=obtenerEstadistica(rs.getString("est"));
-				estad.add(est);
+				Estadisticas est=obtenerEstadistica(rs.getString("Estadisticas"));
+				estad.setKills(estad.getKills()+est.getKills());
+				estad.setDeath(estad.getDeath()+est.getDeath());
+				estad.setAssists(estad.getAssists()+est.getAssists());
 			}
 			conexion.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}	
 		return estad;
 		
 	}

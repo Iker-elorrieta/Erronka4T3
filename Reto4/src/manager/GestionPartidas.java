@@ -49,14 +49,11 @@ public class GestionPartidas {
 }
 
 
-public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
+public static ArrayList<Partida> getPartidasByJugador(String jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
-
-
-    try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
-        String query = "SELECT * FROM matches WHERE player_id = ?";
-
-
+    String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM player WHERE name='"+jugador+"'";
+    try {
+    	Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
         Statement stmt = connection.createStatement(); 
 	    ResultSet resultSet = stmt.executeQuery(query);
         
@@ -69,7 +66,7 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(resultSet.getInt("champion_id"));
 			
-			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
+			Partida partida = new Partida(id, GestionUsuarios.getJugadorByNombre(jugador), modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
         }
 
@@ -79,64 +76,56 @@ public static ArrayList<Partida> getPartidasByJugador(Jugador jugador) {
 
     return partidas;
 }
-
-	//SELECT complejo: Partidos jugados con un personaje de maxima dificultad de un jugador
-    public static ArrayList<Partida> partidosDificultad(Jugador jugador) {
-    	String consulta="SELECT * FROM matches,champions WHERE champions.difficulty=3 AND champions.id=matches.champion_id AND player_id="+jugador.getId()+"";
-		ArrayList<Partida> partidas= new ArrayList<>();
-		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
-		    Statement stmt = conexion.createStatement(); 
-		    ResultSet rs = stmt.executeQuery(consulta);
-			while (rs.next()) 
-			{
-				int id=rs.getInt("id");
-				int duracion = rs.getInt("duration");
-				Modo modo= GestionModos.getModoById(rs.getInt("modo_id"));
-				boolean resultado=rs.getBoolean("result");
-				Date fecha=rs.getDate("date");
-				Jugador jugador1=GestionUsuarios.getJugadorByNombre(rs.getString("player_id"));
-				Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("estadisticas"));
-				Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion_id"));
-				
-				Partida partida1 = new Partida(id, jugador1, modo, personaje, estadistica, resultado, fecha, duracion);
-				partidas.add(partida1);
-				
-			}
-			conexion.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return partidas;
-	}
-	
-	//UPDATE partida 
-	public static  void updatePartida(Partida partida) {
-
-		int result=0;
-		if(partida.isResultado())
-			result=1;
-		 String consulta = "UPDATE matches SET duration='"+partida.getDuracion()+"',result='"+result+"',modo_id='"+partida.getModo().getId()+"',date='"+partida.getFecha()+"',player_id='"+partida.getJugador().getId()+"',champion_id='"+partida.getPersonaje().getId()+"' WHERE id ="+partida.getCod_partida();
-	     Metodos.conexionBDUpdate(consulta);
-
-	}
 	
 	//INSERT partida 
 	public static  void insertarPartida(Partida partida) { 
-	String consulta="INSERT INTO `matches`(`id`, `date`, `duration`, `result`, `champion`, `player`,`estadisticas`) VALUES ('"
-
-			+ "'"+partida.getCod_partida()+"','"+partida.getFecha()+"','"+partida.getDuracion()+"','"+partida.isResultado()+"','"+partida.getPersonaje()+"','"+partida.getJugador()+"','"+partida.getEstadisticas().toString()+")";
-	Metodos.conexionBDUpdate(consulta);
+	int resultado=0;
+	if(partida.isResultado())
+		resultado=1;
+	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
+			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
+			Metodos.conexionBDUpdate(consulta);
 
 }
 
 	//DELETE partida 
 
 	public static void eliminarPartida(Partida partida) {
-	String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
-	Metodos.conexionBDUpdate(consulta);
+		String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
+		Metodos.conexionBDUpdate(consulta);
+	}
+	
+	//SELECT Complejo: sacar victorias y derrotas de usuario
+	public static Integer[] sacarResultados(String nombre) {
+		Integer[] result= new Integer[2];
+		result[0]=0;
+		result[1]=0;
+		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+		        String query = "SELECT result FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id ";
+
+
+		        Statement stmt = connection.createStatement(); 
+			    ResultSet resultSet = stmt.executeQuery(query);
+		        
+		        while (resultSet.next()) {
+		        	byte resul=resultSet.getByte("result");
+		        	if(resul==1)
+		        		result[0]++;
+		        	else
+		        		result[1]++;
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		
+		return result;
+		
 	}
 
 
+	
 
+
+	
 }

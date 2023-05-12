@@ -102,6 +102,13 @@ class JugadorTest {
 	void testSaludo() {
 		assertEquals(jug1.Saludo(),"Buenas, saludos "+jug1.getNombre()+" ,bienvenido al mundo de LOL");
 	}
-	
+	@Test
+	void testStringfecha() {
+		Date date = new Date();
+		Jugador jugador=new Jugador();
+		jugador.setFecha(date);
+		String fecha=jugador.StringFecha();
+		assertEquals(fecha,"2023-05-10");
+	}
 	
 }

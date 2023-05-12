@@ -1,5 +1,6 @@
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Jugador extends Usuario{
@@ -63,7 +64,11 @@ public class Jugador extends Usuario{
 		this.nivel = nivel;
 	}
 	
-
+	public String StringFecha() {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaString = formato.format(fecha);
+		return fechaString;
+	}
 	
 
 }

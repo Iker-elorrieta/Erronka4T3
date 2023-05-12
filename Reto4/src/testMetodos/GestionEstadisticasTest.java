@@ -26,4 +26,11 @@ class GestionEstadisticasTest {
 	     assertTrue(est.getAssists() >= 4 && est.getAssists() <= 20);
 		
 	}
+	
+	@Test
+	void testestadisticasJugador() {
+		String nombre="Faker";
+		Estadisticas est=GestionEstadisticas.estadisticasJugador(nombre);
+		assertEquals(est.getKills(),2);
+	}
 }
