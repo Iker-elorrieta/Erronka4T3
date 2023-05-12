@@ -6,13 +6,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-
-import com.mysql.cj.exceptions.DataConversionException;
 
 import manager.GestionUsuarios;
 import modelo.Jugador;
@@ -35,6 +34,7 @@ class RegisterFrame extends JFrame {
 	private JPasswordField passwordField_2;
     public GestionUsuarios gestionUsur;
     public RegisterFrame() {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
     	setType(Type.UTILITY);
     	setResizable(false);
     	setBackground(new Color(192, 192, 192));

@@ -9,25 +9,18 @@ import javax.swing.border.EmptyBorder;
 import utils.RotatedIcon;
 
 import javax.swing.JTabbedPane;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Label;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +31,12 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JTree;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-
 import controlador.Metodos;
 import controlador.MetodosVista;
+import manager.GestionModos;
 import manager.GestionPersonajes;
 import modelo.Jugador;
 import modelo.Usuario;
@@ -66,8 +57,10 @@ public class MenuJugador extends JFrame {
 	private JTabbedPane tabbedPane;
 	MetodosVista metodosVista = new MetodosVista();
 	GestionPersonajes gestionP = new GestionPersonajes();
+	GestionModos gestionM = new GestionModos();
 	Metodos metodos = new Metodos();
 	private JScrollPane scrollPersonajes ;
+	private  JScrollPane scrollModos;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -88,7 +81,8 @@ public class MenuJugador extends JFrame {
 	 * @throws IOException 
 	 */
 	public MenuJugador(Usuario usuario){
-		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
+		Jugador j1 = (Jugador) usuario;
 	/*	addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -140,6 +134,7 @@ public class MenuJugador extends JFrame {
         lblJugar.setHorizontalAlignment(SwingConstants.CENTER);
         lblJugar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
+            	metodosVista.crearPanelesModos(scrollPersonajes, gestionM.cargaInicialModos());
             	tabbedPane.setSelectedIndex(2);
             }
         });
@@ -182,7 +177,7 @@ public class MenuJugador extends JFrame {
 		lblPersonajes.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	tabbedPane.setSelectedIndex(1);
-            	Jugador j1 = (Jugador) usuario;
+            	
             	metodosVista.crearCartas(gestionP.getPersonajeByJugadorLvL(j1.getNivel()), scrollPersonajes);
             }
         });
@@ -216,7 +211,7 @@ public class MenuJugador extends JFrame {
 	        panelPerfil.setLayout(null);
 	        panelPerfil.add(labelImagen);
 	        
-	        JLabel lblBienvenido = new JLabel("Bienvenido *");
+	        JLabel lblBienvenido = new JLabel("Bienvenido "+j1.getNombre());
 	        lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblBienvenido.setForeground(new Color(240, 230, 210));
 	        lblBienvenido.setFont(new Font("Georgia", Font.BOLD, 19));
@@ -227,20 +222,21 @@ public class MenuJugador extends JFrame {
 	         image = imageIcon.getImage().getScaledInstance(45,50, Image.SCALE_SMOOTH);
 	      ImageIcon nivel = new ImageIcon(image);
 	        
-	        JLabel lblLvL = new JLabel("1");
+	        JLabel lblLvL = new JLabel(String.valueOf(j1.getNivel()));
 	        lblLvL.setForeground(new Color(240, 230, 210));
 	        lblLvL.setFont(new Font("Georgia", Font.BOLD, 15));
 	        lblLvL.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblLvL.setBounds(67, 187, 45, 14);
 	        panelPerfil.add(lblLvL);
 	        
-	        JLabel lblNivel = new JLabel();
+	    /*    JLabel lblNivel = new JLabel();
 	        lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 	        lblNivel.setBackground(Color.RED);
 	        lblNivel.setIcon(new RotatedIcon(nivel, 180));
 	        lblNivel.setBounds(67, 173, 45, 40);
 	        panelPerfil.add(lblNivel);
-	        
+	        */
+	      
 	        // Crear un JPanel para contener los JLabels
 	        JPanel panelPartidas = new JPanel();
 	       
@@ -258,19 +254,22 @@ public class MenuJugador extends JFrame {
 	        scrollPane.setBounds(216, 265, 465, 75);
 	        panelPerfil.add(scrollPane);
 	        
-	        JLabel lblRank = new JLabel("");
-	        lblRank.setOpaque(true);
+	        JLabel lblRank = new JLabel();
+	        lblRank.setHorizontalAlignment(SwingConstants.CENTER);
+	        System.out.println(metodosVista.cambiarIconoPorRango(j1.getRango()));
+	        lblRank.setIcon(metodosVista.cambiarIconoPorRango(j1.getRango()));
 	        lblRank.setBackground(Color.WHITE);
-	        lblRank.setBounds(55, 240, 73, 80);
+	      lblRank.setBounds(35, 212, 126, 128);
 	        panelPerfil.add(lblRank);
+	      
 	        
 	        imageIcon = new ImageIcon("ImagenesAplicacion/ImagenesMenu/fondoMenu.jpg");
 	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
-	      ImageIcon fondo = new ImageIcon(image);
+	      ImageIcon fondoPerfil = new ImageIcon(image);
 	        
 	        JLabel lblFondoPerfil = new JLabel();
 	        lblFondoPerfil.setBounds(0, 0, 720, 367);
-	        lblFondoPerfil.setIcon(fondo);
+	        lblFondoPerfil.setIcon(fondoPerfil);
 	        panelPerfil.add(lblFondoPerfil);
 	      
 	     
@@ -280,14 +279,19 @@ public class MenuJugador extends JFrame {
 	      
 	        
 	         scrollPersonajes = new JScrollPane();
+	         scrollPersonajes.getViewport().setOpaque(false);
+	         scrollPersonajes.setOpaque(false);
 	        scrollPersonajes.setBounds(0, 30, 720, 337);
-	        scrollPersonajes.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	        scrollPersonajes.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	        panelPersonajes.add(scrollPersonajes);
 	        
+	        imageIcon = new ImageIcon("ImagenesAplicacion/ImagenesMenu/fondoMenu.jpg");
+	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
+	      ImageIcon fondoPersonaje = new ImageIcon(image);
+	        
 	        JLabel lblFondoPersonajes = new JLabel();
 	        lblFondoPersonajes.setBounds(0, 0, 720, 367);
-	        lblFondoPersonajes.setIcon(fondo);
+	        lblFondoPersonajes.setIcon(fondoPersonaje);
 	        panelPersonajes.add(lblFondoPersonajes);
 	         
 	      
@@ -295,69 +299,24 @@ public class MenuJugador extends JFrame {
 	        tabbedPane.addTab("New tab", null, panelJugar, null);
 	        panelJugar.setLayout(null);
 	        
-	     
-	      
-	        JPanel panelModosNombres = new JPanel();
-	        panelModosNombres.setOpaque(false);
-	        panelModosNombres.setBounds(40, 180, 640, 49);
-	        panelJugar.add(panelModosNombres);
-	        panelModosNombres.setLayout(new GridLayout(1, 3));
-	   
-	
+	         scrollModos = new JScrollPane();
+	         scrollModos.getViewport().setOpaque(false);
+	         scrollModos.setOpaque(false);
+	        scrollModos.setBounds(60, 60, 600, 160);
+	        scrollModos.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+	        panelJugar.add(scrollModos);
 	        
-	        JLabel lblClasifi_1 = new JLabel();
-	        panelModosNombres.add(lblClasifi_1);
-	        
-	        JLabel lblARAM_1 = new JLabel("New label");
-	        lblARAM_1.setForeground(new Color(240, 230, 210));
-
-	        lblARAM_1.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblARAM_1.setBackground(new Color(10, 20, 40));
-	        panelModosNombres.add(lblARAM_1);
-	        
-	        JLabel lblNormal_1 = new JLabel("New label");
-	        lblNormal_1.setForeground(new Color(240, 230, 210));
-	      
-	        lblNormal_1.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblNormal_1.setBackground(new Color(10, 20, 40));
-	        panelModosNombres.add(lblNormal_1);
-	        
-	        JPanel panelModos = new JPanel();
-	        panelModos.setOpaque(false);
-	        panelModos.setBounds(40, 70, 640, 140);
-	        panelJugar.add(panelModos);
-	        panelModos.setLayout(new BorderLayout(0, 0));
-	        
-	        JLabel lblClasifi = new JLabel("New label");
-	        lblClasifi.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblClasifi.setOpaque(true);
-	        lblClasifi.setBackground(Color.CYAN);
-	        panelModos.add(lblClasifi);
-	        
-	        JLabel lblARAM = new JLabel("New label");
-	        lblARAM.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblARAM.setOpaque(true);
-	        lblARAM.setBackground(Color.RED);
-	        panelModos.add(lblARAM, BorderLayout.EAST);
-	        
-	      
-	        
-	        JLabel lblNormal = new JLabel("New label");
-	        lblNormal.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblNormal.setOpaque(true);
-	        lblNormal.setBackground(Color.PINK);
-	        panelModos.add(lblNormal, BorderLayout.WEST);
+	        imageIcon = new ImageIcon("ImagenesAplicacion/ImagenesMenu/fondoMenu.jpg");
+	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
+	      ImageIcon fondoJugar = new ImageIcon(image);
 	        
 	        JLabel lblFondoJugar = new JLabel();
 	        lblFondoJugar.setBounds(0, 0, 720, 367);
-	        lblFondoJugar.setIcon(fondo);
+	        lblFondoJugar.setIcon(fondoJugar);
 	        panelJugar.add(lblFondoJugar);
 	        
 	       
 	        
 	        
 	}
-
-
-	
 }

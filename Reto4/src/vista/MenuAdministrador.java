@@ -9,8 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
-
 import controlador.MetodosVista;
 import controlador.Metodos;
 import modelo.Usuario;
@@ -28,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Button;
 import java.awt.Label;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -71,7 +70,7 @@ public class MenuAdministrador extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuAdministrador(Usuario UsurJugador) {
-		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

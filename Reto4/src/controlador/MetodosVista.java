@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Modo;
 import modelo.Personaje;
 import utils.DBUtils;
 
@@ -116,6 +118,7 @@ public class MetodosVista {
 	    }
 	    return rowCount;
 	}
+	
 	public boolean isRowIncomplete(DefaultTableModel model, int rowIndex) {
 	    for (int i = 0; i < model.getColumnCount(); i++) {
 	        Object value = model.getValueAt(rowIndex, i);
@@ -129,6 +132,7 @@ public class MetodosVista {
 	
 	public void crearCartas(ArrayList<Personaje> personajes, JScrollPane scrollPane) {
 	    JPanel panelCartas = new JPanel();
+	    panelCartas.setOpaque(false);
 	    panelCartas.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // 20 de espacio horizontal y vertical entre cartas
 	    scrollPane.setViewportView(panelCartas); // Asignamos el panel de cartas al scroll pane
 	    
@@ -147,32 +151,25 @@ public class MetodosVista {
 			panel.setToolTipText(String.valueOf(personaje.getId()));
 			panel.addMouseListener(mouseListener);
 
+			JLabel lblTitulo = new JLabel(personaje.getName());
+			lblTitulo.setBounds(55, 190, 50, 15);
+			lblTitulo.setForeground(Color.WHITE);
+			panel.add(lblTitulo);
+			
+			  JLabel lblSombra = new JLabel();
+				lblSombra.setBounds(0, 0, 150, 220);
+				lblSombra.setForeground(Color.WHITE);
+				lblSombra.setIcon(rescaleImage("ImagenesAplicacion/Utils/sombra.png",150,220));
+				
+				panel.add(lblSombra);
+			
 			JLabel lblImagen = new JLabel();
 			lblImagen.setBounds(5, 5, 140, 215);
-			lblImagen.setIcon(cargarImagenPerfil(personaje));
+			lblImagen.setIcon(rescaleImage( "ImagenesAplicacion/PortadasChampions/" + personaje.getName() + ".jpg",140, 220));
 			lblImagen.setBackground(Color.RED);
 			lblImagen.setOpaque(true);
 			panel.add(lblImagen);
 			
-			
-			ImageIcon image = new ImageIcon("ImagenesAplicacion/Utils/sombra.png");
-		    Image imagenEscalad = image.getImage().getScaledInstance(170, 315, Image.SCALE_SMOOTH);
-		    ImageIcon imagenEscaladaIco = new ImageIcon(imagenEscalad);
-		    
-		    JLabel lblSombra = new JLabel();
-			lblSombra.setBounds(0, 0, 150, 220);
-			lblSombra.setForeground(Color.WHITE);
-			lblSombra.setIcon(imagenEscaladaIco);
-			
-			panel.add(lblSombra);
-			
-			
-			JLabel lblTitulo = new JLabel(personaje.getName());
-			lblTitulo.setBounds(50, 180, 50, 15);
-			lblTitulo.setForeground(Color.WHITE);
-			panel.add(lblTitulo);
-
-
 	        panelCartas.add(panel); // Agregamos la carta al panel de cartas
 	    }
 	    
@@ -185,14 +182,58 @@ public class MetodosVista {
 	    // Asignamos el tamaño mínimo al panel de cartas para que se ajuste al tamaño del contenido
 	    panelCartas.setPreferredSize(new Dimension(scrollPane.getWidth() - 20, filas * (220 + 20)));
 	}
+	
+	public void crearPanelesModos(JScrollPane scrollPanel, ArrayList<Modo> modos) {
+	    JPanel panelModos = new JPanel();
+	    panelModos.setBackground(Color.blue);
+	    panelModos.setLayout(new BoxLayout(panelModos, BoxLayout.X_AXIS));
+	    scrollPanel.setViewportView(panelModos);
+	    
+	    for (Modo modo : modos) {
+	        JPanel panel = new JPanel();
+	        panel.setPreferredSize(new Dimension(193, 148));
+	        panel.setBackground(Color.red);
+	        panel.setLayout(null);
 
+	        JLabel lblImagenModo = new JLabel();
+	        lblImagenModo.setLocation(0, 0);
+	        lblImagenModo.setSize(193, 148);
+	        lblImagenModo.setIcon(rescaleImage("ImagenesAplicacion/ImagenesModos/"+modo.getNombre()+".png",193,148));
 
-	private ImageIcon cargarImagenPerfil(Personaje personaje) {
-		String rutaImagen = "ImagenesAplicacion/PortadasChampions/" + personaje.getName() + ".jpg";
-	    ImageIcon imagen = new ImageIcon(rutaImagen);
-	    Image imagenEscalada = imagen.getImage().getScaledInstance(150, 220, Image.SCALE_SMOOTH);
-	    ImageIcon imagenEscaladaIcon = new ImageIcon(imagenEscalada);
-	    return imagenEscaladaIcon;
+	        JLabel lblNombreModo = new JLabel(modo.getNombre());
+	        lblNombreModo.setForeground(Color.WHITE);
+	        lblNombreModo.setBounds(75, 120, 46, 14);
+
+	        JLabel Sombra = new JLabel();
+	        Sombra.setLocation(0, 0);
+	        Sombra.setIcon((rescaleImage("ImagenesAplicacion/Utils/sombra.png",193,148)));
+	        Sombra.setSize(193, 148);
+
+	        panel.add(Sombra);
+	        panel.add(lblImagenModo);
+	        panel.add(lblNombreModo);
+
+	        panelModos.add(panel);
+	    }
+	    scrollPanel.setViewportView(panelModos);
+
 	}
+	
+	public static ImageIcon rescaleImage(String path, int width, int height) {
+        ImageIcon imageIcon = new ImageIcon(path);
+        Image image = imageIcon.getImage();
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
+	public ImageIcon cambiarIconoPorRango(String rango) {
+	    String rutaImagen = "ImagenesAplicacion/IconosClasificatoria/"+rango+"_1.png";
+	    System.out.println(rutaImagen);
+	   rescaleImage(rutaImagen, 130, 149);
+	    ImageIcon imagen = rescaleImage(rutaImagen, 130, 149);
+	  return imagen;
+	}
+
+	
 
 }

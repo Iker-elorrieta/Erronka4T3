@@ -35,7 +35,7 @@ public class GestionModos {
     }
 
 	//SELECT inicial 
-	public static ArrayList<Modo> cargaInicialModos() {
+	public ArrayList<Modo> cargaInicialModos() {
 		String consulta="SELECT * FROM modos";
 		ArrayList<Modo> modos= new ArrayList<>();
 		try {
@@ -49,6 +49,7 @@ public class GestionModos {
 				Modo modo = new Modo(id, nombre);
 				modos.add(modo);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

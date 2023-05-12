@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import exceptions.LoginException;
-import exceptions.PasswordMismatchException;
 import exceptions.PlayerNotFoundException;
 import manager.GestionUsuarios;
 import utils.TextPrompt;
@@ -28,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class LogIn extends JFrame {
 
@@ -62,7 +61,7 @@ public class LogIn extends JFrame {
 	 * Create the frame.
 	 */
 	public LogIn() {
-		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		setResizable(false);
 		
 		

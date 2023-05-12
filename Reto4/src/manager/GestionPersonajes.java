@@ -73,7 +73,7 @@ public class GestionPersonajes {
 	        }
 
 	        return personaje;
-<<<<<<< HEAD
+
 	    }
 	 
 	 public ArrayList<Personaje> getPersonajeByJugadorLvL(int lvl) {
@@ -141,9 +141,7 @@ public class GestionPersonajes {
 	        
 	        return personajes;
 	    }
-=======
-	    }  
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
+
 	 
 	//UPDATE personaje
 	public static  void updatePersonaje(Personaje personaje){
