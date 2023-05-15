@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import manager.GestionPersonajes;
+import modelo.Jugador;
 import modelo.Personaje;
 
 class GestionPersonajesTest {
@@ -39,9 +40,12 @@ class GestionPersonajesTest {
 	}
 	@Test
 	void testpersonajeMasJugado() {
-		ArrayList<String> pers=GestionPersonajes.personajeMasJugado();
+		Jugador jugador = new Jugador();
+		jugador.setId(1);
+		jugador.setNombre("Faker");
+		ArrayList<String> pers=GestionPersonajes.personajeMasJugado(jugador);
 		assertEquals(pers.get(0),"Faker");
-		assertEquals(pers.get(1),"Ashe");
+		assertEquals(pers.get(1),"Ruben");
 	}
 	@Test
 	void testhabilidadesDePersonajes() {

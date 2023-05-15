@@ -165,25 +165,22 @@ public class GestionPersonajes {
 		}
 	
 
-	public static ArrayList <String> personajeMasJugado() {
+	public static ArrayList <String> personajeMasJugado(Jugador jugador) {
 		
 		int contador=0;
 		ArrayList <Jugador> jugadores;
-		jugadores=GestionUsuarios.cargaInicialJugadores();
 		ArrayList <String> resultado = new ArrayList<String>();
 		
         try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
-            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE id=(SELECT id FROM players where id='"+jugadores.get(contador).getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
+            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE player_id=(SELECT id FROM players where id='"+jugador.getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
 
             Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(query);
 
-            if (rs.next()) {
+            while (rs.next()) {
 			    String personaje=rs.getString("name");
 			    
-			    resultado.add(jugadores.get(contador).getNombre());
-			    resultado.add(personaje);
-			    contador++;
+			    resultado.add(jugador.getNombre());
             }
             
             

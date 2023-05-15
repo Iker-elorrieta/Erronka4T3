@@ -27,6 +27,7 @@ class GestionPartidasTest {
 	
 	@Test
 	void testgetPartidasByJugador() {
+		
 		ArrayList<Partida> partidas=GestionPartidas.getPartidasByJugador("Fernando");
 		assertEquals(partidas.size(),1);
 	}

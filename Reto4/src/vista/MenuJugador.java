@@ -279,6 +279,21 @@ public class MenuJugador extends JFrame {
 	        lblFondoPerfil.setBounds(0, 0, 720, 367);
 	        lblFondoPerfil.setIcon(fondoPerfil);
 	        panelPerfil.add(lblFondoPerfil);
+	        
+	       
+	        
+	        Choice choice_cuenta= new Choice();
+	        choice_cuenta.setBounds(520, 44, 118, 20);
+	        panelPerfil.add(choice_cuenta);
+
+	        String option = "Cambiar nombre y contraseña";
+	        String option2 = "Eliminar cuenta";
+
+	        choice_cuenta.add(option);
+	        choice_cuenta.add(option2);
+	        
+	        
+	       
 	      
 	     
 	         panelPersonajes = new JPanel();
