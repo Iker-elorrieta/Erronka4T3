@@ -49,7 +49,7 @@ public class GestionEstadisticas {
 				estad.setDeath(estad.getDeath()+est.getDeath());
 				estad.setAssists(estad.getAssists()+est.getAssists());
 			}
-			conexion.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	

@@ -31,7 +31,7 @@ public class Metodos {
 		 
 		    Statement stmt = conexion.createStatement(); 
 		    stmt.executeUpdate(consulta);
-		    conexion.close();
+		    
 		} catch (SQLException e) {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}

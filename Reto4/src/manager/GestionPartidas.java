@@ -45,7 +45,7 @@ public class GestionPartidas {
 			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
 		}
-		conexion.close();
+		
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}

@@ -39,7 +39,7 @@ public class GestionUsuarios {
 					Jugador jugador = new Jugador(id, nombre, contrasenya, nivel, rango, fechaRegistro, bloqueado);
 					jugadores.add(jugador);	
 				}
-		     conexion.close();
+		     
 		} catch (SQLException e) {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}
@@ -65,7 +65,7 @@ public class GestionUsuarios {
 					boolean bloqueado = rs.getBoolean("bloqueado");
 					jugador = new Jugador(id, nombre1, contrasenya, nivel, rango, fechaRegistro, bloqueado);
 				}
-		     conexion.close();
+		    
 		} catch (SQLException e) {
 		    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
 		}
@@ -175,7 +175,7 @@ public class GestionUsuarios {
 			String consulta="Select level FROM players WHERE id="+id;
 			int nivel = 0;
 			try {
-			     conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+	
 			    Statement stmt = conexion.createStatement(); 
 			    ResultSet rs = stmt.executeQuery(consulta);
 			     while (rs.next()) 
@@ -198,7 +198,7 @@ public class GestionUsuarios {
 			
 	        String sql ="UPDATE players SET level='"+nivel+"' WHERE id ="+id;
 	        try {
-	        		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+	        		
 	        		PreparedStatement statement = conexion.prepareStatement(sql) ;
 	            statement.executeUpdate();
 	        } catch (SQLException e) {
