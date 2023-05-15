@@ -29,7 +29,8 @@ class gsfd {
 		admin1.setContrasenya(contra);
 		assertEquals(admin1.getNombre(),nombre);
 		assertEquals(admin1.getContrasenya(),contra);
-		
+		Administrador admin2= new Administrador();
+		assertEquals(admin2.getContrasenya(),null);
 		
 	}
 

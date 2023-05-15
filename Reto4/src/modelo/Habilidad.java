@@ -2,16 +2,24 @@ package modelo;
 
 public class Habilidad {
     private int cod;
+    private int cod_personaje;
     private String nombre;
     private String descripcion;
 
-    public Habilidad(int cod, String nombre, String descripcion) {
-        this.cod = cod;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
+    public Habilidad(int cod, int cod_personaje, String nombre, String descripcion) {
+		super();
+		this.cod = cod;
+		this.cod_personaje = cod_personaje;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
 
-    public int getCod() {
+
+    public Habilidad() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getCod() {
         return cod;
     } 
 
@@ -26,7 +34,7 @@ public class Habilidad {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+ 
     public String getDescripcion() {
         return descripcion;
     }
@@ -51,4 +59,12 @@ public class Habilidad {
         Habilidad habilidad = (Habilidad) o;
         return getCod() == habilidad.getCod();
     }
+
+	public int getCod_personaje() {
+		return cod_personaje;
+	}
+
+	public void setCod_personaje(int cod_personaje) {
+		this.cod_personaje = cod_personaje;
+	}
 }

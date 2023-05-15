@@ -19,39 +19,25 @@ class JugadorTest {
 	String contra = "mango123";
 	String rango = "Maestro";
 	int nivel = 69;
-	int id=0;
-	Date date1=new Date();   
-	Jugador jug1 = new Jugador(contra, nombre, rango, nivel, personajes, partidas,id, date1);
+	int id=0; 
+	Date fechaReg= new Date() ;
+	boolean bloqueado=false;
+	Jugador jug1 = new Jugador(id, nombre, contra, nivel, rango, fechaReg, bloqueado);
 	
 	@Test
 	void testJugador() {
 		
 		assertEquals(jug1.getNombre(),nombre);
 		assertEquals(jug1.getContrasenya(),contra);
-		assertEquals(jug1.getPartidasRecientes(),partidas);
-		assertEquals(jug1.getPersonajes(),personajes);
 		assertEquals(jug1.getNivel(),nivel);
 		assertEquals(jug1.getRango(),rango);
+		assertEquals(jug1.getFecha(),fechaReg);
 		assertEquals(jug1.getId(),id);
+		Jugador jug2= new Jugador();
+		assertEquals(jug2.getContrasenya(),null);
 	}
 	
-	@Test
-	void testanyadirPartidas() {
-		Partida partida1 = new Partida(0, jug1, null, null, null, false, null, 0);
-		jug1.anyadirPartidas(partida1);
-		assertEquals(jug1.getPartidasRecientes().get(0),partida1);
-		
-		Partida partida2 = new Partida(1, jug1, null, null, null, false, null, 0);
-		jug1.anyadirPartidas(partida2);
-		jug1.anyadirPartidas(partida2);
-		jug1.anyadirPartidas(partida2);
-		jug1.anyadirPartidas(partida2);
-		jug1.anyadirPartidas(partida1);
-		
-		assertEquals(jug1.getPartidasRecientes().get(0),partida2);
-		assertEquals(jug1.getPartidasRecientes().get(4),partida1);
-	}
-	
+
 	@Test
 	void testgetRango() {
 		assertEquals(jug1.getRango(),rango);
@@ -77,59 +63,52 @@ class JugadorTest {
 	}
 	
 	@Test
-	void testgetPersonajes() {
-		assertEquals(jug1.getPersonajes(),personajes);
+	void testsetFecha() {
+		Date fechaReg1= new Date();
+		jug1.setFecha(fechaReg1);
+		assertEquals(jug1.getFecha(),fechaReg1);
 	}
 	
 	@Test
-	void testsetPersonajes() {
-		ArrayList<Personaje> personajes2= new ArrayList<Personaje>();
-		jug1.setPersonajes(personajes2);
-		assertEquals(jug1.getPersonajes(),personajes2);
+	void testgetFecha() {
+		assertEquals(jug1.getFecha(),fechaReg);
 	}
-	
-	@Test
-	void testgetPartidasrecientes() {
-		assertEquals(jug1.getPartidasRecientes(),partidas);
-	}
-	
-	@Test
-	void testsetPartidasRecientes() {
-		ArrayList<Partida> partidas2= new ArrayList<Partida>();
-		jug1.setPartidasRecientes(partidas2);
-		assertEquals(jug1.getPartidasRecientes(),partidas2);
-	}
-
-	@Test
-	void testsubidaNivel() {
-		Partida partida1 = new Partida(0, jug1, null, null, null, true, null, 0);
-		jug1.anyadirPartidas(partida1);
-		jug1.subidaNivel();
-		assertEquals(jug1.getNivel(),nivel+1);
-	}
-	
 	@Test
 	void testcomprobarContrasenya() {
-		String contra2= "adios";//
+		String contra2= "adios";
 		assertTrue(jug1.comprobarContrasenya(contra));
 		assertFalse(jug1.comprobarContrasenya(contra2));
 	}
 	
 	@Test
-	void testsetfecha() {
-		Date date2=new Date();  
-		jug1.setFecha(date2);
-		assertEquals(jug1.getFecha(),date2);
+	void testsetbloqueado() {
+		boolean bloqueado2=true;  
+
+		jug1.setBloqueado(bloqueado2);
+		assertEquals(jug1.isBloqueado(),bloqueado2);
+
+		jug1.setBloqueado(bloqueado2);
+		assertEquals(jug1.isBloqueado(),bloqueado2);
+
 	}
 	
 	@Test
-	void testFecha() {
-		assertEquals(jug1.getFecha(),date1);
+	void testbloqueado() {
+		assertEquals(jug1.isBloqueado(),bloqueado);
+
 	}
 	
 	@Test
 	void testSaludo() {
 		assertEquals(jug1.Saludo(),"Buenas, saludos "+jug1.getNombre()+" ,bienvenido al mundo de LOL");
+	}
+	@Test
+	void testStringfecha() {
+		Date date = new Date();
+		Jugador jugador=new Jugador();
+		jugador.setFecha(date);
+		String fecha=jugador.StringFecha();
+		assertEquals(fecha,"2023-05-15");
 	}
 	
 }

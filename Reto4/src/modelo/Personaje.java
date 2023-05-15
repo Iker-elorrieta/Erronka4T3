@@ -5,8 +5,6 @@ import java.util.Objects;
 
 public class Personaje implements Saludar{
     private int id;
-    private int mastery;
-    private ArrayList<Habilidad> abilities = new ArrayList<>();
     private String name;
     private String role;
     private int difficulty;
@@ -15,20 +13,23 @@ public class Personaje implements Saludar{
     private int health;
     private int mana;
 
-    public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana, int mastery) {
+    public Personaje(int id, String name, String role, int difficulty, int attackDamage, int abilityPower, int health, int mana) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.difficulty = difficulty;
-        this.abilities = abilities;
         this.attackDamage = attackDamage;
         this.abilityPower = abilityPower;
         this.health = health;
         this.mana = mana;
-        this.mastery = mastery;
+   
     }
 
-    public int getId() {
+    public Personaje() {
+		
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -58,14 +59,6 @@ public class Personaje implements Saludar{
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public ArrayList<Habilidad> getAbilities() {
-        return abilities;
-    }
-
-    public void setAbilities(ArrayList<Habilidad> abilities) {
-        this.abilities = abilities;
     }
 
     public int getAttackDamage() {
@@ -99,36 +92,10 @@ public class Personaje implements Saludar{
     public void setMana(int mana) {
         this.mana = mana;
     }
-
-    public int getMastery() {
-        return mastery;
-    }
-
-    public void setMastery(int mastery) {
-        this.mastery = mastery;
-    }
-
-    public void calculateMastery(Partida partida) {
-        if(partida.isResultado())
-        	mastery=mastery+100;
-        else
-        	mastery=mastery+20;
-    }
-
     @Override
     public String toString() {
-        return "Champion{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", difficulty=" + difficulty +
-                ", abilities=" + abilities +
-                ", attackDamage=" + attackDamage +
-                ", abilityPower=" + abilityPower +
-                ", health=" + health +
-                ", mana=" + mana +
-                ", mastery=" + mastery +
-                '}';
+        return name;
+                
     }
 
     @Override
@@ -139,10 +106,7 @@ public class Personaje implements Saludar{
         return id == champion.id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+   
 
 	@Override
 	public String Saludo() {
