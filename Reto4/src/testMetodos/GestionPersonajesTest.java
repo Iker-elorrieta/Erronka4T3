@@ -25,7 +25,13 @@ class GestionPersonajesTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<Personaje> personajes =GestionPersonajes.cargaInicialPersonajes(conexion);
+		ArrayList<Personaje> personajes;
+		try {
+			personajes = GestionPersonajes.cargaInicialPersonajes(conexion);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(personajes.size(),4);
 	}
 	@Test
@@ -50,12 +56,12 @@ class GestionPersonajesTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Personaje personaje=new Personaje(2, "Ruben", "Tecnico de sistemas", 3, null, 100, 20, 50, 40);
+		Personaje personaje=new Personaje(2, "Ruben", "Tecnico de sistemas", 3, 100, 20, 50, 40);
 		GestionPersonajes.updatePersonaje(conexion, personaje);
 	}
 	@Test
 	void testinsertarPersonaje() {
-		Personaje personaje=new Personaje(4, "Iker", "Profe de marcas", 3, null, 100, 20, 50, 50);
+		Personaje personaje=new Personaje(4, "Iker", "Profe de marcas", 3, 100, 20, 50, 50);
 		GestionPersonajes.insertarPersonaje(personaje);
 	}
 	@Test
@@ -67,7 +73,7 @@ class GestionPersonajesTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, null, 100, 20, 50, 60);
+		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, 100, 20, 50, 60);
 		GestionPersonajes.eliminarPersonaje(conexion, personaje);
 	}
 	@Test

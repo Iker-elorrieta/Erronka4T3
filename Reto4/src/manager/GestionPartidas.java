@@ -73,7 +73,13 @@ public ArrayList<Partida> getPartidasByJugador(Connection conexion, String jugad
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, resultSet.getInt("champion_id"));
 			
-			Partida partida = new Partida(id, GestionUsuarios.getJugadorByNombre(conexion, jugador), modo, personaje, estadistica, resultado, fecha, duracion);
+			Partida partida;
+			try {
+				partida = new Partida(id, GestionUsuarios.getJugadorByNombre(conexion, jugador), modo, personaje, estadistica, resultado, fecha, duracion);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			partidas.add(partida);
         }
 

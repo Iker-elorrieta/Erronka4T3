@@ -12,37 +12,43 @@ public class EditRowFrame extends JFrame implements ActionListener {
     private JButton saveButton, cancelButton;
     private int numColumns;
     private String tableName;
-    private int rowId;
+    private int id;
     private Connection conn;
     
-    public EditRowFrame(String tableName, int rowId, Connection conn) {
+    public EditRowFrame(String tableName, int id, Connection conn) {
         this.tableName = tableName;
-        this.rowId = rowId;
+        this.id = id;
         this.conn = conn;
-        
-        // Get column names from database
+
         try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName + " WHERE id=" + rowId);
+            // Prepare the SQL statement with a parameter
+            String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+
+            // Execute the query and get the result set
+            ResultSet rs = pstmt.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             this.numColumns = metaData.getColumnCount() - 1; // Exclude id column
             this.columnLabels = new JLabel[numColumns];
             this.columnFields = new JTextField[numColumns];
-            
+
             // Set frame properties
             this.setTitle("Edit Row");
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setSize(400, 200);
-            this.setLayout(new GridLayout(numColumns+1, 2));
-            
+            this.setLayout(new GridLayout(numColumns + 1, 2));
+
             // Create column labels and fields
-            for (int i = 1; i <= numColumns; i++) { // Start at 1 to exclude id column
-                columnLabels[i-1] = new JLabel(metaData.getColumnName(i) + ":");
-                this.add(columnLabels[i-1]);
-                columnFields[i-1] = new JTextField(rs.getString(i));
-                this.add(columnFields[i-1]);
+            if (rs.next()) {
+                for (int i = 1; i <= numColumns; i++) { // Start at 1 to exclude id column
+                    columnLabels[i - 1] = new JLabel(metaData.getColumnName(i) + ":");
+                    this.add(columnLabels[i - 1]);
+                    columnFields[i - 1] = new JTextField(rs.getString(i));
+                    this.add(columnFields[i - 1]);
+                }
             }
-            
+
             // Create buttons
             saveButton = new JButton("Save");
             saveButton.addActionListener(this);
@@ -50,18 +56,20 @@ public class EditRowFrame extends JFrame implements ActionListener {
             cancelButton = new JButton("Cancel");
             cancelButton.addActionListener(this);
             this.add(cancelButton);
-            
-            // Close the database connections
+
+            // Close the result set and statement
             rs.close();
-            stmt.close();
+            pstmt.close();
         } catch (SQLException e) {
-            System.out.println("Error getting column names: " + e.getMessage());
+            e.printStackTrace();
         }
-        
+
         // Make the frame visible
         this.setVisible(true);
     }
-    
+
+
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == saveButton) {
             try {
@@ -74,7 +82,7 @@ public class EditRowFrame extends JFrame implements ActionListener {
                         sb.append(", ");
                     }
                 }
-                sb.append(" WHERE id=").append(rowId);
+                sb.append(" WHERE id=").append(id);
                 String sql = sb.toString();
                 
                 // Execute the update statement

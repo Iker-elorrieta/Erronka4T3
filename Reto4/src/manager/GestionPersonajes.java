@@ -159,8 +159,8 @@ public class GestionPersonajes {
 	}
 
 	//DELETE personaje 
-	 public void eliminarPersonaje(Connection conexion,int id) throws SQLException {
-	        String sql = "DELETE FROM champions WHERE id="+id;
+	 public void eliminarPersonaje(Connection conexion,Personaje personaje) throws SQLException {
+	        String sql = "DELETE FROM champions WHERE id="+personaje;
 	        try (Statement statement = conexion.createStatement()) {
 	            statement.executeUpdate(sql);
 	        }

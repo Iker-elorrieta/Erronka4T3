@@ -47,7 +47,7 @@ public class GestionUsuarios {
 	}
 	
 	//SELECT by nombre 
-	public  Jugador getJugadorByNombre(Connection conexion,String nombre){
+	public static  Jugador getJugadorByNombre(Connection conexion,String nombre){
 		String consulta="Select * FROM players WHERE name='"+nombre+"'";
 		Jugador jugador = new Jugador();
 		try {

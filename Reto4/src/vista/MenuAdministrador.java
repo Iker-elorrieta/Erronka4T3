@@ -305,16 +305,13 @@ public class MenuAdministrador extends JFrame {
         		JViewport vp = (JViewport) scroll.getComponent(0);
         		JTable table = (JTable) vp.getComponent(0);
         		 DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-        		 int selectedRow = table.getSelectedRow();
-        		 if (selectedRow != -1) {
+        		 int filaSeleccionada = table.getSelectedRow();
+                 if (filaSeleccionada != -1) {
+                     // Obtenemos el ID de la fila seleccionada en la tabla
+                     int id = Integer.valueOf((String) table.getValueAt(filaSeleccionada, 0)) ;
         		
         		  EditRowFrame editarFila = null;
-				try {
-					editarFila = new EditRowFrame(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()),selectedRow ,ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				editarFila = new EditRowFrame(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()),id ,conexion);
         		    editarFila.setVisible(true);
         		 }
         	}

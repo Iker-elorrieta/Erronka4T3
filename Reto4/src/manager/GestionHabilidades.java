@@ -105,8 +105,8 @@ public class GestionHabilidades {
 	}
 	
 	//DELETE habilidad 
-	 public void eliminarHabilidad(Connection conexion,int id) throws SQLException {
-	        String sql = "DELETE FROM abilities WHERE id="+id;
+	 public void eliminarHabilidad(Connection conexion,Habilidad habilidad) throws SQLException {
+	        String sql = "DELETE FROM abilities WHERE id="+habilidad;
 	        try (Statement statement = conexion.createStatement()) {
 	            statement.executeUpdate(sql);
 	        }

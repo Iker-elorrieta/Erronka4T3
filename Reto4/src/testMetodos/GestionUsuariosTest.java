@@ -21,14 +21,14 @@ class GestionUsuariosTest {
 	//1
 	@Test
 	void testgetJugadorByNombre() {
-		Jugador jug1=GestionUsuarios.getJugadorByNombre("Faker");
+		Jugador jug1=GestionUsuarios.getJugadorByNombre(null, "Faker");
 		assertEquals(jug1.getNombre(),"Faker");
 	}
 	//1
 	@Test
 	void testlogin() throws PlayerNotFoundException {
-			GestionUsuarios.login("Faker","fakerpass");
-			GestionUsuarios.login("gaizka", "gaizkacontra");
+			GestionUsuarios.login(null, "Faker","fakerpass");
+			GestionUsuarios.login(null, "gaizka", "gaizkacontra");
 	}
 	//2
 	@Test
@@ -36,7 +36,7 @@ class GestionUsuariosTest {
 		Date fecha= new Date();
 		Jugador jugador=new Jugador(2, "Fernando", "123",4, "Maestro", fecha, false);
 		
-		assertEquals(GestionUsuarios.getJugadorByNombre("Fernando").getNivel(),4);
+		assertEquals(GestionUsuarios.getJugadorByNombre(null, "Fernando").getNivel(),4);
 	}
 	//3
 	@Test
@@ -45,7 +45,7 @@ class GestionUsuariosTest {
 		Jugador jug= new Jugador(2, "Fernando", "fakerpassguord", 0, "Maestro", date,false);
 		boolean bloqueado=true;
 	
-		Jugador jug1=GestionUsuarios.getJugadorByNombre("Fernando");
+		Jugador jug1=GestionUsuarios.getJugadorByNombre(null, "Fernando");
 		assertEquals(jug1.isbloqueado(),true);
 	}
 	@Test
