@@ -1,6 +1,7 @@
 package utils;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DateConverter {
@@ -12,15 +13,20 @@ public class DateConverter {
         Calendar cal = Calendar.getInstance();
         cal.setTime(utilDate);
         long time = cal.getTimeInMillis();
-        return new Date(time);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada = formato.format(new Date(time));
+     
+        return  Date.valueOf(fechaFormateada);
     }
 
-    public static java.util.Date toUtilDate(Date sqlDate) {
+    public static String toUtilDate(Date sqlDate) {
         if (sqlDate == null) {
             return null;
         }
-        long time = sqlDate.getTime();
-        return new java.util.Date(time);
+        SimpleDateFormat formato = new SimpleDateFormat("YYYY-MM-DD");
+        String fechaFormateada = formato.format(sqlDate);
+       
+        return fechaFormateada;
     }
 }
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import controlador.Metodos;
 import modelo.Estadisticas;
@@ -18,7 +19,10 @@ import modelo.Personaje;
 import utils.DBUtils;
 
 public class GestionPartidas {
-
+	GestionEstadisticas gestionE = new GestionEstadisticas();
+	GestionPersonajes gestionPJ = new GestionPersonajes();
+	GestionModos gestionM = new GestionModos();
+	private Connection connection ;
 	//SELECT inicial 
 	public static ArrayList<Partida> cargaInicialPartidas() {
 	String consulta="SELECT * FROM matches";
@@ -49,11 +53,11 @@ public class GestionPartidas {
 }
 
 
-public static ArrayList<Partida> getPartidasByJugador(String jugador) {
+public ArrayList<Partida> getPartidasByJugador(String jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
-    String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM player WHERE name='"+jugador+"'";
+    String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM players WHERE name='"+jugador+"') ORDER By id DESC LIMIT 10; ;";
     try {
-    	Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+    	connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
         Statement stmt = connection.createStatement(); 
 	    ResultSet resultSet = stmt.executeQuery(query);
         
@@ -78,12 +82,12 @@ public static ArrayList<Partida> getPartidasByJugador(String jugador) {
 }
 	
 	//INSERT partida 
-	public static  void insertarPartida(Partida partida) { 
+	public  void insertarPartida(Partida partida) { 
 	int resultado=0;
 	if(partida.isResultado())
 		resultado=1;
-	String consulta="INSERT INTO `matches`(`id`, `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
-			+"'"+partida.getCod_partida()+"','"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
+	String consulta="INSERT INTO `matches`( `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
+			+"'"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
 			Metodos.conexionBDUpdate(consulta);
 
 }
@@ -123,7 +127,23 @@ public static ArrayList<Partida> getPartidasByJugador(String jugador) {
 		
 	}
 
+	public Partida crearPartidaAleatoria(Jugador jugador , String modo, String personaje) {
+		Random r = new Random();
+        int duracion = r.nextInt(86) + 45; // Duración aleatoria entre 45 y 130 minutos
+        boolean victoria = r.nextBoolean();
 
+        
+		Partida partida =new Partida(duracion, jugador, null, null, null, victoria, null, duracion);
+		partida.setDuracion(duracion);
+		partida.setEstadisticas(gestionE.generarEstadisticasAleatorias());
+		partida.setFecha(new Date());
+		partida.setModo(gestionM.getModoByName(modo));
+		partida.setPersonaje(gestionPJ.getPersonajeByNombre(personaje));
+		partida.setJugador(jugador);
+		partida.setResultado(Boolean.valueOf(victoria));
+		return partida;
+		
+	}
 	
 
 

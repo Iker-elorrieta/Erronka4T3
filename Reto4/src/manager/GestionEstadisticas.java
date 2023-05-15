@@ -13,14 +13,14 @@ import utils.DBUtils;
 public class GestionEstadisticas {
 	
 	public static Estadisticas obtenerEstadistica(String estadistica) {
-		String killString=estadistica.substring(0,1);
-		int kills=Integer.parseInt(killString);
-		String assistString=estadistica.substring(2,3);
-		int assists=Integer.parseInt(assistString);
-		String deathString=estadistica.substring(4,5);
-		int death=Integer.parseInt(deathString);
-		Estadisticas stats= new Estadisticas(kills,death,assists);
-		return stats;
+		 String[] valores = estadistica.split("/");
+		 
+		    int kills = Integer.valueOf(valores[0]);
+		    int assists = Integer.valueOf(valores[1]);
+		    int deaths = Integer.valueOf(valores[2]);
+		   
+		    Estadisticas stats = new Estadisticas(kills, deaths, assists);
+		    return stats;
 	}
 	
 	 public static Estadisticas generarEstadisticasAleatorias() {

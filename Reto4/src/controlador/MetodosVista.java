@@ -17,11 +17,13 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -32,8 +34,10 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import modelo.Modo;
+import modelo.Partida;
 import modelo.Personaje;
 import utils.DBUtils;
 
@@ -83,9 +87,17 @@ public class MetodosVista {
 	            }
 	            row++;
 	        }
-	        DefaultTableModel modelo = new DefaultTableModel(data, columnNames);
+	        DefaultTableModel  modelo = new DefaultTableModel (data, columnNames) { 
+	        	
+	        	private static final long serialVersionUID = 1L;
+
+				@Override
+	            public boolean isCellEditable(int row, int column) {
+	            return false;
+	        	}
+	        };
 	        JTable table = new JTable(modelo);
-	        table.setEnabled(false);
+	       
 
 	        // Paso 5: Agregar la tabla al scroll panel
 	        JScrollPane scroll = new JScrollPane(table);
@@ -185,14 +197,15 @@ public class MetodosVista {
 	
 	public void crearPanelesModos(JScrollPane scrollPanel, ArrayList<Modo> modos) {
 	    JPanel panelModos = new JPanel();
-	    panelModos.setBackground(Color.blue);
+	   
 	    panelModos.setLayout(new BoxLayout(panelModos, BoxLayout.X_AXIS));
+	    panelModos.setOpaque(false);
 	    scrollPanel.setViewportView(panelModos);
 	    
 	    for (Modo modo : modos) {
 	        JPanel panel = new JPanel();
 	        panel.setPreferredSize(new Dimension(193, 148));
-	        panel.setBackground(Color.red);
+	       panel.setOpaque(false);
 	        panel.setLayout(null);
 
 	        JLabel lblImagenModo = new JLabel();
@@ -202,16 +215,17 @@ public class MetodosVista {
 
 	        JLabel lblNombreModo = new JLabel(modo.getNombre());
 	        lblNombreModo.setForeground(Color.WHITE);
-	        lblNombreModo.setBounds(75, 120, 46, 14);
+	        lblNombreModo.setBounds(75, 120, 193, 15);
 
 	        JLabel Sombra = new JLabel();
 	        Sombra.setLocation(0, 0);
 	        Sombra.setIcon((rescaleImage("ImagenesAplicacion/Utils/sombra.png",193,148)));
 	        Sombra.setSize(193, 148);
-
+	        
+	        panel.add(lblNombreModo);
 	        panel.add(Sombra);
 	        panel.add(lblImagenModo);
-	        panel.add(lblNombreModo);
+	        
 
 	        panelModos.add(panel);
 	    }
@@ -226,14 +240,62 @@ public class MetodosVista {
         return new ImageIcon(scaledImage);
     }
 
-	public ImageIcon cambiarIconoPorRango(String rango) {
+	public void cambiarIconoPorRango(String rango, JLabel labelRank) {
 	    String rutaImagen = "ImagenesAplicacion/IconosClasificatoria/"+rango+"_1.png";
 	    System.out.println(rutaImagen);
 	   rescaleImage(rutaImagen, 130, 149);
-	    ImageIcon imagen = rescaleImage(rutaImagen, 130, 149);
-	  return imagen;
+	    ImageIcon imagen = rescaleImage(rutaImagen, 20, 50);
+	    labelRank.setIcon( imagen);
 	}
 
 	
+	public void mostrarPartidas(ArrayList<Partida> partidas, JScrollPane scrollPane) {
+	    // Creamos un JPanel que contendrá las filas de la tabla
+	    JPanel panelTabla = new JPanel();
+	    panelTabla.setLayout(new BoxLayout(panelTabla, BoxLayout.Y_AXIS));
+
+	    // Añadimos cada partida como una fila en el panel
+	    for (int i = 0; i < partidas.size(); i++) {
+	    	Partida partida = partidas.get(i);
+	        JPanel fila = new JPanel(new GridLayout(1, 6)); // Creamos una fila con 4 columnas
+
+	        // Añadimos cada columna de la fila con los datos de la partida
+	        fila.add(new JLabel(partida.victoria()));
+	        fila.add(new JLabel(partida.getPersonaje().getName()));
+	        fila.add(new JLabel(partida.getEstadisticas().toString()));
+	        fila.add(new JLabel(partida.getModo().getNombre()));
+	        fila.add(new JLabel(partida.getFecha().toString()));
+	        fila.add(new JLabel(String.valueOf(partida.getDuracion())));
+	        panelTabla.add(fila); 
+	        
+	        if (i < partidas.size() - 1) {
+	            JSeparator separador = new JSeparator(JSeparator.HORIZONTAL);
+	            panelTabla.add(separador);
+	        }
+	        
+	       
+	    }
+
+	    // Añadimos el panel al JScrollPane
+	    scrollPane.setViewportView(panelTabla);
+	}
+
+	public void mostrarPartida(Partida partida, JPanel panelPartida) {
+		  panelPartida.removeAll(); 
+		  SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	        String fechaFormateada = formato.format(partida.getFecha());
+		 JPanel fila = new JPanel(new GridLayout(1, 6));
+		 fila.add(new JLabel(partida.victoria()));
+	        fila.add(new JLabel(partida.getPersonaje().getName()));
+	        fila.add(new JLabel(partida.getEstadisticas().toString()));
+	        fila.add(new JLabel(partida.getModo().getNombre()));
+	        fila.add(new JLabel(fechaFormateada));
+	        fila.add(new JLabel(String.valueOf(partida.getDuracion())));
+	        panelPartida.add(fila); 
+	        
+	        panelPartida.revalidate();
+	        panelPartida.repaint();
+	}
+
 
 }

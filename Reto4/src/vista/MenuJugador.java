@@ -12,6 +12,8 @@ import javax.swing.JTabbedPane;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -37,8 +39,13 @@ import javax.swing.JTree;
 import controlador.Metodos;
 import controlador.MetodosVista;
 import manager.GestionModos;
+import manager.GestionPartidas;
 import manager.GestionPersonajes;
+import manager.GestionUsuarios;
 import modelo.Jugador;
+import modelo.Modo;
+import modelo.Partida;
+import modelo.Personaje;
 import modelo.Usuario;
 
 import javax.swing.JSeparator;
@@ -46,6 +53,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+import javax.swing.JButton;
+import java.awt.Choice;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuJugador extends JFrame {
 	private MenuJugador frame;
@@ -56,11 +67,15 @@ public class MenuJugador extends JFrame {
 	private  JPanel panelJugar;
 	private JTabbedPane tabbedPane;
 	MetodosVista metodosVista = new MetodosVista();
-	GestionPersonajes gestionP = new GestionPersonajes();
+	GestionPersonajes gestionPJ = new GestionPersonajes();
+	GestionPartidas gestionP = new GestionPartidas();
 	GestionModos gestionM = new GestionModos();
+	GestionUsuarios gestionU = new GestionUsuarios();
 	Metodos metodos = new Metodos();
 	private JScrollPane scrollPersonajes ;
 	private  JScrollPane scrollModos;
+	private JScrollPane scrollPartidas;
+	private JLabel lblLvL;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -82,6 +97,7 @@ public class MenuJugador extends JFrame {
 	 */
 	public MenuJugador(Usuario usuario){
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
+		
 		Jugador j1 = (Jugador) usuario;
 	/*	addWindowListener(new WindowAdapter() {
             @Override
@@ -99,7 +115,7 @@ public class MenuJugador extends JFrame {
                 }
             }
         });
-    
+    	
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);*/
 		setBounds(100, 100, 728, 430);
@@ -123,6 +139,15 @@ public class MenuJugador extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		Timer timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	 metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(j1.getNombre()), scrollPartidas);
+            	 lblLvL.setText(String.valueOf(gestionU.getNivelById(j1.getId())));
+            }
+        });
+
+        timer.start();
+		
 		 ImageIcon imageIcon = new ImageIcon("ImagenesAplicacion/Utils/boton.png");
 	        Image image = imageIcon.getImage().getScaledInstance(380,220, Image.SCALE_SMOOTH);
 	      ImageIcon jugar = new ImageIcon(image);
@@ -134,13 +159,13 @@ public class MenuJugador extends JFrame {
         lblJugar.setHorizontalAlignment(SwingConstants.CENTER);
         lblJugar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	metodosVista.crearPanelesModos(scrollPersonajes, gestionM.cargaInicialModos());
+            	metodosVista.crearPanelesModos(scrollModos, gestionM.cargaInicialModos());
             	tabbedPane.setSelectedIndex(2);
             }
         });
         contentPane.add(lblJugar);
         
-		   // Crear la barra de navegación
+		// Crear la barra de navegación
         JToolBar navBar = new JToolBar();
         navBar.setFloatable(false);
         navBar.setBounds(0, 0, 712, 56);
@@ -178,7 +203,7 @@ public class MenuJugador extends JFrame {
             public void mouseClicked(MouseEvent e) {
             	tabbedPane.setSelectedIndex(1);
             	
-            	metodosVista.crearCartas(gestionP.getPersonajeByJugadorLvL(j1.getNivel()), scrollPersonajes);
+            	metodosVista.crearCartas(gestionPJ.getPersonajeByJugadorLvL(gestionU.getNivelById(j1.getId())), scrollPersonajes);
             }
         });
 		navBar.add(lblPersonajes);
@@ -191,9 +216,9 @@ public class MenuJugador extends JFrame {
 		
 		JPanel panelPerfil = new JPanel();
 		panelPerfil.setBackground(new Color(0, 41, 62));
-		tabbedPane.addTab("New tab", null, panelPerfil, null);
+		tabbedPane.addTab("Perfil", null, panelPerfil, null);
 		
-		 JPanel panelImagen = new JPanel();
+
 	        labelImagen = new JLabel(imagenes.get(0));
 	        labelImagen.setBackground(Color.GREEN);
 	        labelImagen.setOpaque( true);
@@ -222,42 +247,25 @@ public class MenuJugador extends JFrame {
 	         image = imageIcon.getImage().getScaledInstance(45,50, Image.SCALE_SMOOTH);
 	      ImageIcon nivel = new ImageIcon(image);
 	        
-	        JLabel lblLvL = new JLabel(String.valueOf(j1.getNivel()));
+	         lblLvL = new JLabel(String.valueOf(j1.getNivel()));
 	        lblLvL.setForeground(new Color(240, 230, 210));
 	        lblLvL.setFont(new Font("Georgia", Font.BOLD, 15));
 	        lblLvL.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblLvL.setBounds(67, 187, 45, 14);
+	        lblLvL.setBounds(67, 187, 45, 15);
 	        panelPerfil.add(lblLvL);
+	     
 	        
-	    /*    JLabel lblNivel = new JLabel();
-	        lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
-	        lblNivel.setBackground(Color.RED);
-	        lblNivel.setIcon(new RotatedIcon(nivel, 180));
-	        lblNivel.setBounds(67, 173, 45, 40);
-	        panelPerfil.add(lblNivel);
-	        */
-	      
-	        // Crear un JPanel para contener los JLabels
-	        JPanel panelPartidas = new JPanel();
-	       
-	        panelPartidas.setBackground(new Color(0, 67, 100));
-	        panelPartidas.setLayout(new BoxLayout(panelPartidas, BoxLayout.Y_AXIS));
-	        for (int i = 1; i <= 20; i++) {
-	            JLabel label = new JLabel("Label " + i);
-	            label.setForeground(new Color(240, 230, 210));
-	            panelPartidas.add(label);
-	        }
-	        
-	        JScrollPane scrollPane = new JScrollPane(panelPartidas);
-	        scrollPane.setEnabled(false);
-	        scrollPane.setViewportBorder(null);
-	        scrollPane.setBounds(216, 265, 465, 75);
-	        panelPerfil.add(scrollPane);
-	        
+	         scrollPartidas = new JScrollPane();
+	        scrollPartidas.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	        scrollPartidas.setEnabled(false);
+	        scrollPartidas.setViewportBorder(null);
+	        scrollPartidas.setBounds(216, 265, 465, 75);
+	        panelPerfil.add(scrollPartidas);
+	        metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(j1.getNombre()), scrollPartidas);
 	        JLabel lblRank = new JLabel();
 	        lblRank.setHorizontalAlignment(SwingConstants.CENTER);
-	        System.out.println(metodosVista.cambiarIconoPorRango(j1.getRango()));
-	        lblRank.setIcon(metodosVista.cambiarIconoPorRango(j1.getRango()));
+	     
+	        metodosVista.cambiarIconoPorRango(j1.getRango(), lblRank);
 	        lblRank.setBackground(Color.WHITE);
 	      lblRank.setBounds(35, 212, 126, 128);
 	        panelPerfil.add(lblRank);
@@ -274,7 +282,7 @@ public class MenuJugador extends JFrame {
 	      
 	     
 	         panelPersonajes = new JPanel();
-	        tabbedPane.addTab("New tab", null, panelPersonajes, null);
+	        tabbedPane.addTab("Personajes", null, panelPersonajes, null);
 	        panelPersonajes.setLayout(null);
 	      
 	        
@@ -296,7 +304,7 @@ public class MenuJugador extends JFrame {
 	         
 	      
 	         panelJugar = new JPanel();
-	        tabbedPane.addTab("New tab", null, panelJugar, null);
+	        tabbedPane.addTab("Jugar", null, panelJugar, null);
 	        panelJugar.setLayout(null);
 	        
 	         scrollModos = new JScrollPane();
@@ -306,14 +314,55 @@ public class MenuJugador extends JFrame {
 	        scrollModos.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 	        panelJugar.add(scrollModos);
 	        
+	         JPanel panelPartida = new JPanel();
+	         panelPartida.setBounds(71, 270, 578, 34);
+	         panelPartida.setLayout(new BoxLayout(panelPartida, BoxLayout.Y_AXIS));
+	         panelJugar.add(panelPartida);
+	         
 	        imageIcon = new ImageIcon("ImagenesAplicacion/ImagenesMenu/fondoMenu.jpg");
 	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
 	      ImageIcon fondoJugar = new ImageIcon(image);
+	        
+	      
+	      Choice choice = new Choice();
+	        choice.setBounds(444, 318, 118, 20);
+	        ArrayList<Personaje> p=gestionPJ.getPersonajeByJugadorLvL(gestionU.getNivelById(j1.getId()));
+	      for (Personaje personaje : p) {
+			choice.add(personaje.getName());
+		}
+
+	        panelJugar.add(choice);
+	        Choice choice_1 = new Choice();
+	        choice_1.setBounds(180, 318, 118, 20);
+	        ArrayList<Modo> m=gestionM.cargaInicialModos();
+	        for (Modo modo : m) {
+				choice_1.add(modo.getNombre());
+			}
+	        panelJugar.add(choice_1);
+	        
+	        JButton btnJugarPartida = new JButton("Play");
+	        btnJugarPartida.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		
+	        		Partida partida =gestionP.crearPartidaAleatoria(j1, choice_1.getSelectedItem(), choice.getSelectedItem());
+	        		if(partida.isResultado())
+	        			gestionU.subirNivel(j1.getId());
+	        		metodosVista.mostrarPartida(partida, panelPartida);
+	        		gestionP.insertarPartida(partida);
+	        	}
+	        });
+	        btnJugarPartida.setBounds(323, 315, 89, 23);
+	        panelJugar.add(btnJugarPartida);
+	        
+	       
 	        
 	        JLabel lblFondoJugar = new JLabel();
 	        lblFondoJugar.setBounds(0, 0, 720, 367);
 	        lblFondoJugar.setIcon(fondoJugar);
 	        panelJugar.add(lblFondoJugar);
+	        
+	       
+	        
 	        
 	       
 	        

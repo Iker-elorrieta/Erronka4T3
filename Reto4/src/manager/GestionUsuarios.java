@@ -17,13 +17,14 @@ import modelo.Usuario;
 import utils.DBUtils;
 
 public class GestionUsuarios {
+	private static Connection conexion;
 	
 	//SELECT inicial 
-	public static ArrayList<Jugador> cargaInicialJugadores(){
+	public  ArrayList<Jugador> cargaInicialJugadores(){
 		String consulta="Select * FROM players";
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+		     conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -50,7 +51,7 @@ public class GestionUsuarios {
 		String consulta="Select * FROM players WHERE name='"+nombre+"'";
 		Jugador jugador = new Jugador();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+		     conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 		     while (rs.next()) 
@@ -77,10 +78,10 @@ public class GestionUsuarios {
         String sqlJugador = "SELECT * FROM players WHERE name = ? AND password_hash = ?";
         Usuario usur= null;
 		try {
-			Connection conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-
-             PreparedStatement stmtAdmin = conn.prepareStatement(sqlAdmin);
-             PreparedStatement stmtJugador = conn.prepareStatement(sqlJugador);
+			
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+             PreparedStatement stmtAdmin = conexion.prepareStatement(sqlAdmin);
+             PreparedStatement stmtJugador = conexion.prepareStatement(sqlJugador);
 
             stmtAdmin.setString(1, username);
             stmtAdmin.setString(2, password);
@@ -104,67 +105,109 @@ public class GestionUsuarios {
     
     }
     
-    //UPDATE Jugador 
-
-  	public static void actualizarJugador(Jugador jugador) {
-  			int bloqueado=0;
-  			if(jugador.isbloqueado())
-  				bloqueado=1;
-  		
-  	        String consulta = "UPDATE players SET name='"+jugador.getNombre()+"',password_hash='"+jugador.getContrasenya()+"',level='"+jugador.getNivel()+"',rank='"+jugador.getRango()+"',bloqueado='"+bloqueado+"',registration_date='"+jugador.StringFecha()+"' WHERE id ="+jugador.getId();
-  	        Metodos.conexionBDUpdate(consulta);
-
-  	    }
-  	
-  	//UPDATE Bloqueo 
-    public static void actualizarEstadoBloqueo(Jugador jugador, boolean bloqueado) {
-    	int bloquiado=0;
-    	if(bloqueado)
-    		bloquiado++;
-    		
-        String consulta = "UPDATE players SET bloqueado = "+bloquiado+" WHERE id ="+jugador.getId();
-        Metodos.conexionBDUpdate(consulta);
-    }
-    
-    //ARRAY UPDATE Bloqueo 
-    public static void cambiarEstadoBloqueo( Jugador jugador, boolean bloqueado) {
-    	actualizarEstadoBloqueo(jugador, bloqueado);
-    	jugador.setBloqueado(bloqueado);
-        
-    }
-
-    //Array Bloqueo 
-    public static void cambiarBloqueo(ArrayList<Jugador> jugadores, int idJugador, boolean bloqueado) {
-      for(int i=0;i<jugadores.size();i++) {
-    	   
-            if (jugadores.get(i).getId() == idJugador) {
-                cambiarEstadoBloqueo(jugadores.get(i), bloqueado);
-            }
-            	i++;
-            
-       }}
-    
-    //INSERT Usuario Array 
-    public static  void insertarUsuario(Jugador jugador,ArrayList<Jugador> jugadores) { 
-    	if (jugadores!=null)
-    	jugadores.add(jugador);
-
-		String consulta="INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.StringFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
-		Metodos.conexionBDUpdate(consulta);
+   
+	public boolean usuarioExistente(String usuario) throws SQLException {
+		 String sql = "SELECT COUNT(*) FROM (SELECT name FROM players UNION ALL SELECT name FROM admins) usuarios WHERE name = ?";
+	        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+	            statement.setString(1, usuario);
+	            try (ResultSet resultSet = statement.executeQuery()) {
+	                if (resultSet.next()) {
+	                    int count = resultSet.getInt(1);
+	                    return count > 0;
+	                }
+	            }
+	        }
+	        return false;
+		
 	}
-    
-    //DELETE Admin 
-	public static void eliminarAdministrador(Administrador Administrador,ArrayList<Administrador> Administradores) {
-    	Administradores.remove(Administrador);
-    	String consulta="DELETE FROM `admins` WHERE id="+Administrador.getId();
-		Metodos.conexionBDUpdate(consulta);
-    }
+		
+	//UPDATE Jugador 
+	 public void actualizarJugador(Jugador jugador) throws SQLException {
+		 int bloqueado=0;
+			if(jugador.isbloqueado())
+				bloqueado=1;
+	        String sql ="UPDATE players SET name='"+jugador.getNombre()+"',password_hash='"+jugador.getContrasenya()+"',level='"+jugador.getNivel()+"',rank='"+jugador.getRango()+"',bloqueado='"+bloqueado+"',registration_date='"+jugador.StringFecha()+"' WHERE id ="+jugador.getId();
+	        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+	            statement.executeUpdate();
+	        }
+	    }
+	 
+	 public void actualizarAdministrador(Administrador admin) throws SQLException {
+	        String sql = "UPDATE admins SET name=? ,password=? WHERE id="+admin.getId();
+	        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+	            statement.setString(1, admin.getNombre());
+	            statement.setString(2, admin.getContrasenya());
+	            statement.executeUpdate();
+	        }
+	    }
 
-    //DELETE Jugador
-    public static void eliminarJugador(Jugador jugador) {
-    	String consulta="DELETE FROM `players` WHERE id="+jugador.getId();
-		Metodos.conexionBDUpdate(consulta);
-    }
-    
-    
+	    public void insertarJugador(Jugador jugador) throws SQLException {
+	        String sql = "INSERT INTO `players`(`name`, `password_hash`, `registration_date`, `level`, `rank`) VALUES ('"+jugador.getNombre()+"','"+jugador.getContrasenya()+"','"+jugador.StringFecha()+"','"+jugador.getNivel()+"','"+jugador.getRango()+"');";
+	        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+	            statement.executeUpdate();
+	        }
+	    }
+	    
+	    public void insertarAdministrador(Administrador admin) throws SQLException {
+	    	 String sql = "INSERT admins SET name=? ,password=?";
+		        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+		            statement.setString(1, admin.getNombre());
+		            statement.setString(2, admin.getContrasenya());
+		            statement.executeUpdate();
+		        }
+	    }
+	    //DELETE Jugador
+	    public void eliminarJugador(int id) throws SQLException {
+	        String sql = "DELETE FROM `players` WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
+	        //DELETE Admin   
+	    public void eliminarAdministrador(int id) throws SQLException {
+		      String sql ="DELETE FROM `admins` WHERE id="+id;
+		        try (Statement statement = conexion.createStatement()) {
+		            statement.executeUpdate(sql);
+		        }
+	    }
+
+		public int getNivelById(int id) {
+			String consulta="Select level FROM players WHERE id="+id;
+			int nivel = 0;
+			try {
+			     conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+			    Statement stmt = conexion.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(consulta);
+			     while (rs.next()) 
+					{    
+			    	 	
+						
+						nivel=rs.getInt("level");
+						
+					}
+			    
+			} catch (SQLException e) {
+			    System.err.println("Error al establecer la conexión con MySQL: " + e.getMessage());
+			}
+			return nivel;
+			
+		}
+
+		public void subirNivel(int id) {
+			int nivel= getNivelById(id)+1;
+			
+	        String sql ="UPDATE players SET level='"+nivel+"' WHERE id ="+id;
+	        try {
+	        		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+	        		PreparedStatement statement = conexion.prepareStatement(sql) ;
+	            statement.executeUpdate();
+	        } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		
+		}
+	   
+		
 }

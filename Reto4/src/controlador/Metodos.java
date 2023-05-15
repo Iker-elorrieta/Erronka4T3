@@ -8,12 +8,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Random;
 
 import javax.swing.table.DefaultTableModel;
 
 import exceptions.PlayerNotFoundException;
 import modelo.Administrador;
 import modelo.Jugador;
+import modelo.Partida;
 import modelo.Usuario;
 import utils.DBUtils;
 import vista.MenuAdministrador;
@@ -66,8 +68,8 @@ public class Metodos {
 	        } catch (IOException e) {
 	        }
 	    }
-	public void guardarCambios(DefaultTableModel modelo, int selectedPanelInt) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+
+	
+	
 }

@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,7 @@ class RegisterFrame extends JFrame {
 	private JTextField textUsuario;
 	private JPasswordField passwordField_1;
 	private JPasswordField passwordField_2;
-    public GestionUsuarios gestionUsur;
+    public GestionUsuarios gestionU;
     public RegisterFrame() {
     	setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
     	setType(Type.UTILITY);
@@ -156,12 +157,26 @@ class RegisterFrame extends JFrame {
         	    	 
         	    	  lblError_2.setVisible(false);
         	      }
+        	      try {
+					if(gestionU.usuarioExistente(textUsuario.getText()))
+						  lblError.setVisible(true);
+					  else
+						  lblError.setVisible(false);
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
         	      
         	      // Si todo está bien, continua
         	      if(!lblError_2.isVisible()&&!lblError_1.isVisible()&&!lblError.isVisible()){
         	      Date fechareg = new Date();
         	      Jugador jugador = new Jugador(0, textUsuario.getText(),String.valueOf(passwordField_1.getPassword()), 1, "Iron", DateConverter.toSqlDate(fechareg), false);
-        	      gestionUsur.insertarUsuario(jugador, null);
+        	      try {
+					gestionU.insertarJugador(jugador);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         	      }
         	   }
         	

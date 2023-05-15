@@ -3,27 +3,34 @@ package vista;
 import java.awt.EventQueue;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
 import javax.swing.table.DefaultTableModel;
 
 import controlador.MetodosVista;
+import manager.GestionHabilidades;
+import manager.GestionModos;
+import manager.GestionPartidas;
+import manager.GestionPersonajes;
+import manager.GestionUsuarios;
 import controlador.Metodos;
 import modelo.Usuario;
+import utils.ConexionBD;
+import utils.DBUtils;
+
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JViewport;
 import javax.swing.JLabel;
 import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.Font;
-import javax.swing.JLayeredPane;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
+
 import java.awt.Button;
 import java.awt.Label;
 import java.awt.Toolkit;
@@ -31,25 +38,35 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import java.sql.SQLException;
-import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MenuAdministrador extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
 	private JTabbedPane tabbedPane;
 	private JPanel panelJugadores;
 	private  JPanel panelPartidas ;
 	private  JPanel panelPersonajes;
 	private  JPanel panelHabilidades;
 	private  JPanel panelModos;
-	private JScrollPane scrollJugadores;
 	private MetodosVista metodosVista = new MetodosVista();
 	private Metodos metodos = new Metodos();
+	private List<String> sentenciasSQL = new ArrayList<>();
+	 GestionModos gestionM = new GestionModos();
+	    GestionHabilidades gestionH = new GestionHabilidades();
+	    GestionPersonajes gestionC = new GestionPersonajes();
+	    GestionUsuarios gestionU = new GestionUsuarios();
+	    GestionPartidas gestionP = new GestionPartidas();
+	    GestionPersonajes gestionPJ = new GestionPersonajes();
+
 	/**
 	 * Launch the application.
 	 */
@@ -88,7 +105,7 @@ public class MenuAdministrador extends JFrame {
             }
         });
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+		setBounds(100, 100, 728, 430);
 
 		contentPane = new JPanel();
 		setContentPane(contentPane);
@@ -224,6 +241,23 @@ public class MenuAdministrador extends JFrame {
                     // Eliminar la fila seleccionada del modelo de tabla
                    DefaultTableModel modelo= (DefaultTableModel) table.getModel();
                    modelo.removeRow(selectedRow);
+                   String nombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+                  if(nombre.equalsIgnoreCase("players")){
+                	   try {
+						gestionU.eliminarJugador(selectedRow);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                   }else if(nombre.equalsIgnoreCase("matches")){
+                	  
+                   }else if(nombre.equalsIgnoreCase("champions")){
+                	  
+                   }else if(nombre.equalsIgnoreCase("abilities")){
+                	  
+                   }else if(nombre.equalsIgnoreCase("modos")) {
+                	   
+                   }
                 }
         	}
         });
@@ -237,16 +271,19 @@ public class MenuAdministrador extends JFrame {
         		JScrollPane scroll = (JScrollPane) selectedPanel.getComponent(0);
         		JViewport vp = (JViewport) scroll.getComponent(0);
         		JTable table = (JTable) vp.getComponent(0);
+        		 DefaultTableModel modelo= (DefaultTableModel) table.getModel();
+        		 int selectedRow = table.getSelectedRow();
+        		 if (selectedRow != -1) {
         		
-        		
-        		    boolean isEnabled ; 
-        		    if(table.isEnabled())
-        		    	  isEnabled = false; 
-        		    else
-        		    	  isEnabled = true; 
-        		    table.setEnabled(isEnabled);
-        		    table.clearSelection();
-        		    
+        		  EditRowFrame editarFila = null;
+				try {
+					editarFila = new EditRowFrame(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()),selectedRow ,ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		    editarFila.setVisible(true);
+        		 }
         	}
         });
         toolBar.add(buttonEditar);
@@ -263,46 +300,23 @@ public class MenuAdministrador extends JFrame {
         		 int selectedRow = table.getSelectedRow();
         		// Verificar si hay alguna fila seleccionada
                 if (selectedRow != -1) {
-                    // Eliminar la fila seleccionada del modelo de tabla
+                
                    DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-                   int rowCount = modelo.getRowCount();
-                   if (rowCount == 0 || !metodosVista.isRowIncomplete(modelo, rowCount - 1)) {
-                	    // La última fila está completa o la tabla está vacía,
-                	    // por lo que podemos agregar una nueva fila.
-                	    modelo.addRow(new Object[modelo.getColumnCount()]);
-                	}
+                   int numeroColumnas = modelo.getColumnCount();
 
-
+                   String[] columnas = new String[numeroColumnas];
+                   for (int i = 0; i < numeroColumnas; i++) {
+                       columnas[i] = modelo.getColumnName(i);
+                   }
+                   AddRowFrame anadirFila = new AddRowFrame(columnas);
+                   anadirFila.setVisible(true);
                
                 }
         	}
         });
         toolBar.add(buttonAnadir);
         
-        Button buttonGuardar = new Button("Guardar");
-        buttonGuardar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		JTabbedPane tabbedPane = (JTabbedPane) getContentPane().getComponent(2);
-        		JPanel selectedPanel = (JPanel) tabbedPane.getSelectedComponent();
-        		int selectedPanelInt = tabbedPane.getSelectedIndex();
-        		JScrollPane scroll = (JScrollPane) selectedPanel.getComponent(0);
-        		JViewport vp = (JViewport) scroll.getComponent(0);
-        		JTable table = (JTable) vp.getComponent(0);
-        		
-        		 int selectedRow = table.getSelectedRow();
-        		// Verificar si hay alguna fila seleccionada
-                if (selectedRow != -1) {
-                    // Eliminar la fila seleccionada del modelo de tabla
-                   DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-                  metodos.guardarCambios(modelo, selectedPanelInt);
-
-
-               
-                }
-        	
-        	}
-        });
-        toolBar.add(buttonGuardar);
+       
         
          tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setBounds(0, 0, 712, 390);
@@ -310,22 +324,22 @@ public class MenuAdministrador extends JFrame {
         
         panelJugadores = new JPanel();
         panelJugadores.setBackground(new Color(225, 240, 255));
-        tabbedPane.addTab("jugadores", null, panelJugadores, null);
+        tabbedPane.addTab("players", null, panelJugadores, null);
         panelJugadores.setLayout(null);
         
         panelPartidas = new JPanel();
         panelPartidas.setBackground(new Color(225, 240, 255));
-        tabbedPane.addTab("partidas", null, panelPartidas, null);
+        tabbedPane.addTab("matches", null, panelPartidas, null);
         panelPartidas.setLayout(null);
         
          panelPersonajes = new JPanel();
          panelPersonajes.setBackground(new Color(225, 240, 255));
-        tabbedPane.addTab("personajes", null, panelPersonajes, null);
+        tabbedPane.addTab("champions", null, panelPersonajes, null);
         panelPersonajes.setLayout(null);
         
          panelHabilidades = new JPanel();
          panelHabilidades.setBackground(new Color(225, 240, 255));
-        tabbedPane.addTab("habilidades", null, panelHabilidades, null);
+        tabbedPane.addTab("abilities", null, panelHabilidades, null);
         panelHabilidades.setLayout(null);
         
          panelModos = new JPanel();

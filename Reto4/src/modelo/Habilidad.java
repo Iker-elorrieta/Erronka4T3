@@ -11,7 +11,11 @@ public class Habilidad {
         this.descripcion = descripcion;
     }
 
-    public int getCod() {
+    public Habilidad() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getCod() {
         return cod;
     } 
 

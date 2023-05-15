@@ -250,4 +250,34 @@ public class GestionPersonajes {
 		 return personaje;
 	}
 
+	public Personaje getPersonajeByNombre(String personajeStr) {
+		   Personaje personaje = null;
+
+	        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+	            String query = "SELECT * FROM champions WHERE name='"+personajeStr+"'";
+
+	            Statement stmt = conexion.createStatement(); 
+			    ResultSet rs = stmt.executeQuery(query);
+
+	            if (rs.next()) {
+	            	int id = rs.getInt("id");
+				    String name=rs.getString("name");
+				    String role=rs.getString("role");
+				    int difficulty=rs.getInt("difficulty");
+				    int attackDamage=rs.getInt("attack_Damage");
+				    int abilityPower=rs.getInt("ability_Power");
+				    int health=rs.getInt("life");
+				    int mana=rs.getInt("mana");
+				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(id);
+		             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return personaje;
+
+	}
+
 }
