@@ -22,30 +22,30 @@ public class GestionPartidas {
 	GestionEstadisticas gestionE = new GestionEstadisticas();
 	GestionPersonajes gestionPJ = new GestionPersonajes();
 	GestionModos gestionM = new GestionModos();
-	private Connection connection ;
+	
 	//SELECT inicial 
-	public static ArrayList<Partida> cargaInicialPartidas() {
+	public static ArrayList<Partida> cargaInicialPartidas(Connection conexion) {
 	String consulta="SELECT * FROM matches";
 	ArrayList<Partida> partidas= new ArrayList<>();
 	try {
-	    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+
 	    Statement stmt = conexion.createStatement(); 
 	    ResultSet rs = stmt.executeQuery(consulta);
 		while (rs.next()) 
 		{
 			int id=rs.getInt("id");
 			int duracion = rs.getInt("duration");
-			Modo modo= GestionModos.getModoById(rs.getInt("modo_id"));
+			Modo modo= GestionModos.getModoById(conexion, rs.getInt("modo_id"));
 			boolean resultado=rs.getBoolean("result");
 			Date fecha=rs.getDate("date");
-			Jugador jugador=GestionUsuarios.getJugadorByNombre(rs.getString("player_id"));
+			Jugador jugador=GestionUsuarios.getJugadorByNombre(conexion, rs.getString("player_id"));
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("Estadisticas"));
-			Personaje personaje = GestionPersonajes.getPersonajeById(rs.getInt("champion_id"));
+			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, rs.getInt("champion_id"));
 			
 			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
 		}
-		conexion.close();
+		
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
@@ -53,24 +53,24 @@ public class GestionPartidas {
 }
 
 
-public ArrayList<Partida> getPartidasByJugador(String jugador) {
+public ArrayList<Partida> getPartidasByJugador(Connection conexion, String jugador) {
     ArrayList<Partida> partidas = new ArrayList<>();
     String query = "SELECT * FROM matches WHERE player_id = (SELECT id FROM players WHERE name='"+jugador+"') ORDER By id DESC LIMIT 10; ;";
     try {
-    	connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-        Statement stmt = connection.createStatement(); 
+    	
+        Statement stmt = conexion.createStatement(); 
 	    ResultSet resultSet = stmt.executeQuery(query);
         
         while (resultSet.next()) {
         	int id=resultSet.getInt("id");
 			int duracion = resultSet.getInt("duration");
-			Modo modo= GestionModos.getModoById(resultSet.getInt("modo_id"));
+			Modo modo= GestionModos.getModoById(conexion, resultSet.getInt("modo_id"));
 			boolean resultado=resultSet.getBoolean("result");
 			Date fecha=resultSet.getDate("date");
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("Estadisticas"));
-			Personaje personaje = GestionPersonajes.getPersonajeById(resultSet.getInt("champion_id"));
+			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, resultSet.getInt("champion_id"));
 			
-			Partida partida = new Partida(id, GestionUsuarios.getJugadorByNombre(jugador), modo, personaje, estadistica, resultado, fecha, duracion);
+			Partida partida = new Partida(id, GestionUsuarios.getJugadorByNombre(conexion, jugador), modo, personaje, estadistica, resultado, fecha, duracion);
 			partidas.add(partida);
         }
 
@@ -82,13 +82,13 @@ public ArrayList<Partida> getPartidasByJugador(String jugador) {
 }
 	
 	//INSERT partida 
-	public  void insertarPartida(Partida partida) { 
+	public  void insertarPartida(Connection conexion, Partida partida) { 
 	int resultado=0;
 	if(partida.isResultado())
 		resultado=1;
 	String consulta="INSERT INTO `matches`( `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
 			+"'"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
-			Metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(conexion, consulta);
 
 }
 
@@ -96,19 +96,19 @@ public ArrayList<Partida> getPartidasByJugador(String jugador) {
 
 	public static void eliminarPartida(Partida partida) {
 		String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
-		Metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(null, consulta);
 	}
 	
 	//SELECT Complejo: sacar victorias y derrotas de usuario
-	public static Integer[] sacarResultados(String nombre) {
+	public static Integer[] sacarResultados(Connection conexion, String nombre) {
 		Integer[] result= new Integer[2];
 		result[0]=0;
 		result[1]=0;
-		 try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS)) {
+		 try {
 		        String query = "SELECT result FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id ";
 
 
-		        Statement stmt = connection.createStatement(); 
+		        Statement stmt = conexion.createStatement(); 
 			    ResultSet resultSet = stmt.executeQuery(query);
 		        
 		        while (resultSet.next()) {
@@ -127,7 +127,7 @@ public ArrayList<Partida> getPartidasByJugador(String jugador) {
 		
 	}
 
-	public Partida crearPartidaAleatoria(Jugador jugador , String modo, String personaje) {
+	public Partida crearPartidaAleatoria(Connection conexion, Jugador jugador , String modo, String personaje) {
 		Random r = new Random();
         int duracion = r.nextInt(86) + 45; // Duración aleatoria entre 45 y 130 minutos
         boolean victoria = r.nextBoolean();
@@ -137,8 +137,8 @@ public ArrayList<Partida> getPartidasByJugador(String jugador) {
 		partida.setDuracion(duracion);
 		partida.setEstadisticas(gestionE.generarEstadisticasAleatorias());
 		partida.setFecha(new Date());
-		partida.setModo(gestionM.getModoByName(modo));
-		partida.setPersonaje(gestionPJ.getPersonajeByNombre(personaje));
+		partida.setModo(gestionM.getModoByName(conexion, modo));
+		partida.setPersonaje(gestionPJ.getPersonajeByNombre(conexion, personaje));
 		partida.setJugador(jugador);
 		partida.setResultado(Boolean.valueOf(victoria));
 		return partida;

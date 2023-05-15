@@ -130,17 +130,7 @@ public class MetodosVista {
 	    }
 	    return rowCount;
 	}
-	
-	public boolean isRowIncomplete(DefaultTableModel model, int rowIndex) {
-	    for (int i = 0; i < model.getColumnCount(); i++) {
-	        Object value = model.getValueAt(rowIndex, i);
-	        if (value == null || value.toString().trim().isEmpty()) {
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-	
+
 	
 	public void crearCartas(ArrayList<Personaje> personajes, JScrollPane scrollPane) {
 	    JPanel panelCartas = new JPanel();

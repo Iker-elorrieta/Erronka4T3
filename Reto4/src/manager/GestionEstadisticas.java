@@ -35,11 +35,11 @@ public class GestionEstadisticas {
 	    }
 
 	 //Seleccion compleja: suma de estadisticas
-	public static Estadisticas estadisticasJugador(String nombre) {
+	public static Estadisticas estadisticasJugador(Connection conexion, String nombre) {
 		Estadisticas estad= new Estadisticas(0, 0, 0);
 		String consulta="SELECT Estadisticas FROM matches,players WHERE players.name='"+nombre+"' AND players.id=matches.player_id";
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		    
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 
@@ -49,7 +49,7 @@ public class GestionEstadisticas {
 				estad.setDeath(estad.getDeath()+est.getDeath());
 				estad.setAssists(estad.getAssists()+est.getAssists());
 			}
-			conexion.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	

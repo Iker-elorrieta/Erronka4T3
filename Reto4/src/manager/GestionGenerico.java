@@ -9,9 +9,9 @@ import utils.ConexionBD;
 import utils.DBUtils;
 
 public class GestionGenerico {
-	public void actualizarRegistro(Object objeto, String tabla) {
+	public void actualizarRegistro(Connection conexion, Object objeto, String tabla) {
 	    try {
-	        Connection conn = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+	        
 	        String query  = "UPDATE " + tabla + " SET ";
 	        Field[] fields = objeto.getClass().getDeclaredFields();
 	        for (int i = 0; i < fields.length; i++) {
@@ -24,7 +24,7 @@ public class GestionGenerico {
 	            }
 	        }
 	        query += " WHERE id=?";
-	        PreparedStatement ps = conn.prepareStatement(query);
+	        PreparedStatement ps = conexion.prepareStatement(query);
 
 	        // Establecer los valores de los parámetros en la consulta SQL
 	        int j = 1;
@@ -43,9 +43,8 @@ public class GestionGenerico {
 	        // Ejecutar la consulta SQL
 	        ps.executeUpdate();
 
-	        // Cerrar la conexión a la base de datos
-	        ps.close();
-	        conn.close();
+	     
+	       
 	    } catch (SQLException | IllegalAccessException e) {
 	        e.printStackTrace();
 	    }

@@ -2,6 +2,8 @@ package testMetodos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,12 +15,21 @@ import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
+import utils.ConexionBD;
+import utils.DBUtils;
 
 class GestionPartidasTest {
 
 	@Test
 	void testcargaInicialPartidas() {
-		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas();
+		Connection conexion = null;
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas(conexion);
 		assertEquals(partidas.size(),2);
 
 		assertEquals(partidas.size(),4);
@@ -57,8 +68,15 @@ class GestionPartidasTest {
 	
 	@Test
 	void testsacarResultados() {
+		Connection conexion = null;
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String nombre="Faker";
-		Integer[] resultados=GestionPartidas.sacarResultados(nombre);
+		Integer[] resultados=GestionPartidas.sacarResultados(conexion, nombre);
 		assertEquals(resultados[0],1);
 		assertEquals(resultados[1],2);
 	}

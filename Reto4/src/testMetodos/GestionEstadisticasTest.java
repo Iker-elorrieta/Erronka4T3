@@ -2,15 +2,25 @@ package testMetodos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.Test;
 
 import manager.GestionEstadisticas;
 import modelo.Estadisticas;
+import utils.ConexionBD;
+import utils.DBUtils;
+
+
 
 class GestionEstadisticasTest {
-
+	
+	
+	
 	@Test
 	void testobtenerEstadisticas() {
+		
 		String estadistica="4/5/9";
 		Estadisticas estadisticas=GestionEstadisticas.obtenerEstadistica(estadistica);
 		assertEquals(estadisticas.getKills(),4);
@@ -29,8 +39,15 @@ class GestionEstadisticasTest {
 	
 	@Test
 	void testestadisticasJugador() {
+		Connection conexion = null;
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String nombre="Faker";
-		Estadisticas est=GestionEstadisticas.estadisticasJugador(nombre);
+		Estadisticas est=GestionEstadisticas.estadisticasJugador(conexion, nombre);
 		assertEquals(est.getKills(),2);
 	}
 }

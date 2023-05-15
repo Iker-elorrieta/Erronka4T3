@@ -15,9 +15,9 @@ public class GestionModos {
 	
 	
 	//SELECT by ID 
-	public static Modo getModoById(int id) {
+	public static Modo getModoById(Connection conexion, int id) {
     	Modo modo =null;
-    	try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+    	try {
             String query = "SELECT nombre FROM modos WHERE id ="+id;
 
             Statement stmt = conexion.createStatement(); 
@@ -36,11 +36,11 @@ public class GestionModos {
     }
 
 	//SELECT inicial 
-	public ArrayList<Modo> cargaInicialModos() {
+	public ArrayList<Modo> cargaInicialModos(Connection conexion) {
 		String consulta="SELECT * FROM modos";
 		ArrayList<Modo> modos= new ArrayList<>();
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		   
 		    Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 
@@ -58,32 +58,32 @@ public class GestionModos {
 	}
     
 	//UPDATE modo 
-	public static  void updateModo(Modo modo) {
+	public static  void updateModo(Connection conexion, Modo modo) {
 
 		 String consulta = "UPDATE modos SET nombre='"+modo.getNombre()+"'  WHERE id ="+modo.getId();
-	     Metodos.conexionBDUpdate(consulta);
+	     Metodos.conexionBDUpdate(conexion, consulta);
 	}
 	
 	//INSERT modo 
-	public static  void insertarModo(Modo modo) { 
+	public static  void insertarModo(Connection conexion, Modo modo) { 
 
 			String consulta="INSERT INTO `modos`(`id`, `nombre`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
-			Metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(conexion, consulta);
 		}
 	 
 	//DELETE modo 
-	public static void eliminarModo(Modo modo,ArrayList<Modo> modos) {
+	public static void eliminarModo(Connection conexion, Modo modo,ArrayList<Modo> modos) {
 	    	modos.remove(modo);
 
 	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
-			Metodos.conexionBDUpdate(consulta);
+			Metodos.conexionBDUpdate(conexion, consulta);
 	}
 
-	public Modo getModoByName(String modoStr) {
+	public Modo getModoByName(Connection conexion, String modoStr) {
 	    Modo modo = null;
 	    String query = "SELECT * FROM modos WHERE nombre = ?";
-	    try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
-	         PreparedStatement ps = conexion.prepareStatement(query)) {
+	    try {
+	         PreparedStatement ps = conexion.prepareStatement(query);
 
 	        ps.setString(1, modoStr);
 	        ResultSet rs = ps.executeQuery();

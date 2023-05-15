@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import utils.ConexionBD;
+import utils.DBUtils;
 import utils.RotatedIcon;
 
 import javax.swing.JTabbedPane;
@@ -23,6 +25,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +80,8 @@ public class MenuJugador extends JFrame {
 	private  JScrollPane scrollModos;
 	private JScrollPane scrollPartidas;
 	private JLabel lblLvL;
-
+	private JLabel lblRank;
+	Connection conexion;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -96,6 +101,12 @@ public class MenuJugador extends JFrame {
 	 * @throws IOException 
 	 */
 	public MenuJugador(Usuario usuario){
+		 try {
+			 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		
 		Jugador j1 = (Jugador) usuario;
@@ -139,14 +150,9 @@ public class MenuJugador extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Timer timer = new Timer(1000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	 metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(j1.getNombre()), scrollPartidas);
-            	 lblLvL.setText(String.valueOf(gestionU.getNivelById(j1.getId())));
-            }
-        });
+	
 
-        timer.start();
+      
 		
 		 ImageIcon imageIcon = new ImageIcon("ImagenesAplicacion/Utils/boton.png");
 	        Image image = imageIcon.getImage().getScaledInstance(380,220, Image.SCALE_SMOOTH);
@@ -159,7 +165,7 @@ public class MenuJugador extends JFrame {
         lblJugar.setHorizontalAlignment(SwingConstants.CENTER);
         lblJugar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	metodosVista.crearPanelesModos(scrollModos, gestionM.cargaInicialModos());
+            	metodosVista.crearPanelesModos(scrollModos, gestionM.cargaInicialModos(conexion));
             	tabbedPane.setSelectedIndex(2);
             }
         });
@@ -190,6 +196,8 @@ public class MenuJugador extends JFrame {
 		lblPerfil.addMouseListener(new MouseAdapter() {
 	            public void mouseClicked(MouseEvent e) {
 	            	tabbedPane.setSelectedIndex(0);
+	            	lblLvL.setText(String.valueOf(gestionU.getNivelById(conexion, j1.getId())));
+	            	 metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(conexion, j1.getNombre()), scrollPartidas);
 	            }
 	        });
 		navBar.add(lblPerfil);
@@ -203,7 +211,7 @@ public class MenuJugador extends JFrame {
             public void mouseClicked(MouseEvent e) {
             	tabbedPane.setSelectedIndex(1);
             	
-            	metodosVista.crearCartas(gestionPJ.getPersonajeByJugadorLvL(gestionU.getNivelById(j1.getId())), scrollPersonajes);
+            	metodosVista.crearCartas(gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId())), scrollPersonajes);
             }
         });
 		navBar.add(lblPersonajes);
@@ -261,15 +269,16 @@ public class MenuJugador extends JFrame {
 	        scrollPartidas.setViewportBorder(null);
 	        scrollPartidas.setBounds(216, 265, 465, 75);
 	        panelPerfil.add(scrollPartidas);
-	        metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(j1.getNombre()), scrollPartidas);
-	        JLabel lblRank = new JLabel();
+	        metodosVista.mostrarPartidas(gestionP.getPartidasByJugador(conexion, j1.getNombre()), scrollPartidas);
+	         
+	        lblRank = new JLabel();
 	        lblRank.setHorizontalAlignment(SwingConstants.CENTER);
 	     
-	        metodosVista.cambiarIconoPorRango(j1.getRango(), lblRank);
+	       
 	        lblRank.setBackground(Color.WHITE);
 	      lblRank.setBounds(35, 212, 126, 128);
 	        panelPerfil.add(lblRank);
-	      
+	        metodosVista.cambiarIconoPorRango(j1.getRango(), lblRank);
 	        
 	        imageIcon = new ImageIcon("ImagenesAplicacion/ImagenesMenu/fondoMenu.jpg");
 	         image = imageIcon.getImage().getScaledInstance(720,367, Image.SCALE_SMOOTH);
@@ -341,7 +350,7 @@ public class MenuJugador extends JFrame {
 	      
 	      Choice choice = new Choice();
 	        choice.setBounds(444, 318, 118, 20);
-	        ArrayList<Personaje> p=gestionPJ.getPersonajeByJugadorLvL(gestionU.getNivelById(j1.getId()));
+	        ArrayList<Personaje> p=gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId()));
 	      for (Personaje personaje : p) {
 			choice.add(personaje.getName());
 		}
@@ -349,7 +358,7 @@ public class MenuJugador extends JFrame {
 	        panelJugar.add(choice);
 	        Choice choice_1 = new Choice();
 	        choice_1.setBounds(180, 318, 118, 20);
-	        ArrayList<Modo> m=gestionM.cargaInicialModos();
+	        ArrayList<Modo> m=gestionM.cargaInicialModos(conexion);
 	        for (Modo modo : m) {
 				choice_1.add(modo.getNombre());
 			}
@@ -359,11 +368,11 @@ public class MenuJugador extends JFrame {
 	        btnJugarPartida.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
 	        		
-	        		Partida partida =gestionP.crearPartidaAleatoria(j1, choice_1.getSelectedItem(), choice.getSelectedItem());
+	        		Partida partida =gestionP.crearPartidaAleatoria(conexion, j1, choice_1.getSelectedItem(), choice.getSelectedItem());
 	        		if(partida.isResultado())
-	        			gestionU.subirNivel(j1.getId());
+	        			gestionU.subirNivel(conexion, j1.getId());
 	        		metodosVista.mostrarPartida(partida, panelPartida);
-	        		gestionP.insertarPartida(partida);
+	        		gestionP.insertarPartida(conexion, partida);
 	        	}
 	        });
 	        btnJugarPartida.setBounds(323, 315, 89, 23);

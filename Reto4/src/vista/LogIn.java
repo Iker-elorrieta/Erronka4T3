@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 
 import exceptions.PlayerNotFoundException;
 import manager.GestionUsuarios;
+import utils.ConexionBD;
+import utils.DBUtils;
 import utils.TextPrompt;
 
 import java.awt.Color;
@@ -17,6 +19,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -38,7 +42,7 @@ public class LogIn extends JFrame {
 	private JTextField textUsuario;
 	private JPasswordField passwordField;
 	GestionUsuarios gestionUsur = new GestionUsuarios();
-
+	Connection conexion;
 	/**
 	 * Launch the application.
 	 */
@@ -61,6 +65,12 @@ public class LogIn extends JFrame {
 	 * Create the frame.
 	 */
 	public LogIn() {
+		 try {
+				 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		setResizable(false);
 		
@@ -178,7 +188,7 @@ public class LogIn extends JFrame {
 				
 						
 							try {
-								gestionUsur.login(textUsuario.getText(), new String(passwordField.getPassword()));
+								gestionUsur.login(conexion,textUsuario.getText(), new String(passwordField.getPassword()));
 								dispose();
 							} catch (PlayerNotFoundException e1) {
 								// TODO Auto-generated catch block
