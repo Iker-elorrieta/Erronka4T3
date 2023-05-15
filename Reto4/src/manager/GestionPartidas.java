@@ -22,10 +22,10 @@ public class GestionPartidas {
 	GestionEstadisticas gestionE = new GestionEstadisticas();
 	GestionPersonajes gestionPJ = new GestionPersonajes();
 	GestionModos gestionM = new GestionModos();
-	
+	GestionUsuarios gestionU = new GestionUsuarios();
 	//SELECT inicial 
-	public static ArrayList<Partida> cargaInicialPartidas(Connection conexion) {
-	String consulta="SELECT * FROM matches";
+	public ArrayList<Partida> cargaInicialPartidas(Connection conexion) {
+	String consulta="SELECT * FROM matches ORDER BY id DESC";
 	ArrayList<Partida> partidas= new ArrayList<>();
 	try {
 
@@ -38,7 +38,7 @@ public class GestionPartidas {
 			Modo modo= GestionModos.getModoById(conexion, rs.getInt("modo_id"));
 			boolean resultado=rs.getBoolean("result");
 			Date fecha=rs.getDate("date");
-			Jugador jugador=GestionUsuarios.getJugadorByNombre(conexion, rs.getString("player_id"));
+			Jugador jugador=gestionU.getJugadorById(conexion, rs.getInt("player_id"));
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, rs.getInt("champion_id"));
 			

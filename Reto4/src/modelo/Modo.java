@@ -3,7 +3,10 @@ package modelo;
 
 
 public class Modo {
-    private int id;
+   
+
+
+	private int id;
     private String nombre;
 
     public Modo() {
@@ -43,4 +46,8 @@ public class Modo {
 		Modo other = (Modo) obj;
 		return id == other.id;
 	}
+	 @Override
+		public String toString() {
+			return  nombre ;
+		}
 }
