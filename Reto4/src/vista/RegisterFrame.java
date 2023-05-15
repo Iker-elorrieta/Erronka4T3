@@ -15,6 +15,8 @@ import javax.swing.SwingConstants;
 
 import manager.GestionUsuarios;
 import modelo.Jugador;
+import utils.ConexionBD;
+import utils.DBUtils;
 import utils.DateConverter;
 import utils.TextPrompt;
 
@@ -23,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
@@ -30,11 +33,19 @@ import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 
 class RegisterFrame extends JFrame {
+	
 	private JTextField textUsuario;
 	private JPasswordField passwordField_1;
 	private JPasswordField passwordField_2;
     public GestionUsuarios gestionU;
+    Connection conexion;
     public RegisterFrame() {
+    	 try {
+ 			 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+ 		} catch (SQLException e1) {
+ 			// TODO Auto-generated catch block
+ 			e1.printStackTrace();
+ 		}
     	setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
     	setType(Type.UTILITY);
     	setResizable(false);
@@ -158,7 +169,7 @@ class RegisterFrame extends JFrame {
         	    	  lblError_2.setVisible(false);
         	      }
         	      try {
-					if(gestionU.usuarioExistente(textUsuario.getText()))
+					if(gestionU.usuarioExistente(conexion, textUsuario.getText()))
 						  lblError.setVisible(true);
 					  else
 						  lblError.setVisible(false);
@@ -172,7 +183,7 @@ class RegisterFrame extends JFrame {
         	      Date fechareg = new Date();
         	      Jugador jugador = new Jugador(0, textUsuario.getText(),String.valueOf(passwordField_1.getPassword()), 1, "Iron", DateConverter.toSqlDate(fechareg), false);
         	      try {
-					gestionU.insertarJugador(jugador);
+					gestionU.insertarJugador(conexion, jugador);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

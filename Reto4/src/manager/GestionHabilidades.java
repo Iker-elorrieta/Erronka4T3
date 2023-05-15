@@ -15,10 +15,10 @@ import utils.DBUtils;
 public class GestionHabilidades {
 	
 	//SELECT by ChampId 
-	public static ArrayList<Habilidad> getHabilidadesByChampId(int id) {
+	public static ArrayList<Habilidad> getHabilidadesByChampId(Connection conexion, int id) {
         ArrayList<Habilidad> habilidades = new ArrayList<>();
 
-        try (Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS)) {
+        try {
             String query = "SELECT * FROM abilities WHERE champion_id ="+id;
 
             Statement stmt = conexion.createStatement(); 
@@ -40,12 +40,12 @@ public class GestionHabilidades {
     }
 	
 	//SELECT all 
-	public static  ArrayList<Habilidad> getHabilidad() {
+	public static  ArrayList<Habilidad> getHabilidad(Connection conexion) {
 		 ArrayList<Habilidad> habilidades = new ArrayList<>();
 
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS)) {
+	        try  {
 	            String query = "SELECT * FROM abilities";
-	            PreparedStatement statement = connection.prepareStatement(query);
+	            PreparedStatement statement = conexion.prepareStatement(query);
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            while (resultSet.next()) {
@@ -65,24 +65,24 @@ public class GestionHabilidades {
 	
 	//UPDATE Habilidad 
 
-	public static  void updateHabilidad(Habilidad habilidad) { 
+	public static  void updateHabilidad(Connection conexion, Habilidad habilidad) { 
 		String consulta = "UPDATE abilities SET name='"+habilidad.getNombre()+"',description='"+habilidad.getDescripcion()+"' WHERE id ='"+habilidad.getCod()+"'";
-	    Metodos.conexionBDUpdate(consulta);
+	    Metodos.conexionBDUpdate(conexion, consulta);
 
 
 	}
 	
 	//INSERT 
 
-	public static  void insertarHabilidad(Habilidad Habilidad, int cod) { 
+	public static  void insertarHabilidad(Connection conexion, Habilidad Habilidad, int cod) { 
 		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ('"+Habilidad.getCod()+"','"+cod+"','"+Habilidad.getNombre()+"','"+Habilidad.getDescripcion()+"')";
-		Metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(conexion, consulta);
 	}
 	
 	//DELETE habilidad 
-	public static void eliminarHabilidad(Habilidad habilidad) {
+	public static void eliminarHabilidad(Connection conexion, Habilidad habilidad) {
     	String consulta="DELETE FROM `abilities` WHERE id="+habilidad.getCod();
-		Metodos.conexionBDUpdate(consulta);
+		Metodos.conexionBDUpdate(conexion, consulta);
     }
 	
 

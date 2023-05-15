@@ -25,10 +25,10 @@ import vista.MenuJugador;
 public class Metodos {
 
 	//Conexion a BD 
-	public static void conexionBDUpdate(String consulta) {
+	public static void conexionBDUpdate(Connection conexion, String consulta) {
 		
 		try {
-		    Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USERPLAYER, DBUtils.PASS);
+		 
 		    Statement stmt = conexion.createStatement(); 
 		    stmt.executeUpdate(consulta);
 		    conexion.close();

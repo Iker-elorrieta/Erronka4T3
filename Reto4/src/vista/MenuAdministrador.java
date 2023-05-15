@@ -38,7 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class MenuAdministrador extends JFrame {
 	    GestionUsuarios gestionU = new GestionUsuarios();
 	    GestionPartidas gestionP = new GestionPartidas();
 	    GestionPersonajes gestionPJ = new GestionPersonajes();
-
+	    Connection conexion;
 	/**
 	 * Launch the application.
 	 */
@@ -87,6 +87,12 @@ public class MenuAdministrador extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuAdministrador(Usuario UsurJugador) {
+		 try {
+				 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		addWindowListener(new WindowAdapter() {
             @Override
@@ -244,7 +250,7 @@ public class MenuAdministrador extends JFrame {
                    String nombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
                   if(nombre.equalsIgnoreCase("players")){
                 	   try {
-						gestionU.eliminarJugador(selectedRow);
+						gestionU.eliminarJugador(conexion,selectedRow);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
