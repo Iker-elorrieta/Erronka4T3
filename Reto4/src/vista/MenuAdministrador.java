@@ -16,6 +16,11 @@ import manager.GestionPartidas;
 import manager.GestionPersonajes;
 import manager.GestionUsuarios;
 import controlador.Metodos;
+import modelo.Habilidad;
+import modelo.Jugador;
+import modelo.Modo;
+import modelo.Partida;
+import modelo.Personaje;
 import modelo.Usuario;
 import utils.ConexionBD;
 import utils.DBUtils;
@@ -59,10 +64,15 @@ public class MenuAdministrador extends JFrame {
 	private  JPanel panelModos;
 	private MetodosVista metodosVista = new MetodosVista();
 	private Metodos metodos = new Metodos();
-	private List<String> sentenciasSQL = new ArrayList<>();
-	 GestionModos gestionM = new GestionModos();
+	
+	public ArrayList<Partida> arrayPartidas= new ArrayList<>();
+	public ArrayList<Jugador> arrayJugadores= new ArrayList<>();
+	public ArrayList<Personaje> arrayPersonajes= new ArrayList<>();
+	public ArrayList<Habilidad> arrayHabilidades= new ArrayList<>();
+	public ArrayList<Modo> arrayModos= new ArrayList<>();
+		GestionModos gestionM = new GestionModos();
 	    GestionHabilidades gestionH = new GestionHabilidades();
-	    GestionPersonajes gestionC = new GestionPersonajes();
+	   
 	    GestionUsuarios gestionU = new GestionUsuarios();
 	    GestionPartidas gestionP = new GestionPartidas();
 	    GestionPersonajes gestionPJ = new GestionPersonajes();
@@ -87,6 +97,7 @@ public class MenuAdministrador extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuAdministrador(Usuario UsurJugador) {
+		
 		 try {
 				 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
 			} catch (SQLException e1) {
@@ -134,12 +145,10 @@ public class MenuAdministrador extends JFrame {
         labelJugadores.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	
-            	try {
-					metodosVista.mostrarTabla(1, panelJugadores);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            	arrayJugadores=gestionU.cargaInicialJugadores(conexion);
+            	
+				String[] titulos= {"id","nombre","password","fecha", "nivel", "rango", "bloqueado"};
+				metodosVista.crearTabla(arrayJugadores, titulos, panelJugadores);
             	tabbedPane.setSelectedIndex(0);
             }
         });
@@ -152,13 +161,11 @@ public class MenuAdministrador extends JFrame {
         labelPartidas.setAlignment(Label.CENTER);
         labelPartidas.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	tabbedPane.setSelectedIndex(1);
-               try {
-				metodosVista.mostrarTabla(2, panelPartidas);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            	
+            	arrayPartidas=gestionP.cargaInicialPartidas(conexion);
+            	
+				String[] titulos= {"cod_partida","jugador","modo","personaje", "estadisticas", "resultado", "fecha", "duracion"};
+				metodosVista.crearTabla(arrayPartidas, titulos, panelPartidas);
                tabbedPane.setSelectedIndex(1);
                contentPane.updateUI();
             }
@@ -173,12 +180,9 @@ public class MenuAdministrador extends JFrame {
         labelPersonajes.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	
-            	try {
-					metodosVista.mostrarTabla(3, panelPersonajes);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            	arrayPersonajes=gestionPJ.cargaInicialPersonajes(conexion);
+				String[] titulos= {"id","name","role","difficulty", "attackDamage", "abilityPower", "health", "mana"};
+				metodosVista.crearTabla(arrayPersonajes, titulos, panelPersonajes);
             	tabbedPane.setSelectedIndex(2);
                
             }
@@ -192,12 +196,10 @@ public class MenuAdministrador extends JFrame {
         labelHabilidades.setAlignment(Label.CENTER);
         labelHabilidades.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	try {
-					metodosVista.mostrarTabla(4, panelHabilidades);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            	
+            	arrayHabilidades=gestionH.cargaInicialHabilidades(conexion);
+				String[] titulos= {"cod","nombre","descripcion"};
+				metodosVista.crearTabla(arrayHabilidades, titulos, panelHabilidades);
             	tabbedPane.setSelectedIndex(3);
                
             }
@@ -211,12 +213,10 @@ public class MenuAdministrador extends JFrame {
         labelModos.setFont(new Font("Georgia", Font.BOLD, 12));
         labelModos.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	try {
-					metodosVista.mostrarTabla(5, panelModos);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            	
+            	arrayModos=gestionM.cargaInicialModos(conexion);
+				String[] titulos= {"id","nombre"};
+				metodosVista.crearTabla(arrayModos, titulos, panelModos);
             	tabbedPane.setSelectedIndex(4);
                
             }
@@ -234,38 +234,65 @@ public class MenuAdministrador extends JFrame {
         
         Button buttonEliminar = new Button("Eliminar");
         buttonEliminar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		JTabbedPane tabbedPane = (JTabbedPane) getContentPane().getComponent(2);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	JTabbedPane tabbedPane = (JTabbedPane) getContentPane().getComponent(2);
         		JPanel selectedPanel = (JPanel) tabbedPane.getSelectedComponent();
         		JScrollPane scroll = (JScrollPane) selectedPanel.getComponent(0);
         		JViewport vp = (JViewport) scroll.getComponent(0);
         		JTable table = (JTable) vp.getComponent(0);
-        		
-        		 int selectedRow = table.getSelectedRow();
-        		// Verificar si hay alguna fila seleccionada
-                if (selectedRow != -1) {
-                    // Eliminar la fila seleccionada del modelo de tabla
-                   DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-                   modelo.removeRow(selectedRow);
-                   String nombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-                  if(nombre.equalsIgnoreCase("players")){
-                	   try {
-						gestionU.eliminarJugador(conexion,selectedRow);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                   }else if(nombre.equalsIgnoreCase("matches")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("champions")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("abilities")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("modos")) {
-                	   
-                   }
+                int filaSeleccionada = table.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    // Obtenemos el ID de la fila seleccionada en la tabla
+                    int id = Integer.valueOf((String) table.getValueAt(filaSeleccionada, 0)) ;
+                    // Eliminamos la fila de la base de datos
+                    int panelSeleccionado = tabbedPane.getSelectedIndex();
+                    switch (panelSeleccionado) {
+                    case 0:
+                        try {
+							gestionU.eliminarJugador(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 1:
+                    	try {
+							gestionP.eliminarPartida(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 2:
+                        try {
+							gestionPJ.eliminarPersonaje(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 3:
+                        try {
+							gestionH.eliminarHabilidad(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 4:
+                        try {
+							gestionM.eliminarModo(conexion,id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
                 }
-        	}
+                  
+                    
+                }
+            }
         });
         toolBar.add(buttonEliminar);
         
@@ -325,7 +352,7 @@ public class MenuAdministrador extends JFrame {
        
         
          tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setBounds(0, 0, 712, 390);
+        tabbedPane.setBounds(0, 23, 712, 328);
         contentPane.add(tabbedPane);
         
         panelJugadores = new JPanel();

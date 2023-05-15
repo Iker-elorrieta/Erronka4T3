@@ -17,7 +17,7 @@ import utils.DBUtils;
 public class GestionPersonajes {
 	
 	//SELECT inicial 
-	public static ArrayList<Personaje> cargaInicialPersonajes(Connection conexion){
+	public ArrayList<Personaje> cargaInicialPersonajes(Connection conexion){
 		String consulta="SELECT * FROM champions";
 		ArrayList<Personaje> campeones = new ArrayList<Personaje>();
 		try {
@@ -35,7 +35,7 @@ public class GestionPersonajes {
 			    int health=rs.getInt("life");
 			    int mana=rs.getInt("mana");
 			    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-	            Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+	            Personaje personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 	            campeones.add(personaje);
 			}
 		} catch (SQLException e) {
@@ -65,7 +65,7 @@ public class GestionPersonajes {
 				    int health=rs.getInt("life");
 				    int mana=rs.getInt("mana");
 				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-		             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		             personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 	            }
 
 	        } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class GestionPersonajes {
 				    int health=resultSet.getInt("life");
 				    int mana=resultSet.getInt("mana");
 				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-		            personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		            personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 		            personajes.add(personaje);
 	            }
 
@@ -131,7 +131,7 @@ public class GestionPersonajes {
 				    int health=resultSet.getInt("life");
 				    int mana=resultSet.getInt("mana");
 				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-		           Personaje personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		           Personaje personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 		            personajes.add(personaje);
 	            }
 
@@ -159,10 +159,12 @@ public class GestionPersonajes {
 	}
 
 	//DELETE personaje 
-	public static void eliminarPersonaje(Connection conexion, Personaje personaje) {
-			String consulta="DELETE FROM `champions` WHERE id="+personaje.getId();
-			Metodos.conexionBDUpdate(conexion, consulta);
-		}
+	 public void eliminarPersonaje(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM champions WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 	
 
 
@@ -236,7 +238,7 @@ public class GestionPersonajes {
 			    if (rs.next()) {
 				    personaje.setId(rs.getInt("id"));
 				    personaje.setName(rs.getString("name"));
-				   personaje.setAbilities(GestionHabilidades.getHabilidadesByChampId(conexion, id));
+				   
 	            }
 		      
 		    } catch (SQLException e) {
@@ -263,8 +265,7 @@ public class GestionPersonajes {
 				    int abilityPower=rs.getInt("ability_Power");
 				    int health=rs.getInt("life");
 				    int mana=rs.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-		             personaje = new Personaje(id,name,role,difficulty,abilities,attackDamage,abilityPower,health,mana);
+		             personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 	            }
 
 	        } catch (SQLException e) {

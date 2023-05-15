@@ -2,39 +2,40 @@ package modelo;
 
 abstract public class Usuario implements Saludar{
 	protected String nombre;
-	protected String contrasenya;
+	protected String password;
 	protected int id;
 	
 	
 	public String getContrasenya() {
-		return contrasenya;
+		return password;
 	}
 	public Usuario(){
 		
 	}
 
-	public void setContrasenya(String contrasenya) {
-		this.contrasenya = contrasenya;
+	public void setContrasenya(String password) {
+		this.password = password;
 	}
 
 	public int getId() {
 		return id;
 	}
 
+	
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Usuario(int id, String nombre,String contrasena )
+	public Usuario(int id, String nombre,String password )
 	{
 		this.nombre=nombre;
-		this.contrasenya=contrasena;
+		this.password=password;
 		this.id=id;
 	}
 	
 	public boolean comprobarContrasenya(String contra) {
 		boolean inicioSesion = false;
-		if(contra.equals(contrasenya))
+		if(contra.equals(password))
 		{
 			inicioSesion=true;
 		}
@@ -53,5 +54,10 @@ abstract public class Usuario implements Saludar{
 	public String Saludo()
 	{
 		return "Buenas, saludos "+nombre+" ,bienvenido al mundo de LOL";
+	}
+	
+	@Override
+	public String toString() {
+		return nombre;
 	}
 }

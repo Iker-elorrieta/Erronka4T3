@@ -5,8 +5,6 @@ import java.util.Objects;
 
 public class Personaje implements Saludar{
     private int id;
- 
-    private ArrayList<Habilidad> abilities = new ArrayList<>();
     private String name;
     private String role;
     private int difficulty;
@@ -15,12 +13,11 @@ public class Personaje implements Saludar{
     private int health;
     private int mana;
 
-    public Personaje(int id, String name, String role, int difficulty, ArrayList<Habilidad> abilities, int attackDamage, int abilityPower, int health, int mana) {
+    public Personaje(int id, String name, String role, int difficulty, int attackDamage, int abilityPower, int health, int mana) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.difficulty = difficulty;
-        this.abilities = abilities;
         this.attackDamage = attackDamage;
         this.abilityPower = abilityPower;
         this.health = health;
@@ -64,14 +61,6 @@ public class Personaje implements Saludar{
         this.difficulty = difficulty;
     }
 
-    public ArrayList<Habilidad> getAbilities() {
-        return abilities;
-    }
-
-    public void setAbilities(ArrayList<Habilidad> abilities) {
-        this.abilities = abilities;
-    }
-
     public int getAttackDamage() {
         return attackDamage;
     }
@@ -105,17 +94,8 @@ public class Personaje implements Saludar{
     }
     @Override
     public String toString() {
-        return "Champion{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", difficulty=" + difficulty +
-                ", abilities=" + abilities +
-                ", attackDamage=" + attackDamage +
-                ", abilityPower=" + abilityPower +
-                ", health=" + health +
-                ", mana=" + mana +
-                '}';
+        return name;
+                
     }
 
     @Override
@@ -126,10 +106,7 @@ public class Personaje implements Saludar{
         return id == champion.id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+   
 
 	@Override
 	public String Saludo() {

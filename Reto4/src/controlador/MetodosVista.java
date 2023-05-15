@@ -9,7 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.ScrollPane;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -45,92 +47,67 @@ import utils.DBUtils;
 
 public class MetodosVista {
 	CartaMouseListener mouseListener = new CartaMouseListener();
-	public void mostrarTabla(int codigo, JPanel panel) throws SQLException {
-	    Connection conn = null;
-	    Statement stmt = null;
-	    ResultSet rs = null;
+	
+	public <T> void crearTabla(ArrayList<T> datos, String[] nombresColumnas, JPanel panel) {
+	    // Creamos el modelo de la tabla
+		 panel.removeAll();
+		
+		DefaultTableModel  modeloTabla = new DefaultTableModel (nombresColumnas, 0) { 
+		        	
+		        	private static final long serialVersionUID = 1L;
+		
+					@Override
+		            public boolean isCellEditable(int row, int column) {
+		            return false;
+		        	}
+		        };
+
+	    // Agregamos los datos al modelo de la tabla
+		        for (Object objeto : datos) {
+		            Object[] fila = new Object[nombresColumnas.length];
+		            for (int i = 0; i < nombresColumnas.length; i++) {
+		                String[] atributos = nombresColumnas[i].split("\\."); // Separamos los nombres de atributos con el punto
+		                Object valor = objeto;
+		                for (String atributo : atributos) {
+		                    try {
+		                        Field campo = getField(valor.getClass(), atributo);
+		                        campo.setAccessible(true);
+		                        valor = campo.get(valor);
+		                    } catch (NoSuchFieldException | IllegalAccessException e) {
+		                        e.printStackTrace();
+		                        valor = null;
+		                    }
+		                }
+		                fila[i] = (valor != null) ? valor.toString() : "";
+		            }
+		            modeloTabla.addRow(fila);
+		        }
+
+	    JTable tabla = new JTable(modeloTabla);
+	    tabla.setPreferredScrollableViewportSize(new Dimension(500, 300));
+
+	    // Establecemos la posición de la tabla en el centro del JPanel
+	    panel.setLayout(new BorderLayout());
+	    panel.add(new JScrollPane(tabla), BorderLayout.CENTER);
+	    panel.setPreferredSize(new Dimension(500, 300));
+	    
+	    // Actualizamos el panel para que muestre la nueva tabla
+	    panel.revalidate();
+	    panel.repaint();
+	}
+	
+	private Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
 	    try {
-	        // Paso 1: Establecer la conexión
-	        conn = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS);
-
-	        // Paso 2: Crear la consulta SQL
-	        String sql = "";
-	        if (codigo == 1) {
-	            sql = "SELECT * FROM players";
-	        } else if (codigo == 2) {
-	            sql = "SELECT * FROM matches";
-	        } else if (codigo == 3) {
-	            sql = "SELECT * FROM champions";
-	        } else if (codigo == 4) {
-	            sql = "SELECT * FROM abilities";
-	        } else if (codigo == 5) {
-	            sql = "SELECT * FROM modos";
-	        }
-
-	        // Paso 3: Ejecutar la consulta SQL
-	        stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-	        rs = stmt.executeQuery(sql);
-
-	        // Paso 4: Crear la tabla en memoria
-	        ResultSetMetaData rsmd = rs.getMetaData();
-	        int columnCount = rsmd.getColumnCount();
-	        String[] columnNames = new String[columnCount];
-	        for (int i = 1; i <= columnCount; i++) {
-	            columnNames[i - 1] = rsmd.getColumnName(i);
-	        }
-
-	        Object[][] data = new Object[getRowCount(rs)][columnCount];
-	        int row = 0;
-	        while (rs.next()) {
-	            for (int col = 1; col <= columnCount; col++) {
-	                data[row][col - 1] = rs.getObject(col);
-	            }
-	            row++;
-	        }
-	        DefaultTableModel  modelo = new DefaultTableModel (data, columnNames) { 
-	        	
-	        	private static final long serialVersionUID = 1L;
-
-				@Override
-	            public boolean isCellEditable(int row, int column) {
-	            return false;
-	        	}
-	        };
-	        JTable table = new JTable(modelo);
-	       
-
-	        // Paso 5: Agregar la tabla al scroll panel
-	        JScrollPane scroll = new JScrollPane(table);
-	        scroll.setBounds(30, 75, 650, 200);
-	        scroll.setBackground(new Color(225, 240, 255));
-	        panel.add(scroll);
-
-	    } finally {
-	        // Paso 6: Cerrar la conexión
-	        if (rs != null) {
-	            rs.close();
-	        }
-	        if (stmt != null) {
-	            stmt.close();
-	        }
-	        if (conn != null) {
-	            conn.close();
+	        return clazz.getDeclaredField(fieldName);
+	    } catch (NoSuchFieldException e) {
+	        Class<?> superClass = clazz.getSuperclass();
+	        if (superClass != null) {
+	            return getField(superClass, fieldName);
+	        } else {
+	            throw e;
 	        }
 	    }
 	}
-
-	private int getRowCount(ResultSet resultSet) throws SQLException {
-	    int rowCount;
-	    int currentRow = resultSet.getRow(); // Save current row
-	    rowCount = resultSet.last() ? resultSet.getRow() : 0; // Move to last row and get row count
-	    if (currentRow == 0) {
-	        resultSet.beforeFirst(); // Move back to before first row
-	    } else {
-	        resultSet.absolute(currentRow); // Move back to where we were
-	    }
-	    return rowCount;
-	}
-
 	
 	public void crearCartas(ArrayList<Personaje> personajes, JScrollPane scrollPane) {
 	    JPanel panelCartas = new JPanel();

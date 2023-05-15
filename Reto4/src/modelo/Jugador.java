@@ -1,10 +1,10 @@
 package modelo;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Jugador extends Usuario{
-	protected int id;
 	protected int nivel;
 	protected Date fecha;
 	protected String rango;
@@ -23,8 +23,8 @@ public class Jugador extends Usuario{
 	}
 
 
-	public Jugador(int id,String nombre, String contrasenya, int nivel,String rango,  Date fecha, boolean bloqueado) {
-		super(id, nombre,contrasenya);
+	public Jugador(int id,String nombre, String password, int nivel,String rango,  Date fecha, boolean bloqueado) {
+		super(id, nombre,password);
 		this.rango=rango;
 		this.nivel=nivel;
 		this.fecha=fecha;
@@ -69,6 +69,11 @@ public class Jugador extends Usuario{
         String fechaString = formato.format(fecha);
 		return fechaString;
 	}
+	@Override
+	public String toString() {
+		 return super.toString();
+	}
+	
 	
 
 }

@@ -14,6 +14,31 @@ import utils.DBUtils;
 
 public class GestionHabilidades {
 	
+	
+	
+	public ArrayList<Habilidad> cargaInicialHabilidades(Connection conexion) {
+        ArrayList<Habilidad> habilidades = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM abilities";
+
+            Statement stmt = conexion.createStatement(); 
+		    ResultSet rs = stmt.executeQuery(query);
+            
+            while (rs.next()) {
+            	int id_habilidad=rs.getInt("id");
+            	String nombre=rs.getString("name");
+            	String descripcion=rs.getString("description");
+            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
+                habilidades.add(habilidad);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return habilidades;
+    }
 	//SELECT by ChampId 
 	public static ArrayList<Habilidad> getHabilidadesByChampId(Connection conexion, int id) {
         ArrayList<Habilidad> habilidades = new ArrayList<>();
@@ -80,10 +105,12 @@ public class GestionHabilidades {
 	}
 	
 	//DELETE habilidad 
-	public static void eliminarHabilidad(Connection conexion, Habilidad habilidad) {
-    	String consulta="DELETE FROM `abilities` WHERE id="+habilidad.getCod();
-		Metodos.conexionBDUpdate(conexion, consulta);
-    }
+	 public void eliminarHabilidad(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM abilities WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 	
 	public static  ArrayList<String> getHabilidadyPersonaje(Connection conexion) {
 		 ArrayList<String> resultado = new ArrayList<>();
