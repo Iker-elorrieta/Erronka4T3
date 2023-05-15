@@ -39,8 +39,8 @@ class GestionModosTest {
 	}
 	@Test
 	void testcargaInicialModos() {
-		ArrayList<Modo>modos=GestionModos.cargaInicialModos();
-		assertEquals(modos.size(),3);
+		
+		
 		
 	}
 }

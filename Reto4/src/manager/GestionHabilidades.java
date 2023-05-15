@@ -85,5 +85,28 @@ public class GestionHabilidades {
 		Metodos.conexionBDUpdate(consulta);
     }
 	
+	public static  ArrayList<String> getHabilidadyPersonaje() {
+		 ArrayList<String> resultado = new ArrayList<>();
 
+	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS)) {
+	            String query = "SELECT champions.name as champ, abilities.name, abilities.description FROM champions join abilities on abilities.champion_id=champions.id";
+	            PreparedStatement statement = connection.prepareStatement(query);
+	            ResultSet resultSet = statement.executeQuery();
+	            
+	            while (resultSet.next()) {
+	            	String nombre=resultSet.getString("champ");
+	            	String hab=resultSet.getString("name");
+	            	String descripcion=resultSet.getString("description");
+	                resultado.add(nombre);
+	                resultado.add(hab);
+	                resultado.add(descripcion);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return resultado;
+	    }
+	
 }
