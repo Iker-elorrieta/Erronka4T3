@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Label;
+import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -61,6 +62,8 @@ import javax.swing.JButton;
 import java.awt.Choice;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class MenuJugador extends JFrame {
 	private MenuJugador frame;
@@ -242,6 +245,12 @@ public class MenuJugador extends JFrame {
 	            }
 	        });
 	        panelPerfil.setLayout(null);
+	        
+	        
+	        
+	        JButton btn_borrar = new JButton("Borrar cuenta");
+	        btn_borrar.setBounds(595, 120, 89, 23);
+	        panelPerfil.add(btn_borrar);
 	        panelPerfil.add(labelImagen);
 	        
 	        JLabel lblBienvenido = new JLabel("Bienvenido "+j1.getNombre());
@@ -289,17 +298,29 @@ public class MenuJugador extends JFrame {
 	        lblFondoPerfil.setIcon(fondoPerfil);
 	        panelPerfil.add(lblFondoPerfil);
 	        
-	       
 	        
-	        Choice choice_cuenta= new Choice();
-	        choice_cuenta.setBounds(520, 44, 118, 20);
-	        panelPerfil.add(choice_cuenta);
+	        
+	        JButton btn_editar = new JButton("Editar cuenta");
+	        btn_editar.setBounds(595, 86, 89, 23);
+	        panelPerfil.add(btn_editar);
+	        
+	        	        btn_editar.addActionListener(new ActionListener() {
+	        				public void actionPerformed(ActionEvent e) {
+	        					
+	        				}});
+	        	        
 
-	        String option = "Cambiar nombre y contraseña";
-	        String option2 = "Eliminar cuenta";
-
-	        choice_cuenta.add(option);
-	        choice_cuenta.add(option2);
+	        	         btn_borrar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						gestionU.eliminarJugador(conexion, j1.getId());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					dispose();
+					new MenuAdministrador(usuario).setVisible(true);;
+				}});
 	        
 	        
 	       
@@ -384,6 +405,7 @@ public class MenuJugador extends JFrame {
 	        lblFondoJugar.setBounds(0, 0, 720, 367);
 	        lblFondoJugar.setIcon(fondoJugar);
 	        panelJugar.add(lblFondoJugar);
+	        
 	        
 	       
 	        
