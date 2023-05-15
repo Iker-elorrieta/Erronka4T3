@@ -22,10 +22,12 @@ public class GestionPartidas {
 	GestionEstadisticas gestionE = new GestionEstadisticas();
 	GestionPersonajes gestionPJ = new GestionPersonajes();
 	GestionModos gestionM = new GestionModos();
-	GestionUsuarios gestionU = new GestionUsuarios();
+	 static GestionUsuarios gestionU = new GestionUsuarios();
 	//SELECT inicial 
+
 	public ArrayList<Partida> cargaInicialPartidas(Connection conexion) {
-	String consulta="SELECT * FROM matches ORDER BY id DESC";
+		String consulta = "SELECT players.name as jugador, matches.id, matches.duration, matches.modo_id, matches.result, matches.date, matches.Estadisticas, matches.champion_id FROM players JOIN matches ON players.id = matches.player_id";
+
 	ArrayList<Partida> partidas= new ArrayList<>();
 	try {
 
@@ -38,7 +40,8 @@ public class GestionPartidas {
 			Modo modo= GestionModos.getModoById(conexion, rs.getInt("modo_id"));
 			boolean resultado=rs.getBoolean("result");
 			Date fecha=rs.getDate("date");
-			Jugador jugador=gestionU.getJugadorById(conexion, rs.getInt("player_id"));
+			Jugador jugador=gestionU.getJugadorByNombre(conexion, rs.getString("jugador"));
+
 			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, rs.getInt("champion_id"));
 			
@@ -94,10 +97,12 @@ public ArrayList<Partida> getPartidasByJugador(Connection conexion, String jugad
 
 	//DELETE partida 
 
-	public static void eliminarPartida(Partida partida) {
-		String consulta="DELETE FROM `matches` WHERE id="+partida.getCod_partida();
-		Metodos.conexionBDUpdate(null, consulta);
-	}
+	 public void eliminarPartida(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM matches WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 	
 	//SELECT Complejo: sacar victorias y derrotas de usuario
 	public static Integer[] sacarResultados(Connection conexion, String nombre) {

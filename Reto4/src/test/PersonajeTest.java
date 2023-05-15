@@ -13,6 +13,7 @@ public class PersonajeTest {
 
     @Test
     public void testConstructorAndGetters() {
+    	Personaje personaje2 = new Personaje();
         ArrayList<Habilidad> abilities = new ArrayList<>();
         abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
         abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));

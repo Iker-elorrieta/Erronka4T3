@@ -72,12 +72,12 @@ public class GestionModos {
 		}
 	 
 	//DELETE modo 
-	public static void eliminarModo(Connection conexion, Modo modo,ArrayList<Modo> modos) {
-	    	modos.remove(modo);
-
-	    	String consulta="DELETE FROM `modos` WHERE id="+modo.getId();
-			Metodos.conexionBDUpdate(conexion, consulta);
-	}
+	 public void eliminarModo(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM modos WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 
 	public Modo getModoByName(Connection conexion, String modoStr) {
 	    Modo modo = null;

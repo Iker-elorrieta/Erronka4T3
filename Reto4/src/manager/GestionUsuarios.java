@@ -47,7 +47,7 @@ public class GestionUsuarios {
 	}
 	
 	//SELECT by nombre 
-	public static Jugador getJugadorByNombre(Connection conexion,String nombre){
+	public  Jugador getJugadorByNombre(Connection conexion,String nombre){
 		String consulta="Select * FROM players WHERE name='"+nombre+"'";
 		Jugador jugador = new Jugador();
 		try {
@@ -158,7 +158,7 @@ public class GestionUsuarios {
 	    }
 	    //DELETE Jugador
 	    public void eliminarJugador(Connection conexion,int id) throws SQLException {
-	        String sql = "DELETE FROM `players` WHERE id="+id;
+	        String sql = "DELETE FROM players WHERE id="+id;
 	        try (Statement statement = conexion.createStatement()) {
 	            statement.executeUpdate(sql);
 	        }

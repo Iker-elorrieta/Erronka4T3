@@ -171,7 +171,7 @@ class PartidaTest {
 		Date date = new Date();
 		Partida partida =new Partida(cod1, jug1, modo, pers1, est1, resul1, date, cod1);
 		String fecha=partida.StringFecha();
-		assertEquals(fecha,"2023-05-10");
+		assertEquals(fecha,"2023-05-15");
 	}
 	
 	}

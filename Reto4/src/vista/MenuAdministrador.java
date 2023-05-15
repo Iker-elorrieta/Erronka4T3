@@ -64,7 +64,7 @@ public class MenuAdministrador extends JFrame {
 	private  JPanel panelModos;
 	private MetodosVista metodosVista = new MetodosVista();
 	private Metodos metodos = new Metodos();
-	private List<String> sentenciasSQL = new ArrayList<>();
+	
 	public ArrayList<Partida> arrayPartidas= new ArrayList<>();
 	public ArrayList<Jugador> arrayJugadores= new ArrayList<>();
 	public ArrayList<Personaje> arrayPersonajes= new ArrayList<>();
@@ -234,38 +234,65 @@ public class MenuAdministrador extends JFrame {
         
         Button buttonEliminar = new Button("Eliminar");
         buttonEliminar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		JTabbedPane tabbedPane = (JTabbedPane) getContentPane().getComponent(2);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	JTabbedPane tabbedPane = (JTabbedPane) getContentPane().getComponent(2);
         		JPanel selectedPanel = (JPanel) tabbedPane.getSelectedComponent();
         		JScrollPane scroll = (JScrollPane) selectedPanel.getComponent(0);
         		JViewport vp = (JViewport) scroll.getComponent(0);
         		JTable table = (JTable) vp.getComponent(0);
-        		
-        		 int selectedRow = table.getSelectedRow();
-        		// Verificar si hay alguna fila seleccionada
-                if (selectedRow != -1) {
-                    // Eliminar la fila seleccionada del modelo de tabla
-                   DefaultTableModel modelo= (DefaultTableModel) table.getModel();
-                   modelo.removeRow(selectedRow);
-                   String nombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-                  if(nombre.equalsIgnoreCase("players")){
-                	   try {
-						gestionU.eliminarJugador(conexion,selectedRow);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                   }else if(nombre.equalsIgnoreCase("matches")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("champions")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("abilities")){
-                	  
-                   }else if(nombre.equalsIgnoreCase("modos")) {
-                	   
-                   }
+                int filaSeleccionada = table.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    // Obtenemos el ID de la fila seleccionada en la tabla
+                    int id = Integer.valueOf((String) table.getValueAt(filaSeleccionada, 0)) ;
+                    // Eliminamos la fila de la base de datos
+                    int panelSeleccionado = tabbedPane.getSelectedIndex();
+                    switch (panelSeleccionado) {
+                    case 0:
+                        try {
+							gestionU.eliminarJugador(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 1:
+                    	try {
+							gestionP.eliminarPartida(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 2:
+                        try {
+							gestionPJ.eliminarPersonaje(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 3:
+                        try {
+							gestionH.eliminarHabilidad(conexion, id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
+                    case 4:
+                        try {
+							gestionM.eliminarModo(conexion,id);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                        break;
                 }
-        	}
+                  
+                    
+                }
+            }
         });
         toolBar.add(buttonEliminar);
         

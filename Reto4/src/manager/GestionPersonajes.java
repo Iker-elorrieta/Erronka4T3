@@ -159,31 +159,28 @@ public class GestionPersonajes {
 	}
 
 	//DELETE personaje 
-	public static void eliminarPersonaje(Connection conexion, Personaje personaje) {
-			String consulta="DELETE FROM `champions` WHERE id="+personaje.getId();
-			Metodos.conexionBDUpdate(conexion, consulta);
-		}
+	 public void eliminarPersonaje(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM champions WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 	
 
-	public static ArrayList <String> personajeMasJugado(Connection conexion) {
-		
-		int contador=0;
-		ArrayList <Jugador> jugadores;
-		jugadores=GestionUsuarios.cargaInicialJugadores(conexion);
+
+	public static ArrayList <String> personajeMasJugado(Connection conexion, Jugador jugador) {
+
 		ArrayList <String> resultado = new ArrayList<String>();
-		
         try {
-            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE id=(SELECT id FROM players where id='"+jugadores.get(contador).getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
+            String query = "SELECT name FROM champions  WHERE champions.id=(SELECT champion_id FROM matches WHERE player_id=(SELECT id FROM players where id='"+jugador.getId()+"') GROUP BY champion_id ORDER BY COUNT(*) DESC LIMIT 1)";
 
             Statement stmt = conexion.createStatement(); 
 		    ResultSet rs = stmt.executeQuery(query);
 
-            if (rs.next()) {
+            while (rs.next()) {
 			    String personaje=rs.getString("name");
 			    
-			    resultado.add(jugadores.get(contador).getNombre());
-			    resultado.add(personaje);
-			    contador++;
+			    resultado.add(jugador.getNombre());
             }
             
             

@@ -5,11 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Jugador extends Usuario{
-	protected int id;
 	protected int nivel;
 	protected Date fecha;
-	
-
 	protected String rango;
 	protected boolean bloqueado;
 

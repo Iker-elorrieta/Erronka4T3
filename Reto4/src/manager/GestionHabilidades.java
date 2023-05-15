@@ -105,10 +105,35 @@ public class GestionHabilidades {
 	}
 	
 	//DELETE habilidad 
-	public static void eliminarHabilidad(Connection conexion, Habilidad habilidad) {
-    	String consulta="DELETE FROM `abilities` WHERE id="+habilidad.getCod();
-		Metodos.conexionBDUpdate(conexion, consulta);
-    }
+	 public void eliminarHabilidad(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM abilities WHERE id="+id;
+	        try (Statement statement = conexion.createStatement()) {
+	            statement.executeUpdate(sql);
+	        }
+	    }
 	
+	public static  ArrayList<String> getHabilidadyPersonaje(Connection conexion) {
+		 ArrayList<String> resultado = new ArrayList<>();
 
+		 try  {
+	            String query = "SELECT champions.name as champ, abilities.name, abilities.description FROM champions join abilities on champions.id=abilities.champion_id";
+	            PreparedStatement statement = conexion.prepareStatement(query);
+	            ResultSet resultSet = statement.executeQuery();
+	            
+	            while (resultSet.next()) {
+	            	String nombre=resultSet.getString("champ");
+	            	String hab=resultSet.getString("name");
+	            	String descripcion=resultSet.getString("description");
+	                resultado.add(nombre);
+	                resultado.add(hab);
+	                resultado.add(descripcion);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return resultado;
+	    }
+	
 }
