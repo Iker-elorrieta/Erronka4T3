@@ -112,5 +112,45 @@ class GestionPersonajesTest {
 		Personaje pers =GestionPersonajes.buscarPorhabilidad(conexion, 3);
 		assertEquals(pers.getName(),"Ruben");
 	}
+	
+	
+	@Test
+	void getPersonajeByJugadorLvL(){
+		
+		Connection conexion = null;
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int LVL=1;
+		ArrayList<Personaje> personaje;
+		try {
+			personaje = GestionPersonajes.getPersonajeByJugadorLvL(conexion, LVL);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertEquals(personaje.getName(),"Ashe");		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

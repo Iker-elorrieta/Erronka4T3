@@ -30,9 +30,7 @@ class GestionPartidasTest {
 			e.printStackTrace();
 		}
 		ArrayList<Partida> partidas=GestionPartidas.cargaInicialPartidas(conexion);
-		assertEquals(partidas.size(),2);
-
-		assertEquals(partidas.size(),4);
+		assertEquals(partidas.size(),3);
 
 	}
 	

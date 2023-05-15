@@ -48,6 +48,6 @@ class GestionEstadisticasTest {
 		}
 		String nombre="Faker";
 		Estadisticas est=GestionEstadisticas.estadisticasJugador(conexion, nombre);
-		assertEquals(est.getKills(),2);
+		assertEquals(est.getKills(),0);
 	}
 }

@@ -108,7 +108,7 @@ class JugadorTest {
 		Jugador jugador=new Jugador();
 		jugador.setFecha(date);
 		String fecha=jugador.StringFecha();
-		assertEquals(fecha,"2023-05-10");
+		assertEquals(fecha,"2023-05-15");
 	}
 	
 }

@@ -69,10 +69,6 @@ class GestionModosTest {
 		modos.add(Modo);
 		GestionModos.eliminarModo(conexion, Modo, modos);
 	}
-	@Test
-	void testcargaInicialModos() {
+	
 		
-		
-		
-	}
 }

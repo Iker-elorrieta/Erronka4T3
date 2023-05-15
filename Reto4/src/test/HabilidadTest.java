@@ -17,9 +17,12 @@ public class HabilidadTest {
 	
     @Test
     public void testConstructorAndGetters() {
+    	Habilidad habilidad2 = new Habilidad();
+    	
         assertEquals(id, habilidad.getCod());
         assertEquals(nombre, habilidad.getNombre());
         assertEquals(descripcion, habilidad.getDescripcion());
+        
     }
     
     @Test
@@ -64,5 +67,7 @@ public class HabilidadTest {
         assertFalse("Objeto nulo debería ser diferente", habilidad1.equals(habilidad4));
         assertFalse("Diferente clase debería ser diferente", habilidad1.equals(habilidad5));
     }
+	
+
 
 }

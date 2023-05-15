@@ -85,12 +85,12 @@ public class GestionHabilidades {
 		Metodos.conexionBDUpdate(conexion, consulta);
     }
 	
-	public static  ArrayList<String> getHabilidadyPersonaje() {
+	public static  ArrayList<String> getHabilidadyPersonaje(Connection conexion) {
 		 ArrayList<String> resultado = new ArrayList<>();
 
-	        try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USERADMIN, DBUtils.PASS)) {
-	            String query = "SELECT champions.name as champ, abilities.name, abilities.description FROM champions join abilities on abilities.champion_id=champions.id";
-	            PreparedStatement statement = connection.prepareStatement(query);
+		 try  {
+	            String query = "SELECT champions.name as champ, abilities.name, abilities.description FROM champions join abilities on champions.id=abilities.champion_id";
+	            PreparedStatement statement = conexion.prepareStatement(query);
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            while (resultSet.next()) {

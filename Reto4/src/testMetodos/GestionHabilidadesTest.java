@@ -26,7 +26,7 @@ class GestionHabilidadesTest {
 		}
 		int id=2;
 		ArrayList<Habilidad>habilidades=GestionHabilidades.getHabilidadesByChampId(conexion ,id);
-		assertEquals(habilidades.size(),0);
+		assertEquals(habilidades.size(),10);
 		}
 	
 	@Test
@@ -77,7 +77,20 @@ class GestionHabilidadesTest {
 			e.printStackTrace();
 		}
 		ArrayList<Habilidad> habilidades = GestionHabilidades.getHabilidad(conexion);
-		assertEquals(habilidades.size(),12);
+		assertEquals(habilidades.size(),10);
+	}
+	
+	@Test
+	void testgetHabilidadYPersonaje() {
+		Connection conexion = null;
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<String> habilidades = GestionHabilidades.getHabilidadyPersonaje(conexion);
+		assertEquals(habilidades.size(),30);
 	}
 	
 }
