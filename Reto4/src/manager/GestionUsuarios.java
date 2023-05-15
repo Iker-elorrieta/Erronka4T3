@@ -1,7 +1,7 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import exceptions.PlayerNotFoundException;
 import modelo.Administrador;
 import modelo.Jugador;
 import modelo.Usuario;
-import utils.DBUtils;
+
 
 public class GestionUsuarios {
 	
@@ -47,7 +47,7 @@ public class GestionUsuarios {
 	}
 	
 	//SELECT by nombre 
-	public static  Jugador getJugadorByNombre(Connection conexion,String nombre){
+	public  Jugador getJugadorByNombre(Connection conexion,String nombre){
 		String consulta="Select * FROM players WHERE name='"+nombre+"'";
 		Jugador jugador = new Jugador();
 		try {
@@ -73,7 +73,7 @@ public class GestionUsuarios {
 	}
 
 
-    public static void login(Connection conexion, String username, String password) throws PlayerNotFoundException{
+    public void login(Connection conexion, String username, String password) throws PlayerNotFoundException{
         String sqlAdmin = "SELECT * FROM admins WHERE name = ? AND password = ?";
         String sqlJugador = "SELECT * FROM players WHERE name = ? AND password_hash = ?";
         Usuario usur= null;
@@ -97,10 +97,11 @@ public class GestionUsuarios {
             } else if (rsJugador.next() && !(rsJugador.getBoolean("bloqueado"))) {
             	 usur= new Jugador(rsJugador.getInt(1), rsJugador.getString(2), rsJugador.getString(3),rsJugador.getInt(5), rsJugador.getString(6), rsJugador.getDate(4), rsJugador.getBoolean(7));
             }
-
+            
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		Metodos.inicioSesionTXT(usur);
         Metodos.redireccionLogin(usur );
     
     }
@@ -124,7 +125,7 @@ public class GestionUsuarios {
 	//UPDATE Jugador 
 	 public void actualizarJugador(Connection conexion, Jugador jugador) throws SQLException {
 		 int bloqueado=0;
-			if(jugador.isbloqueado())
+			if(jugador.isBloqueado())
 				bloqueado=1;
 	        String sql ="UPDATE players SET name='"+jugador.getNombre()+"',password_hash='"+jugador.getContrasenya()+"',level='"+jugador.getNivel()+"',rank='"+jugador.getRango()+"',bloqueado='"+bloqueado+"',registration_date='"+jugador.StringFecha()+"' WHERE id ="+jugador.getId();
 	        try (PreparedStatement statement = conexion.prepareStatement(sql)) {

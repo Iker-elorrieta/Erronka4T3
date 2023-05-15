@@ -1,7 +1,7 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,7 +16,7 @@ import modelo.Jugador;
 import modelo.Modo;
 import modelo.Partida;
 import modelo.Personaje;
-import utils.DBUtils;
+
 
 public class GestionPartidas {
 	GestionEstadisticas gestionE = new GestionEstadisticas();
@@ -37,12 +37,18 @@ public class GestionPartidas {
 		{
 			int id=rs.getInt("id");
 			int duracion = rs.getInt("duration");
-			Modo modo= GestionModos.getModoById(conexion, rs.getInt("modo_id"));
+			Modo modo = null;
+			try {
+				modo = gestionM.getModoById(conexion, rs.getInt("modo_id"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			boolean resultado=rs.getBoolean("result");
 			Date fecha=rs.getDate("date");
 			Jugador jugador=gestionU.getJugadorByNombre(conexion, rs.getString("jugador"));
 
-			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(rs.getString("Estadisticas"));
+			Estadisticas estadistica=gestionE.obtenerEstadistica(rs.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, rs.getInt("champion_id"));
 			
 			Partida partida = new Partida(id, jugador, modo, personaje, estadistica, resultado, fecha, duracion);
@@ -67,15 +73,15 @@ public ArrayList<Partida> getPartidasByJugador(Connection conexion, String jugad
         while (resultSet.next()) {
         	int id=resultSet.getInt("id");
 			int duracion = resultSet.getInt("duration");
-			Modo modo= GestionModos.getModoById(conexion, resultSet.getInt("modo_id"));
+			Modo modo= gestionM.getModoById(conexion, resultSet.getInt("modo_id"));
 			boolean resultado=resultSet.getBoolean("result");
 			Date fecha=resultSet.getDate("date");
-			Estadisticas estadistica=GestionEstadisticas.obtenerEstadistica(resultSet.getString("Estadisticas"));
+			Estadisticas estadistica=gestionE.obtenerEstadistica(resultSet.getString("Estadisticas"));
 			Personaje personaje = GestionPersonajes.getPersonajeById(conexion, resultSet.getInt("champion_id"));
 			
-			Partida partida;
+			Partida partida = null;
 			try {
-				partida = new Partida(id, GestionUsuarios.getJugadorByNombre(conexion, jugador), modo, personaje, estadistica, resultado, fecha, duracion);
+				partida = new Partida(id, gestionU.getJugadorByNombre(conexion, jugador), modo, personaje, estadistica, resultado, fecha, duracion);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -91,15 +97,16 @@ public ArrayList<Partida> getPartidasByJugador(Connection conexion, String jugad
 }
 	
 	//INSERT partida 
-	public  void insertarPartida(Connection conexion, Partida partida) { 
-	int resultado=0;
-	if(partida.isResultado())
-		resultado=1;
-	String consulta="INSERT INTO `matches`( `duration`, `result`,`estadisticas`,`date`,`champion_id`,`modo_id`,`player_id`) VALUES ("
-			+"'"+partida.getDuracion()+"','"+resultado+"','"+partida.getEstadisticas().toString()+"','"+partida.StringFecha()+"','"+partida.getPersonaje().getId()+"','"+partida.getModo().getId()+"','"+partida.getJugador().getId()+"')";
-			Metodos.conexionBDUpdate(conexion, consulta);
+public void insertarPartida(Connection conexion, Partida partida) {
+    int resultado = partida.isResultado() ? 1 : 0;
+    String estadisticas = partida.getEstadisticas().toString(); // Convertir las estadísticas a una cadena de texto
 
+    String consulta = "INSERT INTO `matches` (`duration`, `result`, `estadisticas`, `date`, `champion_id`, `modo_id`, `player_id`) VALUES ("
+            + "'" + partida.getDuracion() + "', '" + resultado + "', '" + estadisticas + "', '" + partida.StringFecha() + "', '" + partida.getPersonaje().getId() + "', '" + partida.getModo().getId() + "', '" + partida.getJugador().getId() + "')";
+
+    Metodos.conexionBDUpdate(conexion, consulta);
 }
+
 
 	//DELETE partida 
 

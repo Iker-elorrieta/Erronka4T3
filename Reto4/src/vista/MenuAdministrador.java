@@ -15,7 +15,7 @@ import manager.GestionModos;
 import manager.GestionPartidas;
 import manager.GestionPersonajes;
 import manager.GestionUsuarios;
-import controlador.Metodos;
+
 import modelo.Habilidad;
 import modelo.Jugador;
 import modelo.Modo;
@@ -46,7 +46,6 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -63,7 +62,7 @@ public class MenuAdministrador extends JFrame {
 	private  JPanel panelHabilidades;
 	private  JPanel panelModos;
 	private MetodosVista metodosVista = new MetodosVista();
-	private Metodos metodos = new Metodos();
+
 	
 	public ArrayList<Partida> arrayPartidas= new ArrayList<>();
 	public ArrayList<Jugador> arrayJugadores= new ArrayList<>();
@@ -198,7 +197,7 @@ public class MenuAdministrador extends JFrame {
             public void mouseClicked(MouseEvent e) {
             	
             	arrayHabilidades=gestionH.cargaInicialHabilidades(conexion);
-				String[] titulos= {"cod","nombre","descripcion"};
+				String[] titulos= {"cod","cod_personaje","nombre","descripcion"};
 				metodosVista.crearTabla(arrayHabilidades, titulos, panelHabilidades);
             	tabbedPane.setSelectedIndex(3);
                
@@ -304,7 +303,7 @@ public class MenuAdministrador extends JFrame {
         		JScrollPane scroll = (JScrollPane) selectedPanel.getComponent(0);
         		JViewport vp = (JViewport) scroll.getComponent(0);
         		JTable table = (JTable) vp.getComponent(0);
-        		 DefaultTableModel modelo= (DefaultTableModel) table.getModel();
+        
         		 int filaSeleccionada = table.getSelectedRow();
                  if (filaSeleccionada != -1) {
                      // Obtenemos el ID de la fila seleccionada en la tabla
@@ -338,7 +337,7 @@ public class MenuAdministrador extends JFrame {
                    for (int i = 0; i < numeroColumnas; i++) {
                        columnas[i] = modelo.getColumnName(i);
                    }
-                   AddRowFrame anadirFila = new AddRowFrame(columnas);
+                   AddRowFrame anadirFila = new AddRowFrame(columnas, tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
                    anadirFila.setVisible(true);
                
                 }

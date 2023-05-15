@@ -1,7 +1,7 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,13 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import controlador.Metodos;
 import modelo.Modo;
-import utils.DBUtils;
+
 
 public class GestionModos {
 	
 	
 	//SELECT by ID 
-	public static Modo getModoById(Connection conexion, int id) {
+	public  Modo getModoById(Connection conexion, int id) {
     	Modo modo =null;
     	try {
             String query = "SELECT nombre FROM modos WHERE id ="+id;
@@ -58,14 +58,14 @@ public class GestionModos {
 	}
     
 	//UPDATE modo 
-	public static  void updateModo(Connection conexion, Modo modo) {
+	public   void updateModo(Connection conexion, Modo modo) {
 
 		 String consulta = "UPDATE modos SET nombre='"+modo.getNombre()+"'  WHERE id ="+modo.getId();
 	     Metodos.conexionBDUpdate(conexion, consulta);
 	}
 	
 	//INSERT modo 
-	public static  void insertarModo(Connection conexion, Modo modo) { 
+	public  void insertarModo(Connection conexion, Modo modo) { 
 
 			String consulta="INSERT INTO `modos`(`id`, `nombre`) VALUES ('"+modo.getId()+"','"+modo.getNombre()+"')";
 			Metodos.conexionBDUpdate(conexion, consulta);

@@ -84,6 +84,7 @@ public class MenuJugador extends JFrame {
 	private JScrollPane scrollPartidas;
 	private JLabel lblLvL;
 	private JLabel lblRank;
+	public static Jugador j1;
 	Connection conexion;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -112,7 +113,7 @@ public class MenuJugador extends JFrame {
 		}
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		
-		Jugador j1 = (Jugador) usuario;
+		  j1 = (Jugador) usuario;
 	/*	addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -246,11 +247,18 @@ public class MenuJugador extends JFrame {
 	        });
 	        panelPerfil.setLayout(null);
 	        
-	        
-	        
-	        JButton btn_borrar = new JButton("Borrar cuenta");
-	        btn_borrar.setBounds(595, 120, 89, 23);
-	        panelPerfil.add(btn_borrar);
+	        JLabel lblSettings = new JLabel("");
+	        lblSettings.setBounds(675, 41, 25, 25);
+	        lblSettings.setIcon(MetodosVista.rescaleImage("ImagenesAplicacion/Utils/settings.png", 25, 25));
+	        lblSettings.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent e) {
+	                // Abrir el JFrame de registro
+	                SettingsFrame settingsFrame = new SettingsFrame();
+	                settingsFrame.setVisible(true);
+	               
+	            }
+	        });
+	        panelPerfil.add(lblSettings);
 	        panelPerfil.add(labelImagen);
 	        
 	        JLabel lblBienvenido = new JLabel("Bienvenido "+j1.getNombre());
@@ -297,30 +305,6 @@ public class MenuJugador extends JFrame {
 	        lblFondoPerfil.setBounds(0, 0, 720, 367);
 	        lblFondoPerfil.setIcon(fondoPerfil);
 	        panelPerfil.add(lblFondoPerfil);
-	        
-	        
-	        
-	        JButton btn_editar = new JButton("Editar cuenta");
-	        btn_editar.setBounds(595, 86, 89, 23);
-	        panelPerfil.add(btn_editar);
-	        
-	        	        btn_editar.addActionListener(new ActionListener() {
-	        				public void actionPerformed(ActionEvent e) {
-	        					
-	        				}});
-	        	        
-
-	        	         btn_borrar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						gestionU.eliminarJugador(conexion, j1.getId());
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					dispose();
-					new MenuAdministrador(usuario).setVisible(true);;
-				}});
 	        
 	        
 	       
@@ -392,8 +376,8 @@ public class MenuJugador extends JFrame {
 	        		Partida partida =gestionP.crearPartidaAleatoria(conexion, j1, choice_1.getSelectedItem(), choice.getSelectedItem());
 	        		if(partida.isResultado())
 	        			gestionU.subirNivel(conexion, j1.getId());
-	        		metodosVista.mostrarPartida(partida, panelPartida);
 	        		gestionP.insertarPartida(conexion, partida);
+	        		metodosVista.mostrarPartida(partida, panelPartida);
 	        	}
 	        });
 	        btnJugarPartida.setBounds(323, 315, 89, 23);

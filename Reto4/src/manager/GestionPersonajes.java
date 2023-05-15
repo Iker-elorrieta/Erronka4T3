@@ -1,7 +1,7 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import controlador.Metodos;
-import modelo.Habilidad;
+
 import modelo.Jugador;
 import modelo.Personaje;
-import utils.DBUtils;
+
 
 public class GestionPersonajes {
 	
@@ -34,7 +34,7 @@ public class GestionPersonajes {
 			    int abilityPower=rs.getInt("ability_Power");
 			    int health=rs.getInt("life");
 			    int mana=rs.getInt("mana");
-			    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
+			 
 	            Personaje personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 	            campeones.add(personaje);
 			}
@@ -64,7 +64,7 @@ public class GestionPersonajes {
 				    int abilityPower=rs.getInt("ability_Power");
 				    int health=rs.getInt("life");
 				    int mana=rs.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
+				   
 		             personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 	            }
 
@@ -76,42 +76,38 @@ public class GestionPersonajes {
 
 	    }
 	 
-	 public ArrayList<Personaje> getPersonajeByJugadorLvL(Connection conexion,int lvl) {
-	        Personaje personaje = null;
-	        int cantidadDesbloqueos = lvl / 10;
-	        ArrayList<Personaje> personajes = new ArrayList<>();
-	        for (int id = 1; id < cantidadDesbloqueos+1; id++) {
+	public ArrayList<Personaje> getPersonajeByJugadorLvL(Connection conexion, int lvl) {
+	    ArrayList<Personaje> personajes = new ArrayList<>();
+	    int cantidadDesbloqueos = (lvl > 9) ? (lvl / 10) + 1 : 1;
 
-			
-	        try  {
-	            String query = "SELECT * FROM champions WHERE id = ?";
+	    try {
+	        String query = "SELECT * FROM champions WHERE id <= ?";
 
+	        PreparedStatement stmt = conexion.prepareStatement(query);
+	        stmt.setInt(1, cantidadDesbloqueos);
+	        ResultSet resultSet = stmt.executeQuery();
 
-	            PreparedStatement stmt = conexion.prepareStatement(query); 
-	            stmt.setInt(1, id);
-			    ResultSet resultSet = stmt.executeQuery();
-			   
-			    
-	            if (resultSet.next()) {
-	    
-				    String name=resultSet.getString("name");
-				    String role=resultSet.getString("role");
-				    int difficulty=resultSet.getInt("difficulty");
-				    int attackDamage=resultSet.getInt("attack_Damage");
-				    int abilityPower=resultSet.getInt("ability_Power");
-				    int health=resultSet.getInt("life");
-				    int mana=resultSet.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
-		            personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
-		            personajes.add(personaje);
-	            }
+	        while (resultSet.next()) {
+	            int id = resultSet.getInt("id");
+	            String name = resultSet.getString("name");
+	            String role = resultSet.getString("role");
+	            int difficulty = resultSet.getInt("difficulty");
+	            int attackDamage = resultSet.getInt("attack_Damage");
+	            int abilityPower = resultSet.getInt("ability_Power");
+	            int health = resultSet.getInt("life");
+	            int mana = resultSet.getInt("mana");
 
-	        } catch (SQLException e) {
-	            e.printStackTrace();
+	            Personaje personaje = new Personaje(id, name, role, difficulty, attackDamage, abilityPower, health, mana);
+	            personajes.add(personaje);
 	        }
-	        }
-	        return personajes;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
 	    }
+
+	    return personajes;
+	}
+
 
 	 public static ArrayList<Personaje> getPersonajeByPartida(Connection conexion, int cod) {
 	        ArrayList<Personaje> personajes = new ArrayList<>();
@@ -130,7 +126,7 @@ public class GestionPersonajes {
 				    int abilityPower=resultSet.getInt("ability_Power");
 				    int health=resultSet.getInt("life");
 				    int mana=resultSet.getInt("mana");
-				    ArrayList<Habilidad> abilities= GestionHabilidades.getHabilidadesByChampId(conexion, id);
+				   
 		           Personaje personaje = new Personaje(id,name,role,difficulty,attackDamage,abilityPower,health,mana);
 		            personajes.add(personaje);
 	            }
@@ -151,16 +147,16 @@ public class GestionPersonajes {
 	}
 	
 	//INSERT personaje 
-	public static  void insertarPersonaje(Personaje personaje) { 
+	public  void insertarPersonaje(Connection conexion, Personaje personaje) { 
 			String consulta="INSERT INTO `champions`(`id`, `name`, `role`, `difficulty`, `attack_damage`, `ability_power`,`life`,`mana`) VALUES"
 
 					+ " ('"+personaje.getId()+"','"+personaje.getName()+"','"+personaje.getRole()+"','"+personaje.getDifficulty()+"','"+personaje.getAttackDamage()+"','"+personaje.getAbilityPower()+"','"+personaje.getHealth()+"','"+personaje.getMana()+"')";
-			Metodos.conexionBDUpdate(null, consulta);
+			Metodos.conexionBDUpdate(conexion, consulta);
 	}
 
 	//DELETE personaje 
-	 public void eliminarPersonaje(Connection conexion,Personaje personaje) throws SQLException {
-	        String sql = "DELETE FROM champions WHERE id="+personaje;
+	 public void eliminarPersonaje(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM champions WHERE id="+id;
 	        try (Statement statement = conexion.createStatement()) {
 	            statement.executeUpdate(sql);
 	        }

@@ -37,6 +37,10 @@ public class Estadisticas {
 		this.assists=assists;
 	}
 	
+	public Estadisticas() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String toString() {
 		return  + kills + "/" + death + "/" + assists ;
