@@ -34,6 +34,12 @@ public class Partida {
 		this.duracion=duracion;
 	}
 
+	public Partida() {
+		// TODO Auto-generated constructor stub
+	}
+
+	
+
 	public int getCod_partida() {
 		return cod_partida;
 	}

@@ -6,18 +6,35 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
+import manager.GestionEstadisticas;
 import manager.GestionHabilidades;
 import modelo.Habilidad;
 import utils.ConexionBD;
 import utils.DBUtils;
 
 class GestionHabilidadesTest {
-
+	public GestionHabilidades gestionH = new GestionHabilidades();
+	private static Connection conexion = null;
+    private static GestionEstadisticas gestionEstadisticas;
+    
+    @BeforeClass
+    public static void setUp() {
+        gestionEstadisticas = new GestionEstadisticas();
+        
+		try {
+			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 	@Test
 	void testgethabilidadesByChampId() {
-		Connection conexion = null;
+	
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
@@ -31,45 +48,50 @@ class GestionHabilidadesTest {
 	
 	@Test
 	void testupdateHabilidad() {
-		Connection conexion = null;
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Habilidad habilidad= new Habilidad(2,"Ataque lodo","Una bomba de lodo inunda el campo de batalla");
+		Habilidad habilidad= new Habilidad(2,0, "Ataque lodo","Una bomba de lodo inunda el campo de batalla");
 		GestionHabilidades.updateHabilidad(conexion, habilidad);
 	}
 	
 	@Test
 	void testinsertarHabilidad() {
-		Connection conexion = null;
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Habilidad habilidad=new Habilidad(13, "Botellazo","Coje una botella y te ataca con ella");
+		Habilidad habilidad=new Habilidad(13, 0, "Botellazo","Coje una botella y te ataca con ella");
 		int cod=2;
-		GestionHabilidades.insertarHabilidad(conexion, habilidad, cod);
+		gestionH.insertarHabilidad(conexion, habilidad);
 	}
 	@Test
 	void testeliminarHabilidad() {
-		Connection conexion = null;
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Habilidad habilidad=new Habilidad(1, "Lechazo", "Un Ostion que te deja tontorron");
-		GestionHabilidades.eliminarHabilidad(conexion, habilidad);
+		Habilidad habilidad=new Habilidad(1, 0, "Lechazo", "Un Ostion que te deja tontorron");
+		try {
+			gestionH.eliminarHabilidad(conexion, habilidad.getCod());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@Test
 	void testgetHabilidad() {
-		Connection conexion = null;
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
@@ -82,7 +104,7 @@ class GestionHabilidadesTest {
 	
 	@Test
 	void testgetHabilidadYPersonaje() {
-		Connection conexion = null;
+		
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {

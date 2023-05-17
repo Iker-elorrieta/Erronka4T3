@@ -1,25 +1,8 @@
-<<<<<<< HEAD
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 3:44:27 
-=======
-<<<<<<< HEAD
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 2:52:21 
-=======
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
->>>>>>> branch 'S2' of https://github.com/Iker-elorrieta/Erronka4T3.git
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:13:11 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:18:13 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:18:54 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:22:33 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:23:24 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:23:41 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:24:13 
-El usuario: Moranco ha iniciado sesion el dia: Thu May 11 a las: 4:35:29 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 8:20:45 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:04:54 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:24:16 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:34:28 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:39:44 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:41:57 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:42:13 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:55:42 
-El usuario: Moranco ha iniciado sesion el dia: Mon May 15 a las: 2:59:13 
+El usuario: Fake ha iniciado sesion el dia: Tue May 16 a las: 1:57:01 
+El usuario: Fake ha iniciado sesion el dia: Tue May 16 a las: 2:06:35 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 9:45:18 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 9:47:43 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 9:48:52 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 9:52:48 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 9:57:19 
+El usuario: Fake ha iniciado sesion el dia: Wed May 17 a las: 0:14:21 

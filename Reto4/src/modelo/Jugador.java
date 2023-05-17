@@ -31,9 +31,7 @@ public class Jugador extends Usuario{
 		this.bloqueado=bloqueado;
 	}
 
-	public boolean isbloqueado() {
-		return bloqueado;
-}
+
 	public Date getFecha() {
 		return fecha;
 

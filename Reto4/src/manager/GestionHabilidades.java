@@ -1,7 +1,7 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import controlador.Metodos;
 import modelo.Habilidad;
-import utils.DBUtils;
+
 
 public class GestionHabilidades {
 	
@@ -27,9 +27,10 @@ public class GestionHabilidades {
             
             while (rs.next()) {
             	int id_habilidad=rs.getInt("id");
+            	int id_campeon=rs.getInt("champion_id");
             	String nombre=rs.getString("name");
             	String descripcion=rs.getString("description");
-            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
+            	Habilidad habilidad= new Habilidad(id_habilidad, id_campeon, nombre, descripcion);
                 habilidades.add(habilidad);
             }
 
@@ -51,9 +52,10 @@ public class GestionHabilidades {
             
             while (rs.next()) {
             	int id_habilidad=rs.getInt("id");
+            	int id_campeon=rs.getInt("champion_id");
             	String nombre=rs.getString("name");
             	String descripcion=rs.getString("description");
-            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
+            	Habilidad habilidad= new Habilidad(id_habilidad, id_campeon, nombre, descripcion);
                 habilidades.add(habilidad);
             }
 
@@ -75,9 +77,10 @@ public class GestionHabilidades {
 	            
 	            while (resultSet.next()) {
 	            	int id_habilidad=resultSet.getInt("id");
+	            	int id_campeon=resultSet.getInt("champion_id");
 	            	String nombre=resultSet.getString("name");
 	            	String descripcion=resultSet.getString("description");
-	            	Habilidad habilidad= new Habilidad(id_habilidad, nombre, descripcion);
+	            	Habilidad habilidad= new Habilidad(id_habilidad, id_campeon, nombre, descripcion);
 	                habilidades.add(habilidad);
 	            }
 
@@ -99,14 +102,14 @@ public class GestionHabilidades {
 	
 	//INSERT 
 
-	public static  void insertarHabilidad(Connection conexion, Habilidad Habilidad, int cod) { 
-		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ('"+Habilidad.getCod()+"','"+cod+"','"+Habilidad.getNombre()+"','"+Habilidad.getDescripcion()+"')";
+	public  void insertarHabilidad(Connection conexion, Habilidad habilidad) { 
+		String consulta="INSERT INTO `abilities`(`id`, `champion_id`, `name`, `description`) VALUES ('"+habilidad.getCod()+"'"+habilidad.getCod_personaje()+"'','"+habilidad.getNombre()+"','"+habilidad.getDescripcion()+"')";
 		Metodos.conexionBDUpdate(conexion, consulta);
 	}
 	
 	//DELETE habilidad 
-	 public void eliminarHabilidad(Connection conexion,Habilidad habilidad) throws SQLException {
-	        String sql = "DELETE FROM abilities WHERE id="+habilidad;
+	 public void eliminarHabilidad(Connection conexion,int id) throws SQLException {
+	        String sql = "DELETE FROM abilities WHERE id="+id;
 	        try (Statement statement = conexion.createStatement()) {
 	            statement.executeUpdate(sql);
 	        }

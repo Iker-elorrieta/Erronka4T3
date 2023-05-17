@@ -85,7 +85,7 @@ class JugadorTest {
 		boolean bloqueado2=true;  
 
 		jug1.setBloqueado(bloqueado2);
-		assertEquals(jug1.isbloqueado(),bloqueado2);
+		assertEquals(jug1.isBloqueado(),bloqueado2);
 
 		jug1.setBloqueado(bloqueado2);
 		assertEquals(jug1.isBloqueado(),bloqueado2);

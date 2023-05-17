@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
+import manager.GestionEstadisticas;
 import manager.GestionPartidas;
 import modelo.Estadisticas;
 import modelo.Jugador;
@@ -19,19 +21,26 @@ import utils.ConexionBD;
 import utils.DBUtils;
 
 class GestionPartidasTest {
-
-	@Test
-	void testcargaInicialPartidas() {
-		Connection conexion = null;
+	GestionPartidas gestionP = new GestionPartidas();
+	private static Connection conexion = null;
+    private static GestionEstadisticas gestionEstadisticas;
+    
+    @BeforeClass
+    public static void setUp() {
+        gestionEstadisticas = new GestionEstadisticas();
+        
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<Partida> partidas;
+    }
+	@Test
+	void testcargaInicialPartidas() {
+				ArrayList<Partida> partidas = null;
 		try {
-			partidas = GestionPartidas.cargaInicialPartidas(conexion);
+			partidas = gestionP.cargaInicialPartidas(conexion);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,24 +70,24 @@ class GestionPartidasTest {
 	
 	@Test
 	void testeliminarPartida() {
+		Connection conexion = null;
 		Jugador jug= new Jugador();
 		Date date= new Date();
 		Modo modo= new Modo(1, "Clasificatorio");
 		Estadisticas est= new Estadisticas(0, 0, 0);
 		Personaje personaje=new Personaje(9, "Ruben", "Tecnico de sistemas", 3, 100, 20, 50, 60);
 		Partida partida= new Partida(1, jug, modo, personaje, est, false, date, 40);
-		GestionPartidas.eliminarPartida(partida);
-	}
-	
-	@Test
-	void testsacarResultados() {
-		Connection conexion = null;
 		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+			gestionP.eliminarPartida(conexion,1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	void testsacarResultados() {
+		
 		String nombre="Faker";
 		Integer[] resultados=GestionPartidas.sacarResultados(conexion, nombre);
 		assertEquals(resultados[0],1);

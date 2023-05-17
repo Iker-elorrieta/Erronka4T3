@@ -13,6 +13,7 @@ import utils.RotatedIcon;
 import javax.swing.JTabbedPane;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
@@ -24,6 +25,8 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -84,19 +87,9 @@ public class MenuJugador extends JFrame {
 	private JScrollPane scrollPartidas;
 	private JLabel lblLvL;
 	private JLabel lblRank;
+	public static Jugador j1;
+	private ArrayList<Personaje> p;
 	Connection conexion;
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuJugador frame = new MenuJugador(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 
 	/**
@@ -104,6 +97,7 @@ public class MenuJugador extends JFrame {
 	 * @throws IOException 
 	 */
 	public MenuJugador(Usuario usuario){
+		
 		 try {
 			 conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e1) {
@@ -112,8 +106,8 @@ public class MenuJugador extends JFrame {
 		}
 		setIconImage(Toolkit.getDefaultToolkit().getImage("ImagenesAplicacion/ImagenesMenu/logoWR.png"));
 		
-		Jugador j1 = (Jugador) usuario;
-	/*	addWindowListener(new WindowAdapter() {
+		  j1 = (Jugador) usuario;
+		addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 int confirm = JOptionPane.showConfirmDialog(MenuJugador.this,
@@ -131,7 +125,7 @@ public class MenuJugador extends JFrame {
         });
     	
 		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);*/
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 728, 430);
 		  // Obtener imágenes de la carpeta
         imagenes = new ArrayList<>();
@@ -169,6 +163,7 @@ public class MenuJugador extends JFrame {
         lblJugar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	metodosVista.crearPanelesModos(scrollModos, gestionM.cargaInicialModos(conexion));
+            	  p=gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId()));
             	tabbedPane.setSelectedIndex(2);
             }
         });
@@ -246,11 +241,18 @@ public class MenuJugador extends JFrame {
 	        });
 	        panelPerfil.setLayout(null);
 	        
-	        
-	        
-	        JButton btn_borrar = new JButton("Borrar cuenta");
-	        btn_borrar.setBounds(595, 120, 89, 23);
-	        panelPerfil.add(btn_borrar);
+	        JLabel lblSettings = new JLabel("");
+	        lblSettings.setBounds(675, 41, 25, 25);
+	        lblSettings.setIcon(MetodosVista.rescaleImage("ImagenesAplicacion/Utils/settings.png", 25, 25));
+	        lblSettings.addMouseListener(new MouseAdapter() {
+	            public void mouseClicked(MouseEvent e) {
+	                // Abrir el JFrame de registro
+	                SettingsFrame settingsFrame = new SettingsFrame();
+	                settingsFrame.setVisible(true);
+	               
+	            }
+	        });
+	        panelPerfil.add(lblSettings);
 	        panelPerfil.add(labelImagen);
 	        
 	        JLabel lblBienvenido = new JLabel("Bienvenido "+j1.getNombre());
@@ -297,30 +299,6 @@ public class MenuJugador extends JFrame {
 	        lblFondoPerfil.setBounds(0, 0, 720, 367);
 	        lblFondoPerfil.setIcon(fondoPerfil);
 	        panelPerfil.add(lblFondoPerfil);
-	        
-	        
-	        
-	        JButton btn_editar = new JButton("Editar cuenta");
-	        btn_editar.setBounds(595, 86, 89, 23);
-	        panelPerfil.add(btn_editar);
-	        
-	        	        btn_editar.addActionListener(new ActionListener() {
-	        				public void actionPerformed(ActionEvent e) {
-	        					
-	        				}});
-	        	        
-
-	        	         btn_borrar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						gestionU.eliminarJugador(conexion, j1.getId());
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					dispose();
-					new MenuAdministrador(usuario).setVisible(true);;
-				}});
 	        
 	        
 	       
@@ -370,8 +348,9 @@ public class MenuJugador extends JFrame {
 	        
 	      
 	      Choice choice = new Choice();
+	    
 	        choice.setBounds(444, 318, 118, 20);
-	        ArrayList<Personaje> p=gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId()));
+	        p=gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId()));
 	      for (Personaje personaje : p) {
 			choice.add(personaje.getName());
 		}
@@ -388,12 +367,14 @@ public class MenuJugador extends JFrame {
 	        JButton btnJugarPartida = new JButton("Play");
 	        btnJugarPartida.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
-	        		
+	        		 
 	        		Partida partida =gestionP.crearPartidaAleatoria(conexion, j1, choice_1.getSelectedItem(), choice.getSelectedItem());
 	        		if(partida.isResultado())
 	        			gestionU.subirNivel(conexion, j1.getId());
-	        		metodosVista.mostrarPartida(partida, panelPartida);
 	        		gestionP.insertarPartida(conexion, partida);
+	        		
+	        		metodosVista.mostrarPartida(partida, panelPartida);
+	        		 p=gestionPJ.getPersonajeByJugadorLvL(conexion, gestionU.getNivelById(conexion, j1.getId()));
 	        	}
 	        });
 	        btnJugarPartida.setBounds(323, 315, 89, 23);

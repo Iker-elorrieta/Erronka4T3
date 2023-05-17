@@ -11,15 +11,15 @@ import modelo.Habilidad;
 public class HabilidadTest {
 	
 	int id=0;
+	int id_champ=2;
 	String nombre="Disparo de flecha";
 	String descripcion="Dispara una flecha hacia el objetivo.";
-	Habilidad habilidad = new Habilidad(id,nombre,descripcion);
+	Habilidad habilidad = new Habilidad(id,id_champ, nombre,descripcion);
 	
     @Test
     public void testConstructorAndGetters() {
-    	Habilidad habilidad2 = new Habilidad();
-    	
-        assertEquals(id, habilidad.getCod());
+    	assertEquals(id, habilidad.getCod());
+        assertEquals(id_champ, habilidad.getCod_personaje());
         assertEquals(nombre, habilidad.getNombre());
         assertEquals(descripcion, habilidad.getDescripcion());
         
@@ -29,14 +29,17 @@ public class HabilidadTest {
     public void testSetters() {
     	
     	int id1=1;
+    	int id_champ=2;
     	String nombre1="Escudo protector";
     	String descripcion1="Protege al personaje con un escudo mágico.";
     	
     	habilidad.setCod(id1);
+    	habilidad.setCod_personaje(id_champ);
     	habilidad.setDescripcion(descripcion1);
     	habilidad.setNombre(nombre1);
     	
     	assertEquals(habilidad.getCod(),id1);
+    	assertEquals(habilidad.getCod_personaje(),id_champ);
     	assertEquals(habilidad.getNombre(),nombre1);
     	assertEquals(habilidad.getDescripcion(),descripcion1);
     	
@@ -45,9 +48,9 @@ public class HabilidadTest {
 
     @Test
     public void testToString() {
-        Habilidad habilidad1 = new Habilidad(2, "Escudo protector", "Protege al personaje con un escudo mágico.");
+        Habilidad habilidad1 = new Habilidad(2, 2, "Escudo protector", "Protege al personaje con un escudo mágico.");
 
-        String expected = "Habilidad{cod=2, nombre='Escudo protector', descripcion='Protege al personaje con un escudo mágico.'}";
+        String expected = "Habilidad{cod=2, cod_personaje=2, nombre='Escudo protector', descripcion='Protege al personaje con un escudo mágico.'}";
         String actual = habilidad1.toString();
 
         assertEquals(expected, actual);
@@ -55,9 +58,9 @@ public class HabilidadTest {
 
 	@Test
     public void testEquals() {
-    	Habilidad habilidad1 = new Habilidad(1, "Habilidad 1", descripcion);
-        Habilidad habilidad2 = new Habilidad(1, "Habilidad 2", descripcion);
-        Habilidad habilidad3 = new Habilidad(2, "Habilidad 3", descripcion);
+    	Habilidad habilidad1 = new Habilidad(1, 2, "Habilidad 1", descripcion);
+        Habilidad habilidad2 = new Habilidad(1, 2, "Habilidad 2", descripcion);
+        Habilidad habilidad3 = new Habilidad(2, 1, "Habilidad 3", descripcion);
         Habilidad habilidad4 = null;
         String habilidad5 = "Habilidad 1";
 

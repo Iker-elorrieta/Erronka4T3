@@ -1,18 +1,18 @@
 package manager;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
 import modelo.Estadisticas;
-import utils.DBUtils;
+
 
 public class GestionEstadisticas {
-	
-	public static Estadisticas obtenerEstadistica(String estadistica) {
+	  static GestionEstadisticas gestionE = new GestionEstadisticas();
+	public Estadisticas obtenerEstadistica(String estadistica) {
 		 String[] valores = estadistica.split("/");
 		 
 		    int kills = Integer.valueOf(valores[0]);
@@ -23,7 +23,7 @@ public class GestionEstadisticas {
 		    return stats;
 	}
 	
-	 public static Estadisticas generarEstadisticasAleatorias() {
+	 public Estadisticas generarEstadisticasAleatorias() {
 	        Random rand = new Random();
 	        
 	        int kills = rand.nextInt(15) + 1; // Genera un número aleatorio entre 1 y 15
@@ -33,6 +33,36 @@ public class GestionEstadisticas {
 	        // Devuelve una cadena con las estadísticas aleatorias generadas
 	        return estadisticas;
 	    }
+	 @SuppressWarnings("unused")
+	private Estadisticas convertirEstadisticas(String estadisticasString) {
+		    Estadisticas estadisticas = new Estadisticas();
+		    String[] estadisticasArray = estadisticasString.split(", ");
+		    
+		    for (String estadistica : estadisticasArray) {
+		        String[] partes = estadistica.split(":");
+		        String nombre = partes[0].trim();
+		        int valor = Integer.parseInt(partes[1].trim());
+		        
+		        // Asignar valores específicos según el nombre de la estadística
+		        switch (nombre) {
+		            case "kills":
+		                estadisticas.setKills(valor);
+		                break;
+		            case "deaths":
+		                estadisticas.setDeath(valor);
+		                break;
+		            case "assists":
+		                estadisticas.setAssists(valor);
+		                break;
+		            // Agregar más casos según los atributos de estadísticas que tengas
+		            default:
+		                System.out.println("Estadística no reconocida: " + nombre);
+		                break;
+		        }
+		    }
+		    
+		    return estadisticas;
+		}
 
 	 //Seleccion compleja: suma de estadisticas
 	public static Estadisticas estadisticasJugador(Connection conexion, String nombre) {
@@ -44,7 +74,13 @@ public class GestionEstadisticas {
 		    ResultSet rs = stmt.executeQuery(consulta);
 			while (rs.next()) 
 			{
-				Estadisticas est=obtenerEstadistica(rs.getString("Estadisticas"));
+				Estadisticas est = null;
+				try {
+					est = gestionE.obtenerEstadistica(rs.getString("Estadisticas"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				estad.setKills(estad.getKills()+est.getKills());
 				estad.setDeath(estad.getDeath()+est.getDeath());
 				estad.setAssists(estad.getAssists()+est.getAssists());

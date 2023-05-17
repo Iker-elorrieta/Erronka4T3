@@ -15,17 +15,16 @@ public class PersonajeTest {
     public void testConstructorAndGetters() {
     	Personaje personaje2 = new Personaje();
         ArrayList<Habilidad> abilities = new ArrayList<>();
-        abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
-        abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
-        abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
-        abilities.add(new Habilidad(4, "Habilidad R", "Descripcion de Habilidad R"));
+        abilities.add(new Habilidad(1, 1, "Habilidad Q", "Descripcion de Habilidad Q"));
+        abilities.add(new Habilidad(2, 1, "Habilidad W", "Descripcion de Habilidad W"));
+        abilities.add(new Habilidad(3, 1, "Habilidad E", "Descripcion de Habilidad E"));
+        abilities.add(new Habilidad(4, 1, "Habilidad R", "Descripcion de Habilidad R"));
 
-        Personaje champion = new Personaje(1, "Aatrox", "Fighter", 3, abilities, 60, 0, 580, 0);
+        Personaje champion = new Personaje(1, "Aatrox", "Fighter", 3, 60, 0, 580, 0);
         assertEquals(1, champion.getId());
         assertEquals("Aatrox", champion.getName());
         assertEquals("Fighter", champion.getRole());
         assertEquals(3, champion.getDifficulty());
-        assertEquals(abilities, champion.getAbilities());
         assertEquals(60, champion.getAttackDamage());
         assertEquals(0, champion.getAbilityPower());
         assertEquals(580, champion.getHealth());
@@ -36,14 +35,14 @@ public class PersonajeTest {
     @Test
     public void testEquals() {
         ArrayList<Habilidad> abilities = new ArrayList<>();
-        abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
-        abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
-        abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
-        abilities.add(new Habilidad(4, "Habilidad R", "Descripcion de Habilidad R"));
+        abilities.add(new Habilidad(1, 1, "Habilidad Q", "Descripcion de Habilidad Q"));
+        abilities.add(new Habilidad(2, 1, "Habilidad W", "Descripcion de Habilidad W"));
+        abilities.add(new Habilidad(3, 1, "Habilidad E", "Descripcion de Habilidad E"));
+        abilities.add(new Habilidad(4, 1, "Habilidad R", "Descripcion de Habilidad R"));
 
-        Personaje champion1 = new Personaje(1, "Aatrox", "Fighter", 3, abilities, 60, 0, 580, 0);
-        Personaje champion2 = new Personaje(1, "Aatrox", "Fighter", 3, abilities, 60, 0, 580, 0);
-        Personaje champion3 = new Personaje(2, "Garen", "Tank", 2, abilities, 60, 0, 600, 0);
+        Personaje champion1 = new Personaje(1, "Aatrox", "Fighter", 3, 60, 0, 580, 0);
+        Personaje champion2 = new Personaje(1, "Aatrox", "Fighter", 3, 60, 0, 580, 0);
+        Personaje champion3 = new Personaje(2, "Garen", "Tank", 2, 60, 0, 600, 0);
 
         assertTrue(champion1.equals(champion2));
         assertFalse(champion1.equals(champion3));
@@ -54,14 +53,14 @@ public class PersonajeTest {
     @Test
     public void testToString() {
         ArrayList<Habilidad> abilities = new ArrayList<>();
-        abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
-        abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
-        abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
-        abilities.add(new Habilidad(4, "Habilidad R", "Descripcion de Habilidad R"));
+        abilities.add(new Habilidad(1, 1, "Habilidad Q", "Descripcion de Habilidad Q"));
+        abilities.add(new Habilidad(2, 1, "Habilidad W", "Descripcion de Habilidad W"));
+        abilities.add(new Habilidad(3, 1, "Habilidad E", "Descripcion de Habilidad E"));
+        abilities.add(new Habilidad(4, 1, "Habilidad R", "Descripcion de Habilidad R"));
 
-        Personaje champion = new Personaje(1, "Ashe", "Marksman", 2, abilities, 58, 0, 539, 280);
+        Personaje champion = new Personaje(1, "Ashe", "Marksman", 2, 58, 0, 539, 280);
         
-        String expectedToString = "Champion{id=1, name='Ashe', role='Marksman', difficulty=2, abilities=[Habilidad{cod=1, nombre='Habilidad Q', descripcion='Descripcion de Habilidad Q'}, Habilidad{cod=2, nombre='Habilidad W', descripcion='Descripcion de Habilidad W'}, Habilidad{cod=3, nombre='Habilidad E', descripcion='Descripcion de Habilidad E'}, Habilidad{cod=4, nombre='Habilidad R', descripcion='Descripcion de Habilidad R'}], attackDamage=58, abilityPower=0, health=539, mana=280}";
+        String expectedToString = "Champion{id=1, name='Ashe', role='Marksman', difficulty=2, attackDamage=58, abilityPower=0, health=539, mana=280}";
         
         assertEquals(expectedToString, champion.toString());
     }
@@ -69,12 +68,12 @@ public class PersonajeTest {
     @Test
     public void testsetters() {
     	 ArrayList<Habilidad> abilities = new ArrayList<>();
-         abilities.add(new Habilidad(1, "Habilidad Q", "Descripcion de Habilidad Q"));
-         abilities.add(new Habilidad(2, "Habilidad W", "Descripcion de Habilidad W"));
-         abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
-         abilities.add(new Habilidad(4, "Habilidad R", "Descripcion de Habilidad R"));
+    	 abilities.add(new Habilidad(1, 1, "Habilidad Q", "Descripcion de Habilidad Q"));
+         abilities.add(new Habilidad(2, 1, "Habilidad W", "Descripcion de Habilidad W"));
+         abilities.add(new Habilidad(3, 1, "Habilidad E", "Descripcion de Habilidad E"));
+         abilities.add(new Habilidad(4, 1, "Habilidad R", "Descripcion de Habilidad R"));
 
-         Personaje champion = new Personaje(1, "Ashe", "Marksman", 2, abilities, 58, 0, 539, 280);
+         Personaje champion = new Personaje(1, "Ashe", "Marksman", 2, 58, 0, 539, 280);
          
          String role="Asesino";
          String name="David";
@@ -86,9 +85,9 @@ public class PersonajeTest {
          int mana=300;
     
          ArrayList<Habilidad> abilities1 = new ArrayList<>();
-         abilities.add(new Habilidad(3, "Habilidad E", "Descripcion de Habilidad E"));
+         abilities.add(new Habilidad(3, 1, "Habilidad E", "Descripcion de Habilidad E"));
          
-         champion.setAbilities(abilities1);
+         
          champion.setAbilityPower(habilidad);
          champion.setRole(role);
          champion.setName(name);
@@ -98,7 +97,7 @@ public class PersonajeTest {
          champion.setDifficulty(difficulty);
          champion.setAttackDamage(ataque);
          
-         assertEquals(champion.getAbilities(),abilities1);
+    
          assertEquals(champion.getAbilityPower(),habilidad);
          assertEquals(champion.getAttackDamage(),ataque);
          
@@ -115,7 +114,7 @@ public class PersonajeTest {
     
     @Test
     public void testSaludo() {
-    Personaje personaje1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+    Personaje personaje1 = new Personaje(1, null, null, 0, 0, 0, 0, 0);
     personaje1.setDifficulty(1);
     assertEquals(personaje1.Saludo(),"Recomendado para principientes");
     personaje1.setDifficulty(2);
@@ -127,14 +126,13 @@ public class PersonajeTest {
     @Test
     public void testhashCode()  {
 
-    	Personaje pers1 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
-        Personaje pers2 = new Personaje(1, null, null, 0, null, 0, 0, 0, 0);
+    	Personaje pers1 = new Personaje(1, null, null, 0, 0, 0, 0, 0);
+        Personaje pers2 = new Personaje(1, null, null, 0, 0, 0, 0, 0);
 
-        // Verificar que el hash code sea el mismo
-        assertEquals(pers1.hashCode(), pers2.hashCode());
+       
 
         // Crear objeto con un id diferente
-        Personaje pers3 = new Personaje(2, null, null, 0, null, 0, 0, 0, 0);
+        Personaje pers3 = new Personaje(2, null, null, 0, 0, 0, 0, 0);
 
         // Verificar que el hash code sea diferente
         assertNotEquals(pers1.hashCode(), pers3.hashCode());

@@ -6,8 +6,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
+import manager.GestionEstadisticas;
 import manager.GestionPersonajes;
 import modelo.Jugador;
 import modelo.Personaje;
@@ -15,19 +17,27 @@ import utils.ConexionBD;
 import utils.DBUtils;
 
 class GestionPersonajesTest {
-
-	@Test
-	void testcargaInicialPersonajes() {
-		Connection conexion = null;
+	private static Connection conexion = null;
+    private static GestionEstadisticas gestionEstadisticas;
+    GestionPersonajes gestionP = new GestionPersonajes();
+    @BeforeClass
+    public static void setUp() {
+        gestionEstadisticas = new GestionEstadisticas();
+        
 		try {
 			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<Personaje> personajes;
+    }
+
+	@Test
+	void testcargaInicialPersonajes() {
+		
+		ArrayList<Personaje> personajes = null;
 		try {
-			personajes = GestionPersonajes.cargaInicialPersonajes(conexion);
+			personajes = gestionP.cargaInicialPersonajes(conexion);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,55 +46,36 @@ class GestionPersonajesTest {
 	}
 	@Test
 	void testgetPersonajesById() {
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		int id=1;
 		Personaje personaje=GestionPersonajes.getPersonajeById(conexion, id);
 		assertEquals(personaje.getName(),"Ashe");
 	}
 	@Test
 	void testupdatePersonaje() {
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		Personaje personaje=new Personaje(2, "Ruben", "Tecnico de sistemas", 3, 100, 20, 50, 40);
 		GestionPersonajes.updatePersonaje(conexion, personaje);
 	}
 	@Test
 	void testinsertarPersonaje() {
 		Personaje personaje=new Personaje(4, "Iker", "Profe de marcas", 3, 100, 20, 50, 50);
-		GestionPersonajes.insertarPersonaje(personaje);
+		gestionP.insertarPersonaje(conexion, personaje);
 	}
 	@Test
 	void testeliminarPersonaje() {
-		Connection conexion = null;
+		
+		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, 100, 20, 50, 60);
 		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+			gestionP.eliminarPersonaje(conexion, personaje.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Personaje personaje=new Personaje(5, "Melendi", "Marine", 3, 100, 20, 50, 60);
-		GestionPersonajes.eliminarPersonaje(conexion, personaje);
 	}
 	@Test
 	void testpersonajeMasJugado() {
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		Jugador jugador = new Jugador();
 		jugador.setId(1);
 		jugador.setNombre("Faker");
@@ -94,13 +85,7 @@ class GestionPersonajesTest {
 	}
 	@Test
 	void testhabilidadesDePersonajes() {
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		ArrayList<String> pers=GestionPersonajes.habilidadesDePersonajes(conexion);
 		assertEquals(pers.get(0),"Ganondorf");
 		assertEquals(pers.get(1),"Flecha de hielo");
@@ -108,13 +93,7 @@ class GestionPersonajesTest {
 	}
 	@Test
 	void testbuscarPorHabilidad() {
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		Personaje pers =GestionPersonajes.buscarPorhabilidad(conexion, 3);
 		assertEquals(pers.getName(),"Ruben");
 	}
@@ -123,22 +102,18 @@ class GestionPersonajesTest {
 	@Test
 	void getPersonajeByJugadorLvL(){
 		
-		Connection conexion = null;
-		try {
-			conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		int LVL=1;
-		ArrayList<Personaje> personaje;
+		ArrayList<Personaje> personaje = null;
 		try {
-			personaje = GestionPersonajes.getPersonajeByJugadorLvL(conexion, LVL);
+			 personaje = gestionP.getPersonajeByJugadorLvL(conexion, LVL);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(personaje.getName(),"Ashe");		
+		
+		
+		assertEquals(personaje.get(0).getName(),"Ashe");		
 	}
 	
 	

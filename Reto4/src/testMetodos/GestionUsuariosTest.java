@@ -1,18 +1,37 @@
 package testMetodos;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 import exceptions.PlayerNotFoundException;
+import manager.GestionEstadisticas;
 import manager.GestionUsuarios;
 import modelo.Administrador;
 import modelo.Jugador;
+import utils.ConexionBD;
+import utils.DBUtils;
 
 class GestionUsuariosTest {
+	private static Connection conexion;
+	GestionUsuarios gestionU = new GestionUsuarios();
 	
+	 @BeforeClass
+	    public static void setUp() {
+
+			try {
+				conexion = ConexionBD.obtenerConexion(DBUtils.URL, DBUtils.USERVISITANTE, DBUtils.PASS);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 	@Test
 	void testcargaInicialJugadores() {
 		
@@ -21,14 +40,14 @@ class GestionUsuariosTest {
 	//1
 	@Test
 	void testgetJugadorByNombre() {
-		Jugador jug1=GestionUsuarios.getJugadorByNombre(null, "Faker");
+		Jugador jug1=gestionU.getJugadorByNombre(null, "Faker");
 		assertEquals(jug1.getNombre(),"Faker");
 	}
 	//1
 	@Test
 	void testlogin() throws PlayerNotFoundException {
-			GestionUsuarios.login(null, "Faker","fakerpass");
-			GestionUsuarios.login(null, "gaizka", "gaizkacontra");
+			gestionU.login(null, "Faker","fakerpass");
+			gestionU.login(null, "gaizka", "gaizkacontra");
 	}
 	//2
 	@Test
@@ -36,7 +55,7 @@ class GestionUsuariosTest {
 		Date fecha= new Date();
 		Jugador jugador=new Jugador(2, "Fernando", "123",4, "Maestro", fecha, false);
 		
-		assertEquals(GestionUsuarios.getJugadorByNombre(null, "Fernando").getNivel(),4);
+		assertEquals(gestionU.getJugadorByNombre(null, "Fernando").getNivel(),4);
 	}
 	//3
 	@Test
@@ -45,8 +64,8 @@ class GestionUsuariosTest {
 		Jugador jug= new Jugador(2, "Fernando", "fakerpassguord", 0, "Maestro", date,false);
 		boolean bloqueado=true;
 	
-		Jugador jug1=GestionUsuarios.getJugadorByNombre(null, "Fernando");
-		assertEquals(jug1.isbloqueado(),true);
+		Jugador jug1=gestionU.getJugadorByNombre(null, "Fernando");
+		assertEquals(jug1.isBloqueado(),true);
 	}
 	@Test
 	void testcambiarBloqueo() {

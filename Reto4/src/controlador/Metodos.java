@@ -40,8 +40,9 @@ public class Metodos {
 	//Redireccion ArrayList H
 	public static void redireccionLogin(Usuario usuario) throws PlayerNotFoundException {
 
-
+		
     	if (usuario != null) {
+    		inicioSesionTXT(usuario);
     	    if (usuario instanceof Administrador) {
     	        // Redirigir al usuario a la pantalla de administrador.
     	    	new MenuAdministrador(usuario).setVisible(true);;
