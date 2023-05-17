@@ -131,7 +131,8 @@ public class MetodosVista {
 			panel.addMouseListener(mouseListener);
 
 			JLabel lblTitulo = new JLabel(personaje.getName());
-			lblTitulo.setBounds(55, 190, 50, 15);
+			lblTitulo.setBounds(0, 190, 150, 15);
+			 lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 			lblTitulo.setForeground(Color.WHITE);
 			panel.add(lblTitulo);
 			
